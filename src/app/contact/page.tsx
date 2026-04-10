@@ -56,7 +56,7 @@ export default function ContactPage() {
                     Phone
                   </h4>
                   <p className="text-gray-500 text-sm sm:text-base mt-0.5">
-                    +91 7873367335
+                    +91 9819377836
                   </p>
                 </div>
               </div>
