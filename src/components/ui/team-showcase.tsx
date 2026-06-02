@@ -1,8 +1,6 @@
 "use client"
 
-import { useState } from 'react';
-import { FaLinkedinIn, FaTwitter, FaBehance, FaInstagram } from 'react-icons/fa';
-import { cn } from '../../lib/utils';
+import { useState, useRef } from 'react';
 
 export interface TeamMember {
   id: string;
@@ -12,284 +10,393 @@ export interface TeamMember {
   social?: {
     twitter?: string;
     linkedin?: string;
-    instagram?: string;
-    behance?: string;
   };
 }
 
-const DEFAULT_MEMBERS: TeamMember[] = [
+// ─── LEADERSHIP (C-suite, founders) ───────────────────────────────────────────
+const LEADERSHIP: TeamMember[] = [
   {
-    id: '1',
+    id: 'l1',
     name: 'Dipti Ranjan Sahoo',
     role: 'CEO & Founder',
     image: 'https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg',
     social: { linkedin: 'https://www.linkedin.com/in/drsdipti/' },
   },
   {
-    id: '2',
+    id: 'l2',
     name: 'Biswajit Das',
     role: 'Chief Technology Officer',
     image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337648/biswajit-pX4fUldF_yvl1a1.jpg',
-    social: {  linkedin: 'https://www.linkedin.com/in/biswajit-das-307236378/' },
+    social: { linkedin: 'https://www.linkedin.com/in/biswajit-das-307236378/' },
   },
   {
-    id: '3',
+    id: 'l3',
     name: 'Asish Behera',
     role: 'Chief Operating Officer',
     image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337649/asish-YP_x4M2m_zezpos.png',
     social: { linkedin: 'https://www.linkedin.com/in/asish-behera-7aa599231/' },
   },
   {
-    id: '4',
+    id: 'l4',
     name: 'Chandan Prakash Dash',
     role: 'Chief Data Officer',
     image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337649/chandan-Cx7uX2po_s6mbwx.png',
     social: { linkedin: 'https://www.linkedin.com/in/chandan-prakash-dash-938a30314/' },
   },
   {
-    id: '5',
-    name: 'Santanu Swain',
-    role: 'Full-Stack Developer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337649/santanu-BiRSCqHD_twbc2u.png',
-    social: { linkedin: 'https://www.linkedin.com/in/santanu-swain/' },
-  },
-  {
-    id: '6',
-    name: 'Ankita Panda',
-    role: 'Businesss Development Executive',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337649/ankita-C7Tzn3mv_swm78w.jpg',
-    social: { linkedin: 'https://www.linkedin.com/in/ankita-panda-8b5657259?utm_source=share_via&utm_content=profile&utm_medium=member_android' } as TeamMember['social'],
-  },
-  {
-    id: '7',
+    id: 'l5',
     name: 'Abhisek Mahanta',
     role: 'Chief Financial Officer',
     image: 'https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717833/WhatsApp_Image_2026-04-09_at_12.26.48_PM_sc5mqr.jpg',
-    social: { linkedin: 'https://www.linkedin.com/in/abhisek-mohanta-9401952a3?utm_source=share_via&utm_content=profile&utm_medium=member_android' } as TeamMember['social'],
-  },
-  {
-    id: '8',
-    name: 'Bibhas Ranjan Behera',
-    role: 'Digital Marketing Lead',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775718261/WhatsApp_Image_2026-04-09_at_12.32.51_PM_sorjzf.jpg',
-    social: { linkedin: 'https://www.linkedin.com/in/bibhas-ranjan-behera?utm_source=share_via&utm_content=profile&utm_medium=member_android' } as TeamMember['social'],
+    social: { linkedin: 'https://www.linkedin.com/in/abhisek-mohanta-9401952a3' },
   },
 ];
 
-interface TeamShowcaseProps {
-  members?: TeamMember[];
+// ─── CORE TEAM ─────────────────────────────────────────────────────────────────
+const CORE_TEAM: TeamMember[] = [
+  {
+    id: 'c1',
+    name: 'Manoj Kumar Das',
+    role: 'Tech Lead',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780379736/manoj_colvy2.jpg',
+    social: { linkedin: 'https://www.linkedin.com/in/manojkumardas308/' },
+  },
+  {
+    id: 'c2',
+    name: 'Santanu sabyasachi Swain ',
+    role: 'Full-Stack Developer',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780381456/e907741f-12c7-4cab-a058-6a32e5a408a4.png',
+    social: { linkedin: 'https://www.linkedin.com/in/santanu-swain/' },
+  },
+  {
+    id: 'c3',
+    name: 'Biswranjan Rout',
+    role: 'Backend Developer',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380149/bisworanjan_cug4wx.png',
+    social: { linkedin: 'https://www.linkedin.com/in/bisworanjan-rout-90b13724b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
+  },
+  {
+    id: 'c4',
+    name: 'Samir Kumar Swain',
+    role: 'Backend Developer',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780382301/46cff1e3-8125-47b4-b479-4068964655f5.png',
+    social: { linkedin: 'https://www.linkedin.com/in/samirkumarswain/' },
+  },
+  {
+    id: 'c5',
+    name: 'Saswat Mohanty',
+    role: 'Full-Stack Developer',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380846/1bd7b686-c5e8-491f-a533-961a4c86645f.png',
+    social: { linkedin: 'https://www.linkedin.com/in/sashwat-mohanty' },
+  },
+  {
+    id: 'c6',
+    name: 'Bibhas Ranjan Behera',
+    role: 'Digital Marketing Lead',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780379878/fede2153-6a60-4e9a-8322-1393e77c076d.png',
+    social: { linkedin: 'https://www.linkedin.com/in/bibhas-ranjan-behera' },
+  },
+  {
+    id: 'c7',
+    name: 'Rahul Dev Nayak',
+    role: 'Graphic Designer',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780381822/82f58ab2-559f-499e-ab03-b75b46adf640.png  ',
+    social: { linkedin: 'https://www.linkedin.com/in/rahul-dev-nayak-781205269?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
+  },
+  {
+    id: 'c8',
+    name: 'Pinki Maharana',
+    role: 'Business Development Executive Lead ',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380970/df7e3c05-aef2-409a-b316-a3abac3fb7e3.png',
+    social: { linkedin: 'https://www.linkedin.com/in/pinki-maharana-39a081276/' },
+  },
+  {
+    id: 'c9',
+    name: 'Swapnajit Acharya',
+    role: 'Business Development Executive',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380443/3b78e95d-9c50-47d1-bc4a-545e1a930a6e.png',
+    social: { linkedin: 'https://www.linkedin.com/in/swapnajit-acharya-b77506229' },
+  },
+  {
+    id: 'c10',
+    name: 'Pratikshya Rout',
+    role: 'Business Development Executive',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780381072/8729fd84-7163-45c3-8632-901dbf66397e.png',
+    social: { linkedin: 'https://www.linkedin.com/in/pratikshya-rout-1243b0234' },
+  },
+];
+
+// ─── ICONS ────────────────────────────────────────────────────────────────────
+function LinkedInIcon() {
+  return (
+    <svg width={12} height={12} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+    </svg>
+  );
 }
 
-export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcaseProps) {
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-
-  const col1 = members.filter((_, i) => i % 3 === 0);
-  const col2 = members.filter((_, i) => i % 3 === 1);
-  const col3 = members.filter((_, i) => i % 3 === 2);
+// ─── SINGLE CARD ──────────────────────────────────────────────────────────────
+function MemberCard({
+  member,
+  index,
+  isHovered,
+  isAnyHovered,
+  onEnter,
+  onLeave,
+  nameSize = 17,
+}: {
+  member: TeamMember;
+  index: number;
+  isHovered: boolean;
+  isAnyHovered: boolean;
+  onEnter: () => void;
+  onLeave: () => void;
+  nameSize?: number;
+}) {
+  const dimmed = isAnyHovered && !isHovered;
 
   return (
-    <div className="flex flex-col md:flex-row items-start gap-8 md:gap-10 lg:gap-14 select-none w-full max-w-5xl mx-auto py-8 px-4 md:px-6 font-sans overflow-hidden">
-      
-    {/* ── Left: photo grid ── */}
+    <div
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 10,
+        cursor: 'pointer',
+        opacity: dimmed ? 0.28 : 1,
+        transition: 'opacity 0.3s ease',
+      }}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      {/* Photo */}
+      <img
+        src={member.image}
+        alt={member.name}
+        loading="lazy"
+        style={{
+          width: '100%',
+          display: 'block',
+          objectFit: 'cover',
+          aspectRatio: nameSize > 15 ? '3/4' : '4/5',
+          filter: isHovered
+            ? 'grayscale(0) brightness(1.04)'
+            : 'grayscale(0.45) brightness(0.82)',
+          transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+          transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s ease',
+        }}
+      />
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:gap-4 shrink-0 md:overflow-visible pb-1 md:pb-0 min-w-0">
-        {/* Column 1 */}
-        <div className="flex flex-col gap-2 md:gap-3 col-span-1">
-          {col1.map((member) => (
-            <PhotoCard
-              key={member.id}
-              member={member}
-              className="w-full aspect-4/5 sm:w-40 sm:h-42.5 md:w-30 md:h-33 lg:w-40 lg:h-41.25"
-              hoveredId={hoveredId}
-              onHover={setHoveredId}
-            />
-          ))}
-        </div>
+      {/* Gradient */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(to top, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.18) 52%, transparent 100%)',
+          opacity: isHovered ? 1 : 0.65,
+          transition: 'opacity 0.4s ease',
+        }}
+      />
 
-        {/* Column 2 */}
-        <div className="flex flex-col gap-2 md:gap-3 mt-6 sm:mt-8 md:mt-13 lg:mt-17 col-span-1">
-          {col2.map((member) => (
-            <PhotoCard
-              key={member.id}
-              member={member}
-              className="w-full aspect-4/5 sm:w-42.5 sm:h-45 md:w-33.5 md:h-36.5 lg:w-43 lg:h-45.5"
-              hoveredId={hoveredId}
-              onHover={setHoveredId}
-            />
-          ))}
-        </div>
+      {/* Index */}
+      <span
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 11,
+          fontSize: 10,
+          fontWeight: 300,
+          color: 'rgba(255,255,255,0.3)',
+          letterSpacing: '0.13em',
+          fontFamily: "'Outfit', sans-serif",
+          opacity: isHovered ? 0 : 1,
+          transition: 'opacity 0.25s ease',
+        }}
+      >
+        {String(index + 1).padStart(2, '0')}
+      </span>
 
-        {/* Column 3 */}
-        <div className="flex flex-col gap-2 md:gap-3 mt-3 sm:mt-4 md:mt-6.5 lg:mt-8 col-span-1">
-          {col3.map((member) => (
-            <PhotoCard
-              key={member.id}
-              member={member}
-              className="w-full aspect-4/5 sm:w-40 sm:h-42.5 md:w-31.5 md:h-34.5 lg:w-40.5 lg:h-43"
-              hoveredId={hoveredId}
-              onHover={setHoveredId}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Info */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '1rem 1rem 0.85rem',
+          transform: isHovered ? 'translateY(0)' : 'translateY(5px)',
+          opacity: isHovered ? 1 : 0.9,
+          transition: 'transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.35s ease',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: nameSize,
+            fontWeight: 400,
+            color: '#fff',
+            margin: '0 0 3px',
+            lineHeight: 1.15,
+          }}
+        >
+          {member.name}
+        </p>
+        <p
+          style={{
+            fontSize: 9,
+            fontWeight: 400,
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: 'rgba(255,255,255,0.5)',
+            margin: 0,
+            fontFamily: "'Outfit', sans-serif",
+          }}
+        >
+          {member.role}
+        </p>
 
-      {/* ── Right: member name list*/}
-      <div className="flex flex-col sm:grid sm:grid-cols-2 md:flex md:flex-col gap-3 md:gap-4 lg:gap-5 pt-4 md:pt-2 flex-1 min-w-0 w-full">
-        {members.map((member) => (
-          <MemberRow
-            key={member.id}
-            member={member}
-            hoveredId={hoveredId}
-            onHover={setHoveredId}
-          />
-        ))}
+        {/* Social */}
+        {member.social?.linkedin && member.social.linkedin !== '#' && (
+          <div
+            style={{
+              display: 'flex',
+              gap: 7,
+              marginTop: 9,
+              opacity: isHovered ? 1 : 0,
+              transform: isHovered ? 'translateY(0)' : 'translateY(5px)',
+              transition: 'opacity 0.3s ease 0.08s, transform 0.3s ease 0.08s',
+            }}
+          >
+            <a
+              href={member.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              aria-label="LinkedIn"
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: '50%',
+                border: '0.5px solid rgba(255,255,255,0.28)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'rgba(255,255,255,0.72)',
+                textDecoration: 'none',
+              }}
+            >
+              <LinkedInIcon />
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-function PhotoCard({
-  member,
-  className,
-  hoveredId,
-  onHover,
-}: {
-  member: TeamMember;
-  className: string;
-  hoveredId: string | null;
-  onHover: (id: string | null) => void;
-}) {
-  const isActive = hoveredId === member.id;
-  const isDimmed = hoveredId !== null && !isActive;
-
+// ─── SECTION LABEL ────────────────────────────────────────────────────────────
+function SectionLabel({ label }: { label: string }) {
   return (
     <div
-      className={cn(
-        'overflow-hidden rounded-xl cursor-pointer shrink-0 transition-opacity duration-400',
-        className,
-        isDimmed ? 'opacity-60' : 'opacity-100',
-      )}
-      onMouseEnter={() => onHover(member.id)}
-      onMouseLeave={() => onHover(null)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        marginBottom: '1.2rem',
+      }}
     >
-      <img
-        src={member.image}
-        alt={member.name}
-        className="w-full h-full object-cover transition-[filter] duration-500"
+      <span
         style={{
-          filter: isActive ? 'grayscale(0) brightness(1)' : 'grayscale(1) brightness(0.77)',
+          fontSize: 10,
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: 'var(--color-text-secondary)',
+          fontWeight: 400,
+          fontFamily: "'Outfit', sans-serif",
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {label}
+      </span>
+      <div
+        style={{
+          flex: 1,
+          height: '0.5px',
+          background: 'var(--color-border-tertiary)',
         }}
       />
     </div>
   );
 }
 
+// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
+export default function TeamShowcase() {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const isAnyHovered = hoveredId !== null;
 
-function MemberRow({
-  member,
-  hoveredId,
-  onHover,
-}: {
-  member: TeamMember;
-  hoveredId: string | null;
-  onHover: (id: string | null) => void;
-}) {
-  const isActive = hoveredId === member.id;
-  const isDimmed = hoveredId !== null && !isActive;
-  const hasSocial = member.social?.twitter ?? member.social?.linkedin ?? member.social?.instagram ?? member.social?.behance;
+  const allMembers = [...LEADERSHIP, ...CORE_TEAM];
 
   return (
-    <div
-      className={cn(
-        'cursor-pointer transition-opacity duration-300',
-        isDimmed ? 'opacity-50' : 'opacity-100',
-      )}
-      onMouseEnter={() => onHover(member.id)}
-      onMouseLeave={() => onHover(null)}
-    >
-      {/* Name + social*/}
-      <div className="flex items-center gap-2.5">
-        <span
-          className={cn(
-            'w-4 h-3 rounded-[5px] shrink-0 transition-all duration-300',
-            isActive ? 'bg-foreground w-5' : 'bg-foreground/25',
-          )}
-        />
-        <span
-          className={cn(
-            'text-base md:text-[18px] font-semibold leading-none tracking-tight transition-colors duration-300',
-            isActive ? 'text-foreground' : 'text-foreground/80',
-          )}
+    <>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Outfit:wght@300;400;500&display=swap"
+      />
+
+      <section
+        style={{ width: '100%', maxWidth: '72rem', margin: '0 auto', padding: '3.5rem 1.5rem', fontFamily: "'Outfit', sans-serif" }}
+        aria-label="Team"
+      >
+        {/* ── Leadership ── */}
+        <SectionLabel label="Leadership" />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            gap: 12,
+            marginBottom: '2.5rem',
+          }}
         >
-          {member.name}
-        </span>
+          {LEADERSHIP.map((m, i) => (
+            <MemberCard
+              key={m.id}
+              member={m}
+              index={i}
+              isHovered={hoveredId === m.id}
+              isAnyHovered={isAnyHovered}
+              onEnter={() => setHoveredId(m.id)}
+              onLeave={() => setHoveredId(null)}
+              nameSize={17}
+            />
+          ))}
+        </div>
 
-        {/* Social icons */}
-        {hasSocial && (
-          <div
-            className={cn(
-              'flex items-center gap-1.5 ml-0.5 transition-all duration-200',
-              isActive
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-2 pointer-events-none',
-            )}
-          >
-            {member.social?.twitter && (
-              <a
-                href={member.social.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-all duration-150 hover:scale-110"
-                title="X / Twitter"
-              >
-                <FaTwitter size={10} />
-              </a>
-            )}
-            {member.social?.linkedin && (
-              <a
-                href={member.social.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-all duration-150 hover:scale-110"
-                title="LinkedIn"
-              >
-                <FaLinkedinIn size={20} />
-              </a>
-            )}
-            {member.social?.instagram && (
-              <a
-                href={member.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-all duration-150 hover:scale-110"
-                title="Instagram"
-              >
-                <FaInstagram size={10} />
-              </a>
-            )}
-            {member.social?.behance && (
-              <a
-                href={member.social.behance}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-all duration-150 hover:scale-110"
-                title="Behance"
-              >
-                <FaBehance size={10} />
-              </a>
-            )}
-          </div>
-        )}
-      </div>
+        {/* Divider */}
+        <div style={{ height: '0.5px', background: 'var(--color-border-tertiary)', margin: '0 0 2rem' }} />
 
-      {/* Role */}
-      <p className="mt-1.5 pl-6.75 text-[7px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-        {member.role}
-      </p>
-    </div>
+        {/* ── Core Team ── */}
+        <SectionLabel label="Core Team" />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+            gap: 12,
+          }}
+        >
+          {CORE_TEAM.map((m, i) => (
+            <MemberCard
+              key={m.id}
+              member={m}
+              index={i}
+              isHovered={hoveredId === m.id}
+              isAnyHovered={isAnyHovered}
+              onEnter={() => setHoveredId(m.id)}
+              onLeave={() => setHoveredId(null)}
+              nameSize={15}
+            />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
