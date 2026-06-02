@@ -72,7 +72,7 @@ export default function Footer() {
             <div className="space-y-3 text-sm text-[#c5e08a]">
               <p className="flex items-center gap-2">
                 <FaPhone className="text-[#74c316] shrink-0" />
-                <span>+91 7873367335</span>
+                <span>+91 9556536002</span>
               </p>
               <p className="flex items-center gap-2">
                 <FaEnvelope className="text-[#74c316] shrink-0" />

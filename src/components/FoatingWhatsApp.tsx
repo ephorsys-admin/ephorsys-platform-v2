@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 export default function FloatingWhatsApp() {
   const [show, setShow] = useState(false);
 
-  const phoneNumber = '9937405891';
-  const message = 'Hello, I want to know more!';
+  const phoneNumber = '9556536002';
+  const message = 'Hello, I want to know more about your services!';
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   useEffect(() => {
