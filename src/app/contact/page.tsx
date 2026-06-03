@@ -56,7 +56,7 @@ export default function ContactPage() {
                     Phone
                   </h4>
                   <p className="text-gray-500 text-sm sm:text-base mt-0.5">
-                    +91 9937405891
+                    +91 9556536002
                   </p>
                 </div>
               </div>
@@ -107,8 +107,7 @@ export default function ContactPage() {
 
                   {/* 🔥 Better wrapping */}
                   <p className="text-gray-500 text-sm sm:text-base mt-0.5 leading-relaxed break-words">
-                    Ephorsys Private Limited, K8 Kalinga Nagar, Bhubaneswar,
-                    Odisha 751003
+                    7QHC+6PW, K8 Kalinga Nagar, Kalinganagar, Bhubaneswar, Odisha 751029
                   </p>
                 </div>
               </div>
@@ -127,8 +126,39 @@ export default function ContactPage() {
             </div>
 
           </div>
+        
         </div>
       </div>
+
+   {/* ─── Google Map ─── */}
+<div className="w-full px-4 sm:px-6 lg:px-8 pb-16">
+  <div className="max-w-7xl mx-auto">
+    
+    <div className="mb-6 text-center">
+      <h2 className="text-3xl font-bold text-gray-900">
+        Visit Our <span className="text-[#74c316]">Office</span>
+      </h2>
+      <h3 className="text-gray-500 mt-2">
+        Find us at our Bhubaneswar office location.
+      </h3>
+    </div>
+
+<div className="overflow-hidden rounded-3xl shadow-2xl border border-gray-200">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.5354372851702!2d85.76926187479921!3d20.278092781189933!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2832cd512f60df0d%3A0x61d1ddff084be616!2sEphorsys%20Private%20Limited!5e0!3m2!1sen!2sin!4v1780466333173!5m2!1sen!2sin"
+        width="100%"
+        height="500"
+        style={{ border: 0 }}
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        title="Ephorsys Private Limited Location"
+        className="w-full"
+      />
+    </div>
+
+  </div>
+</div>
     </div>
   );
 }
