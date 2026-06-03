@@ -42,6 +42,7 @@ function ImagePreloader() {
 export default function ServicesShowcase() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
@@ -63,7 +64,13 @@ export default function ServicesShowcase() {
     return () => window.removeEventListener("mousemove", handleMouse);
   }, [mouseX, mouseY, isTouchDevice]);
 
-  // ── Removed the old JS Image() preload useEffect — DOM preloader above handles it ──
+  useEffect(() => {
+  const check = () => setIsLargeScreen(window.innerWidth >= 1024);
+  check();
+  window.addEventListener("resize", check);
+  return () => window.removeEventListener("resize", check);
+}, []);
+
 
   return (
     <div
@@ -96,7 +103,7 @@ export default function ServicesShowcase() {
           zIndex: 0,
         }}
       />
-
+{isLargeScreen && ( 
       <AnimatePresence>
         {activeIndex !== null && (
           <motion.div
@@ -156,7 +163,7 @@ export default function ServicesShowcase() {
           </motion.div>
         )}
       </AnimatePresence>
-
+)}       
       <div
         style={{
           padding: "clamp(12px, 1.5vw, 24px) clamp(20px, 5vw, 72px)",

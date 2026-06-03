@@ -352,7 +352,7 @@ export default function TeamShowcase() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(5, 1fr)',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: 12,
             marginBottom: '2.5rem',
           }}
