@@ -16,11 +16,11 @@ export default function AboutSection() {
 
           {/* Description */}
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-6 sm:mb-8 max-w-md">
-            At Ephorsys, we help businesses accelerate growth through scalable
+            Ephorsys help businesses accelerate growth through our scalable
             digital solutions. From web and app development to product design,
-            software engineering, SEO, and digital marketing — we craft
+            software engineering, SEO, and digital marketing, we craft
             strategies that enhance your online presence, optimize performance,
-            and drive measurable results.
+            and drive measurable results. Trusted by 15+ active clients across healthcare, e commerce, real estate and tech.
           </p>
 
           {/* Feature 1 */}
@@ -46,10 +46,10 @@ export default function AboutSection() {
             </div>
             <div>
               <h4 className="font-bold text-foreground text-sm mb-1">
-                Certified & Authorized Company
+                Certified & Authorized Company 
               </h4>
               <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
-                Ephorsys is a certified and authorized company committed to
+                Ephorsys is a certified and authorized Bhubaneswar based custom software devlopment company committed to
                 delivering reliable, secure, and high-quality digital solutions
                 you can trust.
               </p>
@@ -102,10 +102,10 @@ export default function AboutSection() {
           {/* Cell 2: Experience badge — col 2, row 1 */}
           <div className="rounded-xl sm:rounded-2xl bg-brand-dark flex flex-col items-center justify-center p-3 sm:p-5 md:p-6 min-h-23.75 sm:min-h-32.5 md:min-h-37.5">
             <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-none">
-              8+
+              1+
             </span>
             <span className="text-brand-light text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">
-              Month of Experience
+              Years of Excellence in Software Solutions
             </span>
           </div>
 
@@ -138,7 +138,7 @@ export default function AboutSection() {
               </div>
             </div>
             <span className="text-white font-semibold text-[10px] sm:text-xs md:text-sm leading-tight">
-              10+ Satisfied Clients
+              30+ Satisfied Clients
             </span>
           </div>
 

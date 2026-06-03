@@ -5,19 +5,19 @@ import { motion, useInView } from "framer-motion";
 
 const stats = [
   {
-    number: 13,
+    number: 25,
     suffix: "+",
     label: "Projects Completed",
     description: "Shipped across SaaS, e-commerce & enterprise",
   },
   {
-    number: 10,
+    number: 30,
     suffix: "+",
     label: "Happy Clients",
     description: "5-star reviews across every engagement",
   },
   {
-    number: 17,
+    number: 15,
     suffix: "+",
     label: "Team Members",
     description: "Designers, engineers & growth specialists",
