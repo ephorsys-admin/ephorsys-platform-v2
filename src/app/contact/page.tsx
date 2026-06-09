@@ -161,7 +161,7 @@ export default function ContactPage() {
 
                   {/* 🔥 Better wrapping */}
                   <p className="text-gray-500 text-sm sm:text-base mt-0.5 leading-relaxed break-words">
-                    7QHC+6PW, K8 Kalinga Nagar, Kalinganagar, Bhubaneswar, Odisha 751029
+                    1st floor, K8/733, Kalinga Nagar, Bhubaneswar, near Sum Ultimate, 751003
                   </p>
                 </div>
               </div>

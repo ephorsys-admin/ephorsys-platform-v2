@@ -91,8 +91,7 @@ export default function Footer() {
               <p className="flex items-start gap-2">
                 <FaMapMarkerAlt className="text-[#74c316] mt-1 shrink-0" />
                 <span className="leading-relaxed">
-                  Ephorsys Private Limited: 7QHC+6PW, K8 Kalinga Nagar,
-                  Kalinganagar, Bhubaneswar, Odisha 751003
+                  Ephorsys Private Limited: 1st floor, K8/733, Kalinga Nagar, Bhubaneswar, near Sum Ultimate, 751003
                 </span>
               </p>
             </div>
