@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const FULL_TEXT =
-  "Your vision, our expertise — delivered with precision and punctuality. We follow a flexible, agile model that prioritises collaboration, transparency, and streamlined execution.";
+  "Your vision, our expertise delivered with precision and punctuality. We follow a flexible, agile model that prioritises collaboration, transparency, and streamlined execution.";
 
 const AVATARS = [
   "https://i.pravatar.cc/32?img=11",
@@ -15,18 +15,18 @@ const AVATARS = [
 ];
 
 const steps = [
-  { number: "01", title: "Discovery & Planning", desc: "Understanding your vision, goals, and challenges to map out a clear strategic roadmap.", Icon: Globe, color: "#6E54F3", bg: "#f5f3ff" },
-  { number: "02", title: "Design & Development", desc: "Building robust, scalable solutions with clean code and modern architecture.", Icon: Code2, color: "#2563eb", bg: "#eff6ff" },
-  { number: "03", title: "Testing & QA", desc: "Rigorous testing across all scenarios to ensure reliability and performance.", Icon: ShieldCheck, color: "#059669", bg: "#ecfdf5" },
-  { number: "04", title: "Deployment & Support", desc: "Smooth launches with ongoing maintenance and continuous improvement.", Icon: Rocket, color: "#d97706", bg: "#fffbeb" },
+  { number: "01", title: "Discovery & Planning", desc: "We understand your vision, goals, and challenges to map out a clear strategic roadmap for your business.", Icon: Globe, color: "#6E54F3", bg: "#f5f3ff" },
+  { number: "02", title: "Design & Development", desc: " We build robust and scalable solutions with clean code and modern architecture.", Icon: Code2, color: "#2563eb", bg: "#eff6ff" },
+  { number: "03", title: "Testing & QA", desc: "We undergo continious testing across all scenarios to ensure reliability and best performance.", Icon: ShieldCheck, color: "#059669", bg: "#ecfdf5" },
+  { number: "04", title: "Deployment & Support", desc: "We provide seamless deployment, ongoing maintenance, and continuous improvements aligned with your business goals.", Icon: Rocket, color: "#d97706", bg: "#fffbeb" },
 ];
 
 type StatItem = { value: number; suffix: string; label: string; dark: boolean };
 
 const stats: StatItem[] = [
-  { value: 13, suffix: "+", label: "Projects", dark: false },
-  { value: 10, suffix: "+", label: "Clients", dark: true },
-  { value: 8, suffix: "+", label: "Months", dark: false },
+  { value: 25, suffix: "+", label: "Projects", dark: false },
+  { value: 30, suffix: "+", label: "Clients", dark: true },
+  { value: 1, suffix: "+", label: "Years", dark: false },
 ];
 
 function StatBadge({ stat, posClass }: { stat: StatItem; posClass: string }) {
@@ -94,7 +94,7 @@ function ApproachCard() {
         </div>
         <div className="border-t border-gray-100 px-5 py-4">
           <p className="text-sm font-bold text-gray-800">Ephorsys Digital Agency</p>
-          <p className="mt-0.5 text-xs text-gray-400">Delivering scalable, result-driven digital solutions worldwide.</p>
+          <p className="mt-0.5 text-xs text-gray-400">Delivering scalable, result driven best digital solutions worldwide.</p>
         </div>
       </div>
     </div>

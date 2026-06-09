@@ -26,7 +26,7 @@ const MILESTONES: Milestone[] = [
       { icon: Users, label: "Core Team of 3" },
     ],
     description:
-      "Launched as a bootstrapped, lean digital agency with one mission — close the gap between great ideas and great execution. From day one, we focused on building real products for real businesses, with no fluff and no bloat.",
+      "We launched as a startup software company in Bhubaneswar with one mission- close the gap between great ideas and flawless execution. No investors, no safety net. Just a core team of three engineers and designers from day one, we built real products for real businesses. No fluff. No bloat.",
     accent: "#74c316",
   },
   {
@@ -38,7 +38,7 @@ const MILESTONES: Milestone[] = [
       { icon: Users, label: "10+ Clients Served" },
     ],
     description:
-      "Scaled rapidly by earning trust through delivery. We partnered with startups across SaaS, e-commerce, and services — building everything from landing pages to full-stack platforms. Our repeat client rate crossed 70%.",
+      "We scaled quickly, businesses came to us for web development and stayed for mobile app development, SEO, and long term product partnership. We partnered across SaaS, e commerce, hospitality, and services, building everything from landing pages to full stack platforms. By the time we hit 13 projects, 70% of our clients had already come back for more. That number tells our story better than any pitch deck.",
     accent: "#74c316",
   },
   {
@@ -50,7 +50,7 @@ const MILESTONES: Milestone[] = [
       { icon: Zap, label: "12+ Clients by 2026" },
     ],
     description:
-      "Evolving from a service agency into a product partner. We're launching retainer programs, co-building SaaS products with founders, and expanding our design systems practice. The next chapter is about depth, not just delivery.",
+      "We are evolving from a digital solutions company in Bhubaneswar that delivers projects into a product partner that co builds with founders. We are launching retainer programmes, developing AI-powered software solutions, and deepening our design systems practice. We are also expanding our digital marketing and SEO arm for businesses across Odisha.",
     accent: "#74c316",
   },
 ];

@@ -8,9 +8,9 @@ export default function HeroSection() {
   const hexRef = useRef(null);
 
   const statsRows = [
-    { icon: "〜", label: "Projects Delivered", val: "13+" },
+    { icon: "〜", label: "Projects Delivered", val: "20+" },
     { icon: "◷", label: "Active Clients", val: "15+" },
-    { icon: "○", label: "Success Rates", val: "98%" },
+    { icon: "○", label: "Success Rates", val: "100%" },
   ];
 
   return (
@@ -72,40 +72,40 @@ export default function HeroSection() {
               style={{ color: "var(--text-dark)" }}>
               <span className="w-2 h-2 rounded-full animate-pulse-dot "
                 style={{ background: "var(--green-dark)" }} />
-              <h4 className="">EPHORSYS</h4>
+              <h1 className="">EPHORSYS | Best Software Devlopment Company  </h1>
             </div>
 
             {/* Headline */}
             <h1 className="font-syne text-[clamp(2.4rem,6vw,4.2rem)] font-extrabold
                            leading-[1.05] tracking-tight"
               style={{ color: "var(--text-dark)" }}>
-              software that<br />
-              drive{" "}
+              Software That<br />
+              Drives{" "}
               <span className="inline-block rounded-lg mr-4 text-[95%] pr-1"
                 style={{ background: "var(--green)", color: "var(--text-dark)" }}>
-                innovation
+                Innovation
               </span>
             </h1>
 
             {/* Sub */}
             <p className="text-sm sm:text-base leading-relaxed max-w-105"
               style={{ color: "var(--text-muted)" }}>
-              Our solutions are designed with modern architecture, high performance, and reliability at their core—empowering businesses to adapt, evolve, and succeed in a fast-changing digital world.
+              Ephorsys is a next generation software company based in Bhubaneswar, Odisha, delivering scalable web applications, mobile apps, AI powered solutions and full-stack digital products for startups, SMEs and enterprises. 
             </p>
 
             {/* CTAs */}
             <div className="flex flex-row flex-wrap gap-3">
-              <button onClick={() => router.push("/contact")} className="btn-primary rounded-full px-4 py-2 text-sm font-semibold
+              <button onClick={() => router.push("/contact")} className="btn-primary rounded-full px-3 py-4 text-sm font-semibold
                      text-white border-none cursor-pointer transition-all duration-200
                      hover:-translate-y-0.5"
                 style={{ background: "var(--text-dark)", fontFamily: "Inter, sans-serif" }}>
                 <h4>Start Building</h4>
               </button>
-              <button onClick={() => router.push("/blog")} className="btn-secondary rounded-full px-5 py-2 text-sm font-semibold
+              <button onClick={() => router.push("/contact")} className="btn-secondary rounded-full px-5 py-2 text-sm font-semibold
                      cursor-pointer transition-all duration-200 hover:-translate-y-0.5
                      bg-transparent border-[1.5px] border-[#b8d0b8]"
                 style={{ color: "var(--text-dark)", fontFamily: "Inter, sans-serif" }}>
-                <h4>Read Docs</h4>
+                <h4>Contact Us</h4>
               </button>
             </div>
           </div>

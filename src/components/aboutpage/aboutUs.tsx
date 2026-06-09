@@ -204,8 +204,8 @@ export default function AboutUs() {
               transition={{ duration: 0.5, delay: 0.16 }}
               className="mb-8 text-sm leading-relaxed text-white/50 sm:text-base md:text-base md:max-w-md md:mx-auto lg:mx-0"
             >
-              We're a lean, full-service digital agency — young in structure,
-              grounded in real-world execution. Our team has shipped products
+              We're a lean, full-service digital agency, young in structure,
+              grounded in real world execution. Our team has shipped products
               for startups and growing businesses, and we're just getting
               started.
             </motion.p>
@@ -310,19 +310,22 @@ export default function AboutUs() {
               className="space-y-4 text-sm leading-[1.85] text-gray-500 sm:text-[15px]"
             >
               <p>
-                Ephorsys was founded out of a simple frustration: too many
-                agencies overpromise and under-deliver. We set out to do the
-                opposite —{" "}
-                <strong className="font-bold text-gray-800">
-                  smaller commitments, relentless execution, measurable results.
-                </strong>
+                Ephorsys, Established in 2025, is a full service and the best
+                software development company in bhubaneswaar that designs,
+                engineers, and ships digital products people actually want to
+                use. We work across custom web development, mobile app
+                development, AI powered software solutions, full stack
+                development, and digital marketing and SEO, not as separate
+                departments that pass work between them, but as one tightly
+                integrated team that sees every project from first brief to
+                final launch.
               </p>
-              <p>
+              {/* <p>
                 We're a full-service digital studio that designs, builds, and
                 ships. Our team blends engineering precision with design
                 thinking, so what we create isn't just functional — it's
                 something people actually want to use.
-              </p>
+              </p> */}
             </motion.div>
           </div>
 
@@ -343,7 +346,7 @@ export default function AboutUs() {
               <p>
                 With a strong foundation in modern web technologies and a
                 human-first mindset, we build digital products that drive growth
-                — ones that are fast, scalable, and built to last.
+                ones that are fast, scalable, and built to last.
               </p>
             </div>
 

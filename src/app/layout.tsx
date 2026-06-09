@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Syne, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Footer from "@/components/outlet/footer";
 import Navbar from "@/components/outlet/navbar";
@@ -95,6 +96,21 @@ export default function RootLayout({
         className={`${syne.variable} ${inter.variable} antialiased min-h-screen flex flex-col`}
         suppressHydrationWarning
       >
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-F1SKC3Y6GH"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-F1SKC3Y6GH');
+          `}
+        </Script>
+
         <Preloader />
         <Navbar />
 

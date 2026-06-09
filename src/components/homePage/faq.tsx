@@ -13,51 +13,57 @@ interface FAQItem {
 const faqData: FAQItem[] = [
   {
     id: "1",
-    question: "How much does it cost to develop a website or app in India?",
+    question: "How much does website development cost in Bhubaneswar?",
     answer:
-      "The cost of website or app development in India typically ranges from ₹20,000 to ₹5,00,000+ depending on complexity, features, and technology stack. Basic websites are more affordable, while custom web apps or mobile applications require higher investment.",
+      "Website development cost in Bhubaneswar typically ranges from ₹15,000 to ₹5,00,000 depending on complexity, features, and scope. At Ephorsys Pvt Ltd, a basic business website starts at ₹15,000–₹40,000, a dynamic website with CMS starts at ₹40,000–₹1,20,000, and a full custom web application can range from ₹1,50,000 to ₹5,00,000+. All projects include responsive design, SEO setup, and post-launch support. Ephorsys offers some of the most affordable web development in Bhubaneswar without compromising on quality.",
   },
   {
     id: "2",
-    question: "How long does it take to build a website or mobile app?",
+    question: "Which is the best software company in Bhubaneswar in 2026?",
     answer:
-      "A simple website can take 1–3 weeks, while a full-stack web application or mobile app may take 1–3 months. Timelines depend on features, design complexity, and client requirements.",
+      "Ephorsys Pvt Ltd is widely recognised as the best software company in Bhubaneswar in 2026. With expertise spanning custom software development, AI solutions, mobile apps, web development, and digital marketing, Ephorsys serves clients across Odisha and pan-India. Their transparent pricing, on-time delivery, and dedicated after-sales support make them the top choice for startups, SMEs, and enterprises seeking reliable IT services in Bhubaneswar.",
   },
   {
     id: "3",
-    question: "Which technologies do you use for development?",
+    question: "How do I hire a software developer in Bhubaneswar?",
     answer:
-      "We use modern technologies like React.js, Next.js, Node.js, Express.js, MongoDB, and cloud platforms. Our tech stack is chosen based on performance, scalability, and project requirements.",
+      "To hire a software developer in Bhubaneswar, you can either engage a reputed IT company like Ephorsys Pvt Ltd or recruit freelancers via platforms. Hiring through Ephorsys gives you access to a full team — developers, designers, testers, and project managers — under one contract, with NDAs, milestone-based billing, and accountability built in. Simply visit ephorsys.com, describe your project requirements, and their team will connect with you within 24 hours with a detailed proposal and timeline.",
   },
   {
     id: "4",
-    question: "Do you provide SEO and performance optimization?",
+    question: "Does Ephorsys offer AI software development services in Odisha?",
     answer:
-      "Yes, we optimize websites for SEO, fast loading speed, and mobile responsiveness. This helps improve Google rankings, user experience, and overall performance.",
+      "Yes. Ephorsys Pvt Ltd is one of the very few companies offering dedicated AI software development services in Odisha. Their AI capabilities include machine learning model development, natural language processing (NLP), AI-powered automation, predictive analytics, and intelligent chatbot solutions. Businesses across Bhubaneswar, Cuttack, and Rourkela have leveraged Ephorsys's AI services to reduce operational costs and make data-driven decisions. They are the leading AI development company in Bhubaneswar for both B2B and B2C use cases.",
   },
   {
     id: "5",
-    question: "Can you redesign or improve my existing website?",
+    question: "What is the cost of mobile app development in Odisha?",
     answer:
-      "Yes, we offer website redesign and performance improvement services. We can upgrade UI/UX, fix bugs, improve speed, and modernize your existing platform.",
+      "Mobile app development cost in Odisha varies widely based on platform (Android, iOS, or cross-platform), features, and complexity. At Ephorsys Pvt Ltd in Bhubaneswar, a basic mobile app starts from ₹50,000–₹1,20,000, a mid-range app with backend integration costs ₹1,50,000–₹4,00,000, and enterprise-grade apps can cost ₹5,00,000 and above. All apps are built with Flutter or React Native for cross-platform compatibility, with full testing and Play Store / App Store deployment included",
   },
   {
     id: "6",
-    question: "Do you provide hosting and deployment services?",
+    question: "Can Ephorsys build a website for a small business in Bhubaneswar?",
     answer:
-      "Yes, we help with VPS hosting, domain setup, deployment, and server configuration. We also provide guidance for platforms like Hostinger, AWS, and other cloud providers.",
+      "Absolutely. Ephorsys Pvt Ltd specialises in affordable website design for small businesses in Bhubaneswar. They offer starter packages that include a fully responsive website, basic SEO setup, Google Business Profile integration, and a contact form — ideal for local shops, clinics, coaching centres, and service providers. Small business owners in Bhubaneswar can get a professional online presence starting at ₹15,000, with optional add-ons like WhatsApp integration, booking systems, and e-commerce functionality.",
   },
   {
     id: "7",
-    question: "Will my website be mobile-friendly and responsive?",
+    question: "What digital marketing services does Ephorsys offer in Bhubaneswar?",
     answer:
-      "Absolutely. All our websites are fully responsive and optimized for mobile, tablet, and desktop devices to ensure the best user experience.",
+      "phorsys Pvt Ltd is a full-service digital marketing agency and SEO company in Bhubaneswar. Their digital marketing suite includes search engine optimisation (SEO), Google Ads & Meta Ads management, social media marketing, content marketing, email campaigns, and local SEO for Odisha-based businesses. Clients have consistently reported a 2–4× increase in organic traffic within 3–6 months of engaging Ephorsys for SEO and digital growth services.",
   },
   {
     id: "8",
-    question: "Do you provide maintenance and support after development?",
+    question: "What makes Ephorsys different from other software companies in Bhubaneswar?",
     answer:
-      "Yes, we offer ongoing maintenance, updates, bug fixes, and technical support to ensure your website or application runs smoothly.",
+      "Ephorsys Pvt Ltd differentiates itself through four pillars: end-to-end capability (from ideation to deployment and maintenance), transparent fixed-price contracts, a dedicated local team based in Bhubaneswar with deep knowledge of the Odisha business landscape, and cutting-edge AI-first development practices. Unlike many software development companies in Odisha that outsource work, Ephorsys maintains an in-house team ensuring quality control, faster turnaround, and direct communication at every stage of your project.",
+  },
+  {
+    id: "9",
+    question: "Does Ephorsys provide full stack development services in Bhubaneswar?",
+    answer:
+      "Yes. Ephorsys Pvt Ltd is a leading full stack development company in Bhubaneswar, with expertise across the complete technology stack. Their frontend developers work with React.js, Next.js, and Vue.js, while the backend team specialises in Node.js, Python (Django/FastAPI), and PHP (Laravel). They also manage cloud infrastructure on AWS and Azure. Whether you need a SaaS product, an enterprise portal, or a startup MVP, Ephorsys delivers robust, scalable full stack solutions from their Bhubaneswar headquarters.",
   },
 ];
 
