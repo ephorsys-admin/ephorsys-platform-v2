@@ -12,6 +12,9 @@ import {
   Zap,
 } from "lucide-react";
 import { CapabilityCard } from "@/components/servicepage/CapabilityCard";
+import type { Metadata } from "next";
+
+
 
 /* ─── Static params ─────────────────────────────────────────────────────────── */
 
@@ -23,13 +26,32 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
   const service = servicesData[slug];
-  if (!service) return {};
+
+  if (!service) {
+    return {
+      title: "Service Not Found | Ephorsys Pvt Ltd",
+    };
+  }
+
   return {
-    title: `${service.title}`,
+    title: `${service.title} | Ephorsys Pvt Ltd`,
     description: service.tagline,
+    keywords: [
+      "Ephorsys",
+      "Ephorsys Pvt Ltd",
+      "software company in Bhubaneswar",
+      "best software company in Bhubaneswar",
+      "IT company in Bhubaneswar",
+      "web development Bhubaneswar",
+      "app development Odisha",
+      "AI development Bhubaneswar",
+      "digital marketing Bhubaneswar",
+      "full stack development Bhubaneswar",
+      service.title,
+    ],
   };
 }
 
