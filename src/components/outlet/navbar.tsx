@@ -379,11 +379,11 @@ export function Navbar() {
       />
       
       {/* ── Mobile menu sidebar ── */}
-      <div
-        className={`fixed top-0 right-0 z-[70] h-screen w-[80vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
-          mobileOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
+<div
+  className={`fixed top-0 right-0 z-[70] h-dvh w-[88vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
+    mobileOpen ? "translate-x-0" : "translate-x-full"
+  }`}
+>
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#74c316]/10">
           <span
@@ -408,7 +408,7 @@ export function Navbar() {
         </div>
 
         {/* Nav items */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto pb-4"> 
           <MobileNavLink
             href="/"
             onClick={closeMobileMenu}
@@ -453,29 +453,21 @@ export function Navbar() {
         </div>
 
         {/* Mobile CTA */}
-        <div className="p-5 border-t border-[#74c316]/10">
-          <Link href="/contact" onClick={closeMobileMenu}>
-            <button
-              className="
-                group relative w-full py-3.5 rounded-xl
-                text-base font-bold tracking-wide
-                overflow-hidden
-                transition-all duration-200
-                hover:brightness-110
-                active:scale-[0.97]
-                cursor-pointer
-              "
-              style={{
-                background: "#74c316",
-                color: "#021a0a",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
-              <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />
-              <span className="relative">Contact Us</span>
-            </button>
-          </Link>
-        </div>
+       <div className="shrink-0 sticky bottom-0 bg-white p-4 border-t border-[#74c316]/10 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+  <Link href="/contact" onClick={closeMobileMenu} className="block">
+    <button
+      className="group relative w-full py-3.5 rounded-xl text-base font-bold tracking-wide overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer shadow-lg"
+      style={{
+        background: "#74c316",
+        color: "#021a0a",
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
+      <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />
+      <span className="relative">Contact Us</span>
+    </button>
+  </Link>
+</div>
       </div>
     </>
   );
