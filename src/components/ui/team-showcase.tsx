@@ -107,7 +107,7 @@ const CORE_TEAM: TeamMember[] = [
     id: 'c8',
     name: 'Pinki Maharana',
     role: 'Business Development Executive Lead ',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380970/df7e3c05-aef2-409a-b316-a3abac3fb7e3.png',
+    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780396102/87a5f591-fcd2-46eb-bd20-9ea6134eb636.png',
     social: { linkedin: 'https://www.linkedin.com/in/pinki-maharana-39a081276/' },
   },
   {

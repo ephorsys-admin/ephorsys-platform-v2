@@ -4,6 +4,7 @@ import TeamSection from "@/components/aboutpage/ourTeam";
 import AboutUs from "@/components/aboutpage/aboutUs";
 import BgHero from "@/components/outlet/bg-hero";
 import type { Metadata } from "next";
+import WhatWeDo from "@/components/aboutpage/whatwedo";
 
 export const metadata: Metadata = {
   title: "About Ephorsys Pvt Ltd | Best Software Company in Bhubaneswar, Odisha",
@@ -66,7 +67,7 @@ export default function About() {
         tag="About Us"
         heading={
           <>
-            About Our <span style={{ color: "#74c316" }}>Company</span>
+            About <span style={{ color: "#74c316" }}>EPHORSYS</span>
           </>
         }
         description="We deliver reliable, result-driven digital solutions."
@@ -74,6 +75,7 @@ export default function About() {
       />
       <CompanyOverview />
       <AboutUs />
+      <WhatWeDo/>
       <LayoutGridDemo />
       <TeamSection />
     </div>
