@@ -169,13 +169,30 @@ export default function Footer() {
         {/* ── Divider on mobile: thin visual separator between cols ── */}
         {/* <div className="block sm:hidden mt-2 border-t border-white/5" /> */}
 
-        {/* ── Copyright ── */}
+        {/* ── Copyright & Legal ── */}
         <div className="mt-10 sm:mt-14 md:mt-18
-                        pt-6 sm:pt-14 xl:mt-25
+                        pt-6 sm:pt-8 md:pt-10 xl:mt-20
                         border-t border-white/10
-                        text-center text-[0.65rem] sm:text-xs
-                        font-heading text-white/70">
-          © {new Date().getFullYear()} Ephorsys Pvt. Ltd. All rights reserved.
+                        flex justify-center items-center
+                        text-[0.7rem] sm:text-xs tracking-wider
+                        font-heading text-[#c5e08a]/60 pb-4 sm:pb-0">
+          <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-5">
+            <span className="whitespace-nowrap hover:text-white transition-colors duration-300 cursor-default">
+              © 2026 Ephorsys Pvt. Ltd. All rights reserved.
+            </span>
+            
+            <span className="hidden sm:block w-1 h-1 rounded-full bg-[#c5e08a]/40" />
+            
+            <Link href="/privacy-policy" className="hover:text-[#74c316] transition-colors duration-300 whitespace-nowrap">
+              Privacy Policy
+            </Link>
+
+            <span className="hidden sm:block w-1 h-1 rounded-full bg-[#c5e08a]/40" />
+            
+            <Link href="/terms-of-service" className="hover:text-[#74c316] transition-colors duration-300 whitespace-nowrap">
+              Terms & Conditions
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
