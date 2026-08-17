@@ -288,10 +288,46 @@ function Newsletter() {
     );
 }
 
-/* ──────────────────────────── MAIN ─────────────────────────── */
-export default function Myblog() {
-    const featured = blogs.find((b) => b.featured)!;
-    const rest = blogs.filter((b) => !b.featured);
+type BlogItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  shortDescription: string;
+  content: string;
+  featuredImage: string;
+  category: string;
+  subcategory?: string;
+  readTime: string;
+  publishedAt?: string;
+  author: {
+    name: string;
+    profileImage: string;
+    role: string;
+  };
+};
+
+export default function Myblog({ blogsData }: { blogsData?: BlogItem[] }) {
+    const activeBlogs = blogsData && blogsData.length > 0
+        ? blogsData.map((b, idx) => ({
+              id: idx + 1,
+              category: b.category,
+              title: b.title,
+              excerpt: b.shortDescription,
+              more: b.content,
+              image: b.featuredImage || "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352862/pexels-yankrukov-7698805_zwk7hu.jpg",
+              slug: b.slug,
+              tag: b.subcategory || "Tech",
+              number: String(idx + 1).padStart(2, "0"),
+              author: b.author.name,
+              authorRole: b.author.role || "Author",
+              authorAvatar: b.author.profileImage || "https://i.pravatar.cc/40?img=11",
+              date: b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+              featured: idx === 0,
+          }))
+        : blogs;
+
+    const featured = activeBlogs.find((b) => b.featured) || activeBlogs[0];
+    const rest = activeBlogs.filter((b) => b !== featured);
 
     return (
         <>
@@ -325,9 +361,11 @@ export default function Myblog() {
                     </div>
 
                     {/* FEATURED */}
-                    <div className="mb-8">
-                        <FeaturedCard post={featured} />
-                    </div>
+                    {featured && (
+                        <div className="mb-8">
+                            <FeaturedCard post={featured} />
+                        </div>
+                    )}
 
                     {/* GRID */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
@@ -342,4 +380,4 @@ export default function Myblog() {
             </section>
         </>
     );
-}
+}

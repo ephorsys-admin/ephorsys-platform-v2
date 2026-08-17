@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   FaLinkedin, FaInstagram,
   FaFacebook, FaYoutube, FaEnvelope, FaMapMarkerAlt, FaPhone
@@ -36,6 +39,9 @@ const socials = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname.startsWith("/admin")) return null;
+
   return (
     <footer className="relative bg-linear-to-br from-[#042407] via-[#0a2f1e] to-[#042407]
                        text-white overflow-hidden
