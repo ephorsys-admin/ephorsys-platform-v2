@@ -33,41 +33,40 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gray-50 px-4 overflow-hidden select-none">
-      {/* Background radial glow spots */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#74c316]/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-gray-200/50 blur-[150px] pointer-events-none" />
-      <div className="absolute top-[30%] right-[20%] w-[300px] h-[300px] rounded-full bg-[#74c316]/5 blur-[90px] pointer-events-none" />
-
+    <div className="relative min-h-screen flex items-center justify-center bg-black px-4 overflow-hidden select-none">
       {/* Grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.05] pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle, #74c316 1.5px, transparent 1.5px)`,
-          backgroundSize: "32px 32px",
-        }}
-      />
 
       <div className="relative z-10 w-full max-w-md mx-auto">
         {/* Header/Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 mb-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#74c316] animate-pulse" />
+          <div className="inline-flex items-center  mb-2">
+            <img
+              src="/logo.png"
+              alt="Ephorsys Logo"
+              className="w-25 h-25 object-contain"
+            />
+
             <span
-              className="text-2xl font-black tracking-tight text-[#042407]"
-              style={{ fontFamily: "var(--font-syne)" }}
+              className="text-2xl font-black tracking-tight text-[#62A611]"
+              
             >
               Ephorsys Console
             </span>
           </div>
-          <p className="text-gray-400 text-[10px] font-bold tracking-widest uppercase">Authentication Portal</p>
+          <p className="text-gray-400 text-[10px] font-bold tracking-widest uppercase">
+            Authentication Portal
+          </p>
         </div>
 
         {/* Frosted Glass Login Card */}
         <div className="bg-white/80 border border-gray-200/50 backdrop-blur-2xl rounded-3xl p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
           <div className="mb-6">
-            <h1 className="text-xl font-black text-[#042407] tracking-tight">System Login</h1>
-            <p className="text-gray-500 text-xs mt-1 font-medium">Enter your administrative credentials to continue.</p>
+            <h1 className="text-xl font-black text-[#042407] tracking-tight">
+              System Login
+            </h1>
+            <p className="text-gray-500 text-xs mt-1 font-medium">
+              Enter your administrative credentials to continue.
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -109,7 +108,11 @@ export default function AdminLoginPage() {
                   onClick={() => setShowPassword((v) => !v)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -132,7 +135,7 @@ export default function AdminLoginPage() {
                   Establishing connection...
                 </>
               ) : (
-                "Access Control"
+                "Sign In"
               )}
             </button>
           </form>

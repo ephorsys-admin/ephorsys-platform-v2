@@ -86,9 +86,9 @@ export default function BlogEditorPage() {
     setSaving(false);
   };
 
-  const inputCls = "w-full rounded-xl bg-black/40 border border-white/10 text-white placeholder-white/20 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
-  const labelCls = "text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5";
-  const errCls = "text-xs text-red-400 mt-1";
+  const inputCls = "w-full rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-405 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
+  const labelCls = "text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5";
+  const errCls = "text-xs text-red-500 mt-1";
 
   if (loading) {
     return (
@@ -103,18 +103,18 @@ export default function BlogEditorPage() {
       <div className="flex items-center gap-4 mb-8 select-none">
         <button
           onClick={() => router.push("/admin/blog")}
-          className="p-3 text-white/40 hover:text-white rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all"
+          className="p-3 text-gray-450 hover:text-gray-900 rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-all"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-3xl font-black text-white tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>
+        <h1 className="text-3xl font-black text-[#042407] tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>
           {isNew ? "Create Article" : "Edit Article"}
         </h1>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.5)] space-y-5">
-          <h2 className="font-bold text-white text-sm" style={{ fontFamily: "var(--font-syne)" }}>Post Details</h2>
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-5">
+          <h2 className="font-bold text-gray-900 text-sm" style={{ fontFamily: "var(--font-syne)" }}>Post Details</h2>
 
           <div>
             <label className={labelCls}>Title *</label>
@@ -155,7 +155,7 @@ export default function BlogEditorPage() {
           </div>
 
           <div>
-            <label className={labelCls}>Featured Image URL</label>
+            <label className={labelCls}>Featured Image</label>
             <ImageUpload
               value={watch("featuredImage")}
               onChange={(url) => setValue("featuredImage", url)}
@@ -177,8 +177,8 @@ export default function BlogEditorPage() {
         </div>
 
         {/* Author */}
-        <div className="bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.5)] space-y-4">
-          <h2 className="font-bold text-white text-sm" style={{ fontFamily: "var(--font-syne)" }}>Author</h2>
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <h2 className="font-bold text-gray-900 text-sm" style={{ fontFamily: "var(--font-syne)" }}>Author</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className={labelCls}>Name *</label>
@@ -190,7 +190,7 @@ export default function BlogEditorPage() {
               <input {...register("author.role")} placeholder="e.g. Full Stack Engineer" className={inputCls} />
             </div>
             <div>
-              <label className={labelCls}>Profile Image URL</label>
+              <label className={labelCls}>Profile Image</label>
               <ImageUpload
                 value={watch("author.profileImage")}
                 onChange={(url) => setValue("author.profileImage", url)}
@@ -202,9 +202,9 @@ export default function BlogEditorPage() {
         </div>
 
         {/* Publish */}
-        <div className="bg-[#021105]/80 border border-white/10 backdrop-blur-md rounded-2xl p-6 shadow-sm flex items-center justify-between gap-4 flex-wrap">
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <select {...register("status")} className={`${inputCls} w-40 [&>option]:bg-[#021105]`}>
+            <select {...register("status")} className={`${inputCls} w-40 [&>option]:bg-white`}>
               <option value="draft">Draft Mode</option>
               <option value="published">Publish Live</option>
             </select>
@@ -213,14 +213,14 @@ export default function BlogEditorPage() {
             <button
               type="button"
               onClick={() => router.push("/admin/blog")}
-              className="px-5 py-3 border border-white/10 rounded-xl text-xs font-bold text-white/70 hover:bg-white/[0.02] hover:text-white transition-all duration-300"
+              className="px-5 py-3 border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 bg-[#74c316] hover:bg-[#85e219] text-[#021004] font-black text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all duration-300 shadow-[0_4px_20px_rgba(116,195,22,0.2)]"
+              className="flex items-center gap-2 bg-[#74c316] hover:bg-[#62a611] text-[#021004] font-black text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all duration-300 shadow-sm"
             >
               {saving && <Loader2 className="w-4 h-4 animate-spin text-[#021004]" />}
               {isNew ? "Create Post" : "Save Changes"}

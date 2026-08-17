@@ -30,10 +30,10 @@ export default async function DashboardPage() {
     <div>
       {/* Title block */}
       <div className="mb-10 select-none">
-        <h1 className="text-3xl font-black text-white tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>
+        <h1 className="text-3xl font-black text-[#042407] tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>
           Console Dashboard
         </h1>
-        <p className="text-white/40 text-sm mt-1.5 font-medium">Real-time status overview of the Ephorsys platform.</p>
+        <p className="text-gray-500 text-sm mt-1.5 font-medium">Real-time status overview of the Ephorsys platform.</p>
       </div>
 
       {/* Grid of stats */}
@@ -41,7 +41,7 @@ export default async function DashboardPage() {
         {cards.map(({ label, value, icon: Icon, color }) => (
           <div
             key={label}
-            className="bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-[#74c316]/20 hover:bg-white/[0.04] transition-all duration-300 flex flex-col gap-4 group"
+            className="bg-white border border-gray-200/60 rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:border-[#74c316]/30 hover:shadow-[0_10px_30px_rgba(116,195,22,0.05)] transition-all duration-300 flex flex-col gap-4 group"
           >
             <div className="flex items-center justify-between">
               <div
@@ -50,19 +50,19 @@ export default async function DashboardPage() {
               >
                 <Icon className="w-5 h-5" style={{ color }} strokeWidth={2} />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-white/30 group-hover:text-white/50 transition-colors">Live</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-gray-500 transition-colors">Live</span>
             </div>
             <div>
-              <p className="text-4xl font-black text-white tracking-tight drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">{value}</p>
-              <p className="text-xs font-semibold text-white/50 tracking-wide mt-1 uppercase">{label}</p>
+              <p className="text-4xl font-black text-gray-900 tracking-tight">{value}</p>
+              <p className="text-xs font-semibold text-gray-500 tracking-wide mt-1 uppercase">{label}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Quick Links section */}
-      <div className="mt-10 bg-white/[0.01] border border-white/5 backdrop-blur-md rounded-2xl p-8 shadow-[0_15px_40px_rgba(0,0,0,0.6)]">
-        <h2 className="text-lg font-bold text-white tracking-tight mb-5" style={{ fontFamily: "var(--font-syne)" }}>System Controllers</h2>
+      <div className="mt-10 bg-white border border-gray-200/60 rounded-2xl p-8 shadow-[0_15px_40px_rgba(0,0,0,0.03)]">
+        <h2 className="text-lg font-bold text-[#042407] tracking-tight mb-5" style={{ fontFamily: "var(--font-syne)" }}>System Controllers</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { href: "/admin/careers", label: "Openings Registry" },
@@ -75,7 +75,7 @@ export default async function DashboardPage() {
             <a
               key={href}
               href={href}
-              className="text-xs font-bold text-[#74c316] uppercase tracking-wider bg-[#74c316]/5 hover:bg-[#74c316]/10 border border-[#74c316]/20 hover:border-[#74c316]/40 rounded-xl px-5 py-4 transition-all duration-300 text-center shadow-[0_2px_10px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_20px_rgba(116,195,22,0.15)] hover:scale-[1.02] active:scale-[0.98]"
+              className="text-xs font-bold text-[#42720e] uppercase tracking-wider bg-[#74c316]/5 hover:bg-[#74c316]/10 border border-[#74c316]/20 hover:border-[#74c316]/40 rounded-xl px-5 py-4 transition-all duration-300 text-center hover:scale-[1.02] active:scale-[0.98]"
             >
               {label}
             </a>
