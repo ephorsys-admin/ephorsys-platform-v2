@@ -18,7 +18,7 @@ function TeamMemberModal({ member, onClose, onSaved }: { member: TeamMember | nu
     resolver: zodResolver(teamMemberSchema),
     defaultValues: member ? { ...member, linkedIn: member.linkedIn ?? "" } : { category: "core", order: 0 },
   });
-  const inputCls = "w-full rounded-xl bg-black/40 border border-white/10 text-white placeholder-white/20 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
+  const inputCls = "w-full rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-405 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
 
   const onSubmit = async (data: any) => {
     const url = member ? `/api/admin/team/${member._id}` : "/api/admin/team";
@@ -28,22 +28,22 @@ function TeamMemberModal({ member, onClose, onSaved }: { member: TeamMember | nu
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#021105]/95 border border-white/10 backdrop-blur-xl rounded-2xl w-full max-w-lg shadow-2xl text-white">
-        <div className="flex items-center justify-between p-6 border-b border-white/5">
-          <h2 className="text-lg font-black text-white" style={{ fontFamily: "var(--font-syne)" }}>{member ? "Edit Member" : "New Member"}</h2>
-          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-lg shadow-2xl text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>{member ? "Edit Member" : "New Member"}</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Name *</label>
+            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Name *</label>
               <input {...register("name")} className={inputCls} /></div>
-            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Position *</label>
+            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Position *</label>
               <input {...register("position")} className={inputCls} /></div>
           </div>
-          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Photo URL</label>
+          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Photo URL</label>
             <ImageUpload
               value={watch("photo")}
               onChange={(url) => setValue("photo", url)}
@@ -51,20 +51,20 @@ function TeamMemberModal({ member, onClose, onSaved }: { member: TeamMember | nu
               folder="team"
             />
           </div>
-          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">LinkedIn URL</label>
+          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">LinkedIn URL</label>
             <input {...register("linkedIn")} placeholder="https://linkedin.com/in/..." className={inputCls} /></div>
           <div className="grid grid-cols-2 gap-4">
-            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Category</label>
-              <select {...register("category")} className={`${inputCls} [&>option]:bg-[#021105]`}>
+            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Category</label>
+              <select {...register("category")} className={`${inputCls} [&>option]:bg-white`}>
                 <option value="leader">Leader</option>
                 <option value="core">Core Team</option>
               </select></div>
-            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Order</label>
+            <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Order</label>
               <input type="number" {...register("order", { valueAsNumber: true })} className={inputCls} /></div>
           </div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 border border-white/10 rounded-xl py-3 text-xs font-bold text-white/70 hover:bg-white/[0.03] hover:text-white transition-all duration-300">Cancel</button>
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#85e219] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(116,195,22,0.2)]">
+            <button type="button" onClick={onClose} className="flex-1 border border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#62a611] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin text-[#021004]" />}
               Save Member
             </button>
@@ -80,7 +80,7 @@ function PhotoModal({ photo, onClose, onSaved }: { photo: Photo | null; onClose:
     resolver: zodResolver(lifeAtPhotoSchema),
     defaultValues: photo ?? { caption: "", order: 0 },
   });
-  const inputCls = "w-full rounded-xl bg-black/40 border border-white/10 text-white placeholder-white/20 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
+  const inputCls = "w-full rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-405 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
 
   const onSubmit = async (data: any) => {
     const url = photo ? `/api/admin/life-at-photos/${photo._id}` : "/api/admin/life-at-photos";
@@ -90,16 +90,16 @@ function PhotoModal({ photo, onClose, onSaved }: { photo: Photo | null; onClose:
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#021105]/95 border border-white/10 backdrop-blur-xl rounded-2xl w-full max-w-md shadow-2xl text-white">
-        <div className="flex items-center justify-between p-6 border-b border-white/5">
-          <h2 className="text-lg font-black text-white" style={{ fontFamily: "var(--font-syne)" }}>{photo ? "Edit Photo" : "Add Gallery Photo"}</h2>
-          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-md shadow-2xl text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>{photo ? "Edit Photo" : "Add Gallery Photo"}</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
-          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Image URL *</label>
+          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Image URL *</label>
             <ImageUpload
               value={watch("imageUrl")}
               onChange={(url) => setValue("imageUrl", url)}
@@ -107,13 +107,13 @@ function PhotoModal({ photo, onClose, onSaved }: { photo: Photo | null; onClose:
               folder="gallery"
             />
           </div>
-          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Caption</label>
+          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Caption</label>
             <input {...register("caption")} placeholder="Optional caption" className={inputCls} /></div>
-          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5">Order</label>
+          <div><label className="text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5">Order</label>
             <input type="number" {...register("order", { valueAsNumber: true })} className={inputCls} /></div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 border border-white/10 rounded-xl py-3 text-xs font-bold text-white/70 hover:bg-white/[0.03] hover:text-white transition-all duration-300">Cancel</button>
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#85e219] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(116,195,22,0.2)]">
+            <button type="button" onClick={onClose} className="flex-1 border border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#62a611] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin text-[#021004]" />}
               Save Photo
             </button>
@@ -172,12 +172,12 @@ export default function AdminAboutPage() {
     <div>
       <div className="flex items-center justify-between mb-8 select-none">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>About Settings</h1>
-          <p className="text-xs text-white/45 mt-1 font-medium">Control the public team showcase and gallery items.</p>
+          <h1 className="text-3xl font-black text-[#042407] tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>About Settings</h1>
+          <p className="text-xs text-gray-500 mt-1 font-medium">Control the public team showcase and gallery items.</p>
         </div>
         <button
           onClick={() => { if (tab === "team") { setEditMember(null); setShowMemberModal(true); } else { setEditPhoto(null); setShowPhotoModal(true); } }}
-          className="flex items-center gap-2 bg-[#74c316] hover:bg-[#85e219] text-[#021004] font-black text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-[0_4px_20px_rgba(116,195,22,0.25)] hover:scale-[1.02] active:scale-[0.98]"
+          className="flex items-center gap-2 bg-[#74c316] hover:bg-[#62a611] text-[#021004] font-black text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
         >
           <Plus className="w-4 h-4" strokeWidth={2.5} />
           {tab === "team" ? "Add Member" : "Add Photo"}
@@ -185,13 +185,13 @@ export default function AdminAboutPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1.5 bg-white/[0.02] border border-white/5 rounded-2xl p-1.5 mb-8 w-fit shadow-inner">
+      <div className="flex gap-1.5 bg-gray-100/85 border border-gray-200/60 rounded-2xl p-1.5 mb-8 w-fit shadow-inner">
         {[{ key: "team", label: "Team Members" }, { key: "gallery", label: "Life at Gallery" }].map(({ key, label }) => (
           <button key={key} onClick={() => setActiveTab("about", key)}
             className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
               tab === key
-                ? "bg-[#74c316]/10 text-[#74c316] border border-[#74c316]/25 shadow-[0_2px_10px_rgba(116,195,22,0.1)]"
-                : "text-white/40 hover:text-white/70"
+                ? "bg-white text-[#42720e] border border-gray-200/40 shadow-sm"
+                : "text-gray-500 hover:text-gray-800"
             }`}
           >
             {label}
@@ -204,34 +204,34 @@ export default function AdminAboutPage() {
         <div className="space-y-4">
           {loading ? <div className="flex justify-center py-20"><Loader2 className="w-7 h-7 animate-spin text-[#74c316]" /></div> :
           members.length === 0 ? (
-            <div className="text-center py-20 bg-white/[0.01] border border-white/5 rounded-2xl">
-              <p className="text-sm text-white/30 font-medium">No team members registered yet.</p>
+            <div className="text-center py-20 bg-white border border-gray-200/60 rounded-2xl">
+              <p className="text-sm text-gray-400 font-medium">No team members registered yet.</p>
             </div>
           ) : (
             members.map((m) => (
-              <div key={m._id} className="bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-2xl p-6 flex items-center justify-between gap-6 shadow-[0_4px_30px_rgba(0,0,0,0.3)] hover:border-[#74c316]/20 transition-all duration-300">
+              <div key={m._id} className="bg-white border border-gray-200/60 rounded-2xl p-6 flex items-center justify-between gap-6 shadow-sm hover:border-[#74c316]/30 transition-all duration-300">
                 <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-200 shrink-0">
                     {m.photo ? <img src={m.photo} alt={m.name} className="w-full h-full object-cover" /> :
-                      <div className="w-full h-full bg-[#74c316]/10 border border-[#74c316]/25 flex items-center justify-center text-[#74c316] font-black text-sm">{m.name[0]}</div>}
+                      <div className="w-full h-full bg-[#74c316]/10 border border-[#74c316]/20 flex items-center justify-center text-[#42720e] font-black text-sm">{m.name[0]}</div>}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 flex-wrap">
-                      <p className="font-bold text-white text-base tracking-tight">{m.name}</p>
+                      <p className="font-bold text-gray-900 text-base tracking-tight">{m.name}</p>
                       <span className={`text-[9px] font-black uppercase px-2.5 py-1 rounded-lg border ${
                         m.category === "leader"
-                          ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                          : "bg-white/[0.04] text-white/40 border border-white/10"
+                          ? "bg-amber-50 text-amber-700 border-amber-200"
+                          : "bg-gray-100 text-gray-500 border border-gray-200"
                       }`}>
                         {m.category}
                       </span>
                     </div>
-                    <p className="text-xs text-white/40 font-medium uppercase tracking-wider mt-1">{m.position}</p>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mt-1">{m.position}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <button onClick={() => { setEditMember(m); setShowMemberModal(true); }} className="p-3 text-white/40 hover:text-[#74c316] transition-all duration-300 bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] rounded-xl"><Edit2 className="w-4 h-4" /></button>
-                  <button onClick={() => deleteMember(m._id)} className="p-3 text-white/40 hover:text-red-400 transition-all duration-300 bg-white/[0.02] border border-white/5 hover:bg-red-500/10 hover:border-red-500/20 rounded-xl"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => { setEditMember(m); setShowMemberModal(true); }} className="p-3 text-gray-400 hover:text-[#74c316] transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl"><Edit2 className="w-4 h-4" /></button>
+                  <button onClick={() => deleteMember(m._id)} className="p-3 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"><Trash2 className="w-4 h-4" /></button>
                 </div>
               </div>
             ))
@@ -244,20 +244,20 @@ export default function AdminAboutPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           {loading ? <div className="col-span-full flex justify-center py-20"><Loader2 className="w-7 h-7 animate-spin text-[#74c316]" /></div> :
           photos.length === 0 ? (
-            <div className="col-span-full text-center py-20 bg-white/[0.01] border border-white/5 rounded-2xl">
-              <p className="text-sm text-white/30 font-medium">No gallery photographs registered yet.</p>
+            <div className="col-span-full text-center py-20 bg-white border border-gray-200/60 rounded-2xl">
+              <p className="text-sm text-gray-400 font-medium">No gallery photographs registered yet.</p>
             </div>
           ) : (
             photos.map((p) => (
-              <div key={p._id} className="bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)] group">
+              <div key={p._id} className="bg-white border border-gray-200/60 rounded-2xl overflow-hidden shadow-sm hover:border-[#74c316]/30 border transition-all group">
                 <div className="relative aspect-square">
                   <img src={p.imageUrl} alt={p.caption ?? ""} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-[#021105]/75 backdrop-blur-xs group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-3">
-                    <button onClick={() => { setEditPhoto(p); setShowPhotoModal(true); }} className="p-2.5 bg-[#74c316] hover:bg-[#85e219] rounded-xl text-[#021004] transition-all"><Edit2 className="w-4 h-4" /></button>
-                    <button onClick={() => deletePhoto(p._id)} className="p-2.5 bg-red-500 hover:bg-red-600 rounded-xl text-white transition-all"><Trash2 className="w-4 h-4" /></button>
+                  <div className="absolute inset-0 bg-white/90 backdrop-blur-xs group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-3">
+                    <button onClick={() => { setEditPhoto(p); setShowPhotoModal(true); }} className="p-2.5 bg-[#74c316] hover:bg-[#62a611] rounded-xl text-[#021004] transition-all"><Edit2 className="w-4 h-4" /></button>
+                    <button onClick={() => deletePhoto(p._id)} className="p-2.5 bg-red-500 hover:bg-red-650 rounded-xl text-white transition-all"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 </div>
-                {p.caption && <p className="text-xs text-white/50 font-medium px-4 py-3 truncate bg-black/20 border-t border-white/5">{p.caption}</p>}
+                {p.caption && <p className="text-xs text-gray-500 font-medium px-4 py-3 truncate bg-gray-50 border-t border-gray-150">{p.caption}</p>}
               </div>
             ))
           )}

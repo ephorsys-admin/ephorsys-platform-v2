@@ -10,8 +10,8 @@ import { useAdminUiStore } from "@/store/adminUiStore";
 import { Plus, Edit2, Trash2, X, Loader2, Eye, EyeOff } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
 
-const inputCls = "w-full rounded-xl bg-black/40 border border-white/10 text-white placeholder-white/20 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
-const labelCls = "text-[10px] font-bold uppercase tracking-widest text-[#74c316] block mb-1.5";
+const inputCls = "w-full rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
+const labelCls = "text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5";
 
 // ─── Stat Modal ───────────────────────────────────────────────────────────────
 function StatModal({ item, onClose, onSaved }: { item: any | null; onClose: () => void; onSaved: () => void }) {
@@ -25,19 +25,19 @@ function StatModal({ item, onClose, onSaved }: { item: any | null; onClose: () =
     if (res.ok) { onSaved(); onClose(); }
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#021105]/95 border border-white/10 backdrop-blur-xl rounded-2xl w-full max-w-sm shadow-2xl text-white">
-        <div className="flex items-center justify-between p-5 border-b border-white/5">
-          <h2 className="text-lg font-black text-white" style={{ fontFamily: "var(--font-syne)" }}>{item?._id ? "Edit Stat" : "Add Stat"}</h2>
-          <button onClick={onClose}><X className="w-5 h-5 text-white/40 hover:text-white transition-colors" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-sm shadow-2xl text-gray-900">
+        <div className="flex items-center justify-between p-5 border-b border-gray-100">
+          <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>{item?._id ? "Edit Stat" : "Add Stat"}</h2>
+          <button onClick={onClose}><X className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" /></button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-5 space-y-4">
           <div><label className={labelCls}>Value * (e.g. "500+" or "98%")</label><input {...register("value")} className={inputCls} /></div>
           <div><label className={labelCls}>Label *</label><input {...register("label")} placeholder="Projects Completed" className={inputCls} /></div>
           <div><label className={labelCls}>Order</label><input type="number" {...register("order", { valueAsNumber: true })} className={inputCls} /></div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 border border-white/10 rounded-xl py-3 text-xs font-bold text-white/70 hover:bg-white/[0.03] hover:text-white transition-all duration-300">Cancel</button>
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#85e219] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(116,195,22,0.2)]">
+            <button type="button" onClick={onClose} className="flex-1 border border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#62a611] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin text-[#021004]" />} Save Stat
             </button>
           </div>
@@ -58,11 +58,11 @@ function TestimonialModal({ item, onClose, onSaved }: { item: any | null; onClos
     if (res.ok) { onSaved(); onClose(); }
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#021105]/95 border border-white/10 backdrop-blur-xl rounded-2xl w-full max-w-md shadow-2xl text-white">
-        <div className="flex items-center justify-between p-5 border-b border-white/5">
-          <h2 className="text-lg font-black text-white" style={{ fontFamily: "var(--font-syne)" }}>{item?._id ? "Edit Testimonial" : "Add Testimonial"}</h2>
-          <button onClick={onClose}><X className="w-5 h-5 text-white/40 hover:text-white transition-colors" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-md shadow-2xl text-gray-900">
+        <div className="flex items-center justify-between p-5 border-b border-gray-100">
+          <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>{item?._id ? "Edit Testimonial" : "Add Testimonial"}</h2>
+          <button onClick={onClose}><X className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" /></button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-5 space-y-4">
           <div><label className={labelCls}>Client Name *</label><input {...register("clientName")} className={inputCls} /></div>
@@ -77,11 +77,11 @@ function TestimonialModal({ item, onClose, onSaved }: { item: any | null; onClos
           <div><label className={labelCls}>Feedback *</label><textarea {...register("feedbackText")} rows={4} className={inputCls} /></div>
           <div className="grid grid-cols-2 gap-4">
             <div><label className={labelCls}>Order</label><input type="number" {...register("order", { valueAsNumber: true })} className={inputCls} /></div>
-            <div className="flex items-end"><label className="flex items-center gap-2 cursor-pointer pb-2.5"><input type="checkbox" {...register("isActive")} className="w-4 h-4 rounded accent-[#74c316]" /><span className="text-xs font-semibold text-white/75">Active</span></label></div>
+            <div className="flex items-end"><label className="flex items-center gap-2 cursor-pointer pb-2.5"><input type="checkbox" {...register("isActive")} className="w-4 h-4 rounded accent-[#74c316]" /><span className="text-xs font-semibold text-gray-700">Active</span></label></div>
           </div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 border border-white/10 rounded-xl py-3 text-xs font-bold text-white/70 hover:bg-white/[0.03] hover:text-white transition-all duration-300">Cancel</button>
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#85e219] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(116,195,22,0.2)]">
+            <button type="button" onClick={onClose} className="flex-1 border border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#62a611] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin text-[#021004]" />} Save Testimonial
             </button>
           </div>
@@ -103,14 +103,14 @@ function LogoModal({ item, onClose, onSaved }: { item: any | null; onClose: () =
     if (res.ok) { onSaved(); onClose(); }
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#021105]/95 border border-white/10 backdrop-blur-xl rounded-2xl w-full max-w-sm shadow-2xl text-white">
-        <div className="flex items-center justify-between p-5 border-b border-white/5">
-          <h2 className="text-lg font-black text-white" style={{ fontFamily: "var(--font-syne)" }}>{item?._id ? "Edit Logo" : "Add Client Logo"}</h2>
-          <button onClick={onClose}><X className="w-5 h-5 text-white/40 hover:text-white transition-colors" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-sm shadow-2xl text-gray-900">
+        <div className="flex items-center justify-between p-5 border-b border-gray-100">
+          <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>{item?._id ? "Edit Logo" : "Add Client Logo"}</h2>
+          <button onClick={onClose}><X className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" /></button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-5 space-y-4">
-          <div><label className={labelCls}>Logo Image URL *</label>
+          <div><label className={labelCls}>Logo Image *</label>
             <ImageUpload
               value={watch("logoImage")}
               onChange={(url) => setValue("logoImage", url)}
@@ -121,8 +121,8 @@ function LogoModal({ item, onClose, onSaved }: { item: any | null; onClose: () =
           <div><label className={labelCls}>Client Name * (for alt text)</label><input {...register("clientName")} className={inputCls} /></div>
           <div><label className={labelCls}>Order</label><input type="number" {...register("order", { valueAsNumber: true })} className={inputCls} /></div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 border border-white/10 rounded-xl py-3 text-xs font-bold text-white/70 hover:bg-white/[0.03] hover:text-white transition-all duration-300">Cancel</button>
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#85e219] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(116,195,22,0.2)]">
+            <button type="button" onClick={onClose} className="flex-1 border border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#62a611] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin text-[#021004]" />} Save Logo
             </button>
           </div>
@@ -172,8 +172,8 @@ export default function AdminHomePage() {
     <div>
       <div className="flex items-center justify-between mb-8 select-none">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>Homepage Settings</h1>
-          <p className="text-xs text-white/45 mt-1 font-medium">Manage main landing metrics, partner logs, and reviews.</p>
+          <h1 className="text-3xl font-black text-[#042407] tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>Homepage Settings</h1>
+          <p className="text-xs text-gray-500 mt-1 font-medium">Manage main landing metrics, partner logs, and reviews.</p>
         </div>
         <button
           onClick={() => {
@@ -181,7 +181,7 @@ export default function AdminHomePage() {
             else if (tab === "testimonials") { setEditTestimonial(null); setShowTestimonialModal(true); }
             else { setEditLogo(null); setShowLogoModal(true); }
           }}
-          className="flex items-center gap-2 bg-[#74c316] hover:bg-[#85e219] text-[#021004] font-black text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-[0_4px_20px_rgba(116,195,22,0.25)] hover:scale-[1.02] active:scale-[0.98]"
+          className="flex items-center gap-2 bg-[#74c316] hover:bg-[#62a611] text-[#021004] font-black text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
         >
           <Plus className="w-4 h-4" strokeWidth={2.5} />
           Add {tab === "stats" ? "Stat" : tab === "testimonials" ? "Testimonial" : "Logo"}
@@ -189,13 +189,13 @@ export default function AdminHomePage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1.5 bg-white/[0.02] border border-white/5 rounded-2xl p-1.5 mb-8 w-fit shadow-inner">
+      <div className="flex gap-1.5 bg-gray-100/85 border border-gray-200/60 rounded-2xl p-1.5 mb-8 w-fit shadow-inner">
         {TABS.map(({ key, label }) => (
           <button key={key} onClick={() => setActiveTab("home", key)}
             className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
               tab === key
-                ? "bg-[#74c316]/10 text-[#74c316] border border-[#74c316]/25 shadow-[0_2px_10px_rgba(116,195,22,0.1)]"
-                : "text-white/40 hover:text-white/70"
+                ? "bg-white text-[#42720e] border border-gray-200/40 shadow-sm"
+                : "text-gray-500 hover:text-gray-800"
             }`}
           >
             {label}
@@ -209,19 +209,19 @@ export default function AdminHomePage() {
       {tab === "stats" && !loading && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
           {stats.length === 0 ? (
-            <div className="col-span-full text-center py-20 bg-white/[0.01] border border-white/5 rounded-2xl">
-              <p className="text-sm text-white/30 font-medium">No statistical values registered yet.</p>
+            <div className="col-span-full text-center py-20 bg-white border border-gray-200/60 rounded-2xl">
+              <p className="text-sm text-gray-400 font-medium">No statistical values registered yet.</p>
             </div>
           ) : (
             stats.map((s) => (
-              <div key={s._id} className="bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-[#74c316]/20 transition-all duration-300 flex flex-col justify-between">
+              <div key={s._id} className="bg-white border border-gray-200/60 rounded-2xl p-6 shadow-sm hover:border-[#74c316]/30 transition-all duration-300 flex flex-col justify-between">
                 <div>
-                  <p className="text-3xl font-black text-[#74c316] drop-shadow-[0_0_15px_rgba(116,195,22,0.2)]">{s.value}</p>
-                  <p className="text-xs font-bold text-white/60 uppercase tracking-wider mt-2">{s.label}</p>
+                  <p className="text-3xl font-black text-[#42720e]">{s.value}</p>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mt-2">{s.label}</p>
                 </div>
-                <div className="flex gap-2.5 mt-4 pt-3 border-t border-white/5">
-                  <button onClick={() => { setEditStat(s); setShowStatModal(true); }} className="p-2 text-white/40 hover:text-[#74c316] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] rounded-xl transition-all"><Edit2 className="w-3.5 h-3.5" /></button>
-                  <button onClick={() => deleteStat(s._id)} className="p-2 text-white/40 hover:text-red-400 bg-white/[0.02] border border-white/5 hover:bg-red-500/10 hover:border-red-500/20 rounded-xl transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
+                <div className="flex gap-2.5 mt-4 pt-3 border-t border-gray-100">
+                  <button onClick={() => { setEditStat(s); setShowStatModal(true); }} className="p-2 text-gray-400 hover:text-[#74c316] bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl transition-all"><Edit2 className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => deleteStat(s._id)} className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
               </div>
             ))
@@ -233,29 +233,29 @@ export default function AdminHomePage() {
       {tab === "testimonials" && !loading && (
         <div className="space-y-4">
           {testimonials.length === 0 ? (
-            <div className="text-center py-20 bg-white/[0.01] border border-white/5 rounded-2xl">
-              <p className="text-sm text-white/30 font-medium">No client reviews registered yet.</p>
+            <div className="text-center py-20 bg-white border border-gray-200/60 rounded-2xl">
+              <p className="text-sm text-gray-400 font-medium">No client reviews registered yet.</p>
             </div>
           ) : (
             testimonials.map((t) => (
-              <div key={t._id} className="bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-2xl p-6 flex items-center justify-between gap-6 shadow-[0_4px_30px_rgba(0,0,0,0.3)] hover:border-[#74c316]/20 transition-all duration-300">
+              <div key={t._id} className="bg-white border border-gray-200/60 rounded-2xl p-6 flex items-center justify-between gap-6 shadow-sm hover:border-[#74c316]/30 transition-all duration-300">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2 flex-wrap">
-                    <p className="font-bold text-white text-base tracking-tight">{t.clientName}</p>
+                    <p className="font-bold text-gray-900 text-base tracking-tight">{t.clientName}</p>
                     <span className={`text-[9px] font-black uppercase px-2.5 py-1 rounded-lg border ${
                       t.isActive
-                        ? "bg-emerald-500/10 text-[#74c316] border border-[#74c316]/20"
-                        : "bg-white/[0.04] text-white/40 border border-white/10"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                        : "bg-gray-100 text-gray-500 border border-gray-200"
                     }`}>
                       {t.isActive ? "active" : "hidden"}
                     </span>
                   </div>
-                  <p className="text-xs text-white/50 leading-relaxed line-clamp-1">{t.feedbackText}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed line-clamp-1">{t.feedbackText}</p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <button onClick={() => toggleTestimonial(t)} className="p-3 text-white/40 hover:text-[#74c316] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] rounded-xl transition-all">{t.isActive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}</button>
-                  <button onClick={() => { setEditTestimonial(t); setShowTestimonialModal(true); }} className="p-3 text-white/40 hover:text-[#74c316] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
-                  <button onClick={() => deleteTestimonial(t._id)} className="p-3 text-white/40 hover:text-red-400 bg-white/[0.02] border border-white/5 hover:bg-red-500/10 hover:border-red-500/20 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => toggleTestimonial(t)} className="p-3 text-gray-400 hover:text-[#74c316] bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl transition-all">{t.isActive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}</button>
+                  <button onClick={() => { setEditTestimonial(t); setShowTestimonialModal(true); }} className="p-3 text-gray-400 hover:text-[#74c316] bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
+                  <button onClick={() => deleteTestimonial(t._id)} className="p-3 text-gray-400 hover:text-red-500 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
                 </div>
               </div>
             ))
@@ -267,16 +267,16 @@ export default function AdminHomePage() {
       {tab === "logos" && !loading && (
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
           {logos.length === 0 ? (
-            <div className="col-span-full text-center py-20 bg-white/[0.01] border border-white/5 rounded-2xl">
-              <p className="text-sm text-white/30 font-medium">No partner client logos configured yet.</p>
+            <div className="col-span-full text-center py-20 bg-white border border-gray-200/60 rounded-2xl">
+              <p className="text-sm text-gray-400 font-medium">No partner client logos configured yet.</p>
             </div>
           ) : (
             logos.map((l) => (
-              <div key={l._id} className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.4)] group relative">
-                <img src={l.logoImage} alt={l.clientName} className="w-full h-12 object-contain mb-3 brightness-0 invert opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
-                <p className="text-[10px] font-bold text-center text-white/40 truncate uppercase tracking-wider">{l.clientName}</p>
-                <div className="absolute inset-0 bg-[#021105]/90 backdrop-blur-xs group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-2">
-                  <button onClick={() => { setEditLogo(l); setShowLogoModal(true); }} className="p-2 bg-[#74c316] hover:bg-[#85e219] rounded-lg text-[#021004] transition-all"><Edit2 className="w-3.5 h-3.5" /></button>
+              <div key={l._id} className="bg-white border border-gray-200/60 rounded-2xl p-5 shadow-sm group relative">
+                <img src={l.logoImage} alt={l.clientName} className="w-full h-12 object-contain mb-3 opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+                <p className="text-[10px] font-bold text-center text-gray-400 truncate uppercase tracking-wider">{l.clientName}</p>
+                <div className="absolute inset-0 bg-white/95 group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-2">
+                  <button onClick={() => { setEditLogo(l); setShowLogoModal(true); }} className="p-2 bg-[#74c316] hover:bg-[#62a611] rounded-lg text-[#021004] transition-all"><Edit2 className="w-3.5 h-3.5" /></button>
                   <button onClick={() => deleteLogo(l._id)} className="p-2 bg-red-500 hover:bg-red-600 rounded-lg text-white transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
               </div>
