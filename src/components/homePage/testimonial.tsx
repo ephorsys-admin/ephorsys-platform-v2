@@ -1,6 +1,10 @@
 import { StaggerTestimonials } from "@/components/ui/stagger-testimonials";
 
-const Testimonials = () => {
+interface TestimonialsProps {
+  testimonialsData?: { clientPhoto: string; feedbackText: string; clientName: string }[];
+}
+
+const Testimonials = ({ testimonialsData }: TestimonialsProps) => {
   return (
     <div
       className="relative flex w-full min-h-screen justify-center items-center overflow-hidden"
@@ -73,10 +77,10 @@ const Testimonials = () => {
 
       {/* Content */}
       <div className="relative z-10 w-full">
-        <StaggerTestimonials />
+        <StaggerTestimonials testimonialsData={testimonialsData} />
       </div>
     </div>
   );
 };
 
-export { Testimonials };
+export { Testimonials };

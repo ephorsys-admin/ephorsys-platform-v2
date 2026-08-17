@@ -330,11 +330,35 @@ function SectionLabel({ label }: { label: string }) {
 }
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
-export default function TeamShowcase() {
+export default function TeamShowcase({
+  leadersData,
+  coreTeamData,
+}: {
+  leadersData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+  coreTeamData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+}) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const isAnyHovered = hoveredId !== null;
 
-  const allMembers = [...LEADERSHIP, ...CORE_TEAM];
+  const activeLeaders = leadersData && leadersData.length > 0
+    ? leadersData.map((d, idx) => ({
+        id: `l-${idx}`,
+        name: d.name,
+        role: d.position,
+        image: d.photo || "https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg",
+        social: { linkedin: d.linkedIn || "#" },
+      }))
+    : LEADERSHIP;
+
+  const activeCore = coreTeamData && coreTeamData.length > 0
+    ? coreTeamData.map((d, idx) => ({
+        id: `c-${idx}`,
+        name: d.name,
+        role: d.position,
+        image: d.photo || "https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg",
+        social: { linkedin: d.linkedIn || "#" },
+      }))
+    : CORE_TEAM;
 
   return (
     <>
@@ -352,12 +376,12 @@ export default function TeamShowcase() {
         <div
           style={{
             display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: 12,
             marginBottom: '2.5rem',
           }}
         >
-          {LEADERSHIP.map((m, i) => (
+          {activeLeaders.map((m, i) => (
             <MemberCard
               key={m.id}
               member={m}
@@ -383,7 +407,7 @@ export default function TeamShowcase() {
             gap: 12,
           }}
         >
-          {CORE_TEAM.map((m, i) => (
+          {activeCore.map((m, i) => (
             <MemberCard
               key={m.id}
               member={m}

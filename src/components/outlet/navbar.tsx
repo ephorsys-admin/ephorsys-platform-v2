@@ -222,6 +222,8 @@ const MobileNavLink = ({
 /* ─── Navbar ───────────────────────────────────────────────────────────────── */
 export function Navbar() {
   const pathname = usePathname();
+  if (pathname.startsWith("/admin")) return null;
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -306,11 +308,14 @@ export function Navbar() {
                 items={SERVICES}
                 isActive={isServicesActive}
               />
-              <DesktopNavLink href="/career" isActive={pathname === "/career"}>
-                <h4>Career</h4>
-              </DesktopNavLink>
               <DesktopNavLink href="/blog" isActive={pathname === "/blog"}>
                 <h4>Blog</h4>
+              </DesktopNavLink>
+              <DesktopNavLink href="/portfolio" isActive={pathname === "/portfolio"}>
+                <h4>Portfolio</h4>
+              </DesktopNavLink>
+              <DesktopNavLink href="/career" isActive={pathname === "/career"}>
+                <h4>Career</h4>
               </DesktopNavLink>
             </div>
 
@@ -441,6 +446,14 @@ export function Navbar() {
             isActive={pathname === "/blog"}
           >
             Blog
+          </MobileNavLink>
+
+          <MobileNavLink
+            href="/portfolio"
+            onClick={closeMobileMenu}
+            isActive={pathname === "/portfolio"}
+          >
+            Portfolio
           </MobileNavLink>
 
           <MobileNavLink

@@ -231,10 +231,38 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   );
 };
 
-export const StaggerTestimonials: React.FC = () => {
+export const StaggerTestimonials: React.FC<{
+  testimonialsData?: { clientPhoto: string; feedbackText: string; clientName: string }[];
+}> = ({ testimonialsData }) => {
   const [cardSize, setCardSize] = useState(365);
   const [isMobile, setIsMobile] = useState(false);
-  const [testimonialsList, setTestimonialsList] = useState(testimonials);
+
+  const initialList = testimonialsData && testimonialsData.length >= 3
+    ? testimonialsData.map((t, idx) => ({
+        tempId: idx,
+        testimonial: t.feedbackText,
+        by: t.clientName,
+        initials: t.clientName[0] || "?",
+        image: t.clientPhoto || "",
+      }))
+    : testimonials;
+
+  const [testimonialsList, setTestimonialsList] = useState(initialList);
+
+  // Sync if testimonialsData changes
+  useEffect(() => {
+    if (testimonialsData && testimonialsData.length >= 3) {
+      setTestimonialsList(
+        testimonialsData.map((t, idx) => ({
+          tempId: idx,
+          testimonial: t.feedbackText,
+          by: t.clientName,
+          initials: t.clientName[0] || "?",
+          image: t.clientPhoto || "",
+        }))
+      );
+    }
+  }, [testimonialsData]);
 
   const handleMove = (steps: number) => {
     const newList = [...testimonialsList];

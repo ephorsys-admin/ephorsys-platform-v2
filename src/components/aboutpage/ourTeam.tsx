@@ -1,6 +1,12 @@
 import TeamShowcase from "@/components/ui/team-showcase";
 
-export default function TeamShowcaseDemo() {
+export default function TeamShowcaseDemo({
+  leadersData,
+  coreTeamData,
+}: {
+  leadersData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+  coreTeamData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+}) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start pt-16 px-4 ">
       {/* <div className="mx-auto max-w-5xl px-4"> */}
@@ -10,8 +16,9 @@ export default function TeamShowcaseDemo() {
         </h2>
       </div>
       <div className="flex items-center mb-5" >
-        <TeamShowcase />
+        <TeamShowcase leadersData={leadersData} coreTeamData={coreTeamData} />
       </div>
     </div>
   );
 }
+

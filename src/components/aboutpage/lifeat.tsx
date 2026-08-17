@@ -1,6 +1,21 @@
 import { LayoutGrid } from "../ui/layout-grid";
 
-export function LayoutGridDemo() {
+export function LayoutGridDemo({ photosData }: { photosData?: { imageUrl: string; caption?: string }[] }) {
+    const activeCards = photosData && photosData.length > 0
+        ? photosData.map((p, idx) => ({
+              id: idx + 1,
+              content: (
+                  <div>
+                      <p className="font-bold md:text-2xl text-lg text-white">
+                          {p.caption || ""}
+                      </p>
+                  </div>
+              ),
+              className: idx % 4 === 0 || idx % 4 === 3 ? "md:col-span-2" : "col-span-1",
+              thumbnail: p.imageUrl,
+          }))
+        : cards;
+
     return (
         <div className="min-h-screen py-16 w-full bg-black relative z-0">
 
@@ -18,7 +33,7 @@ export function LayoutGridDemo() {
 
             </div>
 
-            <LayoutGrid cards={cards} />
+            <LayoutGrid cards={activeCards} />
         </div>
     );
 }
