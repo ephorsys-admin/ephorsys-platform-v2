@@ -97,6 +97,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 font-sans">
       <HeroSection />
+      <ClientLogosSection logosData={data.logos} />
       <SlidingService />
       <AboutSection />
       <Techstack />
@@ -108,7 +109,6 @@ export default async function Home() {
       <WhatWeProvide />
       <StatsSection statsData={data.stats} />
       <Testimonials testimonialsData={data.testimonials} />
-      <ClientLogosSection logosData={data.logos} />
       <FAQSection />
     </div>
   );
