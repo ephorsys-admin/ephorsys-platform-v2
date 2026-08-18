@@ -51,8 +51,7 @@ export async function DELETE(
 
   await connectDB();
   const { id } = await params;
-  // Soft-delete: toggle isActive to false
-  const job = await Job.findByIdAndUpdate(id, { isActive: false }, { new: true });
+  const job = await Job.findByIdAndDelete(id);
   if (!job) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json({ message: "Job deactivated", job });
+  return NextResponse.json({ message: "Job deleted successfully" });
 }

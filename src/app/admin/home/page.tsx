@@ -9,6 +9,8 @@ import { clientLogoSchema, type ClientLogoInput } from "@/schemas/clientLogo.sch
 import { useAdminUiStore } from "@/store/adminUiStore";
 import { Plus, Edit2, Trash2, X, Loader2, Eye, EyeOff } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
+import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
+import { toast } from "sonner";
 
 const inputCls = "w-full rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
 const labelCls = "text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5";
@@ -22,7 +24,12 @@ function StatModal({ item, onClose, onSaved }: { item: any | null; onClose: () =
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/stats/${item._id}` : "/api/admin/stats";
     const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) { onSaved(); onClose(); }
+    if (res.ok) {
+      toast.success(item?._id ? "Stat updated!" : "Stat created!");
+      onSaved(); onClose();
+    } else {
+      toast.error("Failed to save stat. Please try again.");
+    }
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
@@ -55,7 +62,12 @@ function TestimonialModal({ item, onClose, onSaved }: { item: any | null; onClos
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/testimonials/${item._id}` : "/api/admin/testimonials";
     const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) { onSaved(); onClose(); }
+    if (res.ok) {
+      toast.success(item?._id ? "Testimonial updated!" : "Testimonial added!");
+      onSaved(); onClose();
+    } else {
+      toast.error("Failed to save testimonial. Please try again.");
+    }
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
@@ -95,12 +107,22 @@ function TestimonialModal({ item, onClose, onSaved }: { item: any | null; onClos
 function LogoModal({ item, onClose, onSaved }: { item: any | null; onClose: () => void; onSaved: () => void }) {
   const { register, handleSubmit, setValue, watch, formState: { isSubmitting } } = useForm<any>({
     resolver: zodResolver(clientLogoSchema),
-    defaultValues: item ?? { logoImage: "", clientName: "", order: 0 },
+    defaultValues: {
+      logoImage: item?.logoImage ?? "",
+      clientName: item?.clientName ?? "",
+      liveUrl: item?.liveUrl ?? "",
+      order: item?.order ?? 0,
+    },
   });
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/client-logos/${item._id}` : "/api/admin/client-logos";
     const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) { onSaved(); onClose(); }
+    if (res.ok) {
+      toast.success(item?._id ? "Logo updated!" : "Logo added!");
+      onSaved(); onClose();
+    } else {
+      toast.error("Failed to save logo. Please try again.");
+    }
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
@@ -119,6 +141,7 @@ function LogoModal({ item, onClose, onSaved }: { item: any | null; onClose: () =
             />
           </div>
           <div><label className={labelCls}>Client Name * (for alt text)</label><input {...register("clientName")} className={inputCls} /></div>
+          <div><label className={labelCls}>Live URL</label><input {...register("liveUrl")} placeholder="https://clientwebsite.com" className={inputCls} /></div>
           <div><label className={labelCls}>Order</label><input type="number" {...register("order", { valueAsNumber: true })} className={inputCls} /></div>
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 border border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300">Cancel</button>
@@ -139,7 +162,7 @@ export default function AdminHomePage() {
 
   type StatItem = StatInput & { _id: string };
   type TestimonialItem = TestimonialInput & { _id: string };
-  type LogoItem = ClientLogoInput & { _id: string };
+  type LogoItem = ClientLogoInput & { _id: string; liveUrl?: string };
 
   const [stats, setStats] = useState<StatItem[]>([]);
   const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
@@ -153,6 +176,9 @@ export default function AdminHomePage() {
   const [editLogo, setEditLogo] = useState<LogoItem | null>(null);
   const [showLogoModal, setShowLogoModal] = useState(false);
 
+  // Delete confirm state
+  const [deleteTarget, setDeleteTarget] = useState<{ type: "stat" | "testimonial" | "logo"; id: string; name?: string } | null>(null);
+
   const fetchStats = useCallback(async () => { setLoading(true); const r = await fetch("/api/admin/stats"); const d = await r.json(); setStats(d.stats ?? []); setLoading(false); }, []);
   const fetchTestimonials = useCallback(async () => { setLoading(true); const r = await fetch("/api/admin/testimonials"); const d = await r.json(); setTestimonials(d.testimonials ?? []); setLoading(false); }, []);
   const fetchLogos = useCallback(async () => { setLoading(true); const r = await fetch("/api/admin/client-logos"); const d = await r.json(); setLogos(d.logos ?? []); setLoading(false); }, []);
@@ -161,10 +187,34 @@ export default function AdminHomePage() {
   useEffect(() => { if (tab === "testimonials") fetchTestimonials(); }, [tab, fetchTestimonials]);
   useEffect(() => { if (tab === "logos") fetchLogos(); }, [tab, fetchLogos]);
 
-  const deleteStat = async (id: string) => { if (!confirm("Delete?")) return; await fetch(`/api/admin/stats/${id}`, { method: "DELETE" }); fetchStats(); };
-  const deleteTestimonial = async (id: string) => { if (!confirm("Delete?")) return; await fetch(`/api/admin/testimonials/${id}`, { method: "DELETE" }); fetchTestimonials(); };
-  const deleteLogo = async (id: string) => { if (!confirm("Delete?")) return; await fetch(`/api/admin/client-logos/${id}`, { method: "DELETE" }); fetchLogos(); };
-  const toggleTestimonial = async (t: TestimonialItem) => { await fetch(`/api/admin/testimonials/${t._id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ isActive: !t.isActive }) }); fetchTestimonials(); };
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    const endpoints: Record<string, string> = {
+      stat: `/api/admin/stats/${deleteTarget.id}`,
+      testimonial: `/api/admin/testimonials/${deleteTarget.id}`,
+      logo: `/api/admin/client-logos/${deleteTarget.id}`,
+    };
+    const res = await fetch(endpoints[deleteTarget.type], { method: "DELETE" });
+    if (res.ok) {
+      toast.success(`${deleteTarget.type.charAt(0).toUpperCase() + deleteTarget.type.slice(1)} deleted successfully.`);
+      if (deleteTarget.type === "stat") fetchStats();
+      else if (deleteTarget.type === "testimonial") fetchTestimonials();
+      else fetchLogos();
+    } else {
+      toast.error("Failed to delete. Please try again.");
+    }
+    setDeleteTarget(null);
+  };
+
+  const toggleTestimonial = async (t: TestimonialItem) => {
+    const res = await fetch(`/api/admin/testimonials/${t._id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ isActive: !t.isActive }) });
+    if (res.ok) {
+      toast.success(`Testimonial ${t.isActive ? "hidden" : "activated"}.`);
+      fetchTestimonials();
+    } else {
+      toast.error("Failed to update status.");
+    }
+  };
 
   const TABS = [{ key: "stats", label: "Stats Counters" }, { key: "testimonials", label: "Testimonials" }, { key: "logos", label: "Client Logos" }];
 
@@ -221,7 +271,7 @@ export default function AdminHomePage() {
                 </div>
                 <div className="flex gap-2.5 mt-4 pt-3 border-t border-gray-100">
                   <button onClick={() => { setEditStat(s); setShowStatModal(true); }} className="p-2 text-gray-400 hover:text-[#74c316] bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl transition-all"><Edit2 className="w-3.5 h-3.5" /></button>
-                  <button onClick={() => deleteStat(s._id)} className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => setDeleteTarget({ type: "stat", id: s._id, name: s.label })} className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
               </div>
             ))
@@ -255,7 +305,7 @@ export default function AdminHomePage() {
                 <div className="flex items-center gap-3 shrink-0">
                   <button onClick={() => toggleTestimonial(t)} className="p-3 text-gray-400 hover:text-[#74c316] bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl transition-all">{t.isActive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}</button>
                   <button onClick={() => { setEditTestimonial(t); setShowTestimonialModal(true); }} className="p-3 text-gray-400 hover:text-[#74c316] bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
-                  <button onClick={() => deleteTestimonial(t._id)} className="p-3 text-gray-400 hover:text-red-500 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => setDeleteTarget({ type: "testimonial", id: t._id, name: t.clientName })} className="p-3 text-gray-400 hover:text-red-500 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
                 </div>
               </div>
             ))
@@ -272,12 +322,19 @@ export default function AdminHomePage() {
             </div>
           ) : (
             logos.map((l) => (
-              <div key={l._id} className="bg-white border border-gray-200/60 rounded-2xl p-5 shadow-sm group relative">
-                <img src={l.logoImage} alt={l.clientName} className="w-full h-12 object-contain mb-3 opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
-                <p className="text-[10px] font-bold text-center text-gray-400 truncate uppercase tracking-wider">{l.clientName}</p>
-                <div className="absolute inset-0 bg-white/95 group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-2">
-                  <button onClick={() => { setEditLogo(l); setShowLogoModal(true); }} className="p-2 bg-[#74c316] hover:bg-[#62a611] rounded-lg text-[#021004] transition-all"><Edit2 className="w-3.5 h-3.5" /></button>
-                  <button onClick={() => deleteLogo(l._id)} className="p-2 bg-red-500 hover:bg-red-600 rounded-lg text-white transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
+              <div key={l._id} className="bg-white border border-gray-200/60 rounded-2xl p-5 shadow-sm group relative flex flex-col justify-between min-h-[140px]">
+                <div>
+                  <img src={l.logoImage} alt={l.clientName} className="w-full h-12 object-contain mb-3 opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+                  <p className="text-[10px] font-bold text-center text-gray-400 truncate uppercase tracking-wider">{l.clientName}</p>
+                  {l.liveUrl && (
+                    <p className="text-[9px] text-center text-gray-400 truncate mt-1 hover:text-[#74c316] transition-colors relative z-10">
+                      <a href={l.liveUrl} target="_blank" rel="noopener noreferrer" title={l.liveUrl}>{l.liveUrl}</a>
+                    </p>
+                  )}
+                </div>
+                <div className="absolute inset-0 bg-white/95 group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-2 rounded-2xl">
+                  <button onClick={() => { setEditLogo(l); setShowLogoModal(true); }} className="p-2 bg-[#74c316] hover:bg-[#62a611] rounded-lg text-[#021004] transition-all relative z-20"><Edit2 className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => setDeleteTarget({ type: "logo", id: l._id, name: l.clientName })} className="p-2 bg-red-500 hover:bg-red-600 rounded-lg text-white transition-all relative z-20"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
               </div>
             ))
@@ -288,6 +345,15 @@ export default function AdminHomePage() {
       {showStatModal && <StatModal item={editStat} onClose={() => setShowStatModal(false)} onSaved={fetchStats} />}
       {showTestimonialModal && <TestimonialModal item={editTestimonial} onClose={() => setShowTestimonialModal(false)} onSaved={fetchTestimonials} />}
       {showLogoModal && <LogoModal item={editLogo} onClose={() => setShowLogoModal(false)} onSaved={fetchLogos} />}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title={`Delete ${deleteTarget.type.charAt(0).toUpperCase() + deleteTarget.type.slice(1)}`}
+          description={`Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.`}
+          onConfirm={handleDelete}
+          onClose={() => setDeleteTarget(null)}
+        />
+      )}
     </div>
   );
 }

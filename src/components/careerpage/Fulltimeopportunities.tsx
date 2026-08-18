@@ -29,48 +29,7 @@ interface Job {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const fullTimeJobs: Job[] = [
-  {
-    id: "ft-1",
-    title: "Senior Frontend Engineer",
-    department: "Development",
-    location: "Onsite",
-    description:
-      "We are looking for an experienced frontend engineer to help build amazing user interfaces.",
-    tags: ["React", "TypeScript", "CSS"],
-    icon: Code2,
-  },
-  {
-    id: "ft-2",
-    title: "Full Stack Developer",
-    department: "Software Development",
-    location: "Onsite",
-    description:
-      "Join our team to build scalable web applications using modern technologies.",
-    tags: ["Node.js", "React", "MongoDB"],
-    icon: Layers,
-  },
-  {
-    id: "ft-3",
-    title: "Product Lead",
-    department: "Product",
-    location: "Onsite",
-    description:
-      "Lead product strategy and drive the vision for our next-generation platform.",
-    tags: ["Strategy", "Analytics", "Leadership"],
-    icon: Globe,
-  },
-  {
-    id: "ft-4",
-    title: "Graphic Design",
-    department: "Design",
-    location: "Onsite",
-    description:
-      "Shape the future of design at our company. Lead design direction for all products.",
-    tags: ["Figma", "UI/UX", "Branding"],
-    icon: Palette,
-  },
-];
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -102,6 +61,7 @@ function JobCard({
     department: string;
     location: string;
     description: string;
+    responsibilities?: string[];
     experienceRequired?: string;
   };
   onApply: () => void;
@@ -146,16 +106,14 @@ function JobCard({
               ].join(" ")}
             >
               <Icon
-                className={`h-5 w-5 transition-colors duration-300 ${
-                  hovered ? "text-[#74c316]" : "text-gray-400"
-                }`}
+                className={`h-5 w-5 transition-colors duration-300 ${hovered ? "text-[#74c316]" : "text-gray-400"
+                  }`}
                 strokeWidth={1.8}
               />
             </div>
             <h3
-              className={`text-sm font-bold transition-colors duration-300 sm:text-base ${
-                hovered ? "text-[#74c316]" : "text-gray-900"
-              }`}
+              className={`text-sm font-bold transition-colors duration-300 sm:text-base ${hovered ? "text-[#74c316]" : "text-gray-900"
+                }`}
             >
               {job.title}
             </h3>
@@ -184,12 +142,39 @@ function JobCard({
           {job.description}
         </p>
 
-        {/* Experience requirement tag */}
-        <div className="mb-5 flex flex-wrap gap-1.5">
+        {/* Requirements */}
+        <div className="mb-5 space-y-3">
+          {/* Must Have Skills */}
+          {job.responsibilities && job.responsibilities.length > 0 && (
+            <div>
+              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-700">
+                Must Have Skills
+              </p>
+
+              <div className="flex flex-wrap gap-1.5">
+                {job.responsibilities.map((resp, idx) => (
+                  <span
+                    key={idx}
+                    className="rounded-md border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-500"
+                  >
+                    {resp}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Experience */}
           {job.experienceRequired && (
-            <span className="rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[11px] font-medium text-gray-500">
-              Exp: {job.experienceRequired}
-            </span>
+            <div>
+              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-700">
+                Experience
+              </p>
+
+              <span className="inline-block rounded-md border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-500">
+                {job.experienceRequired}
+              </span>
+            </div>
           )}
         </div>
 
@@ -217,6 +202,7 @@ export default function FullTimeOpportunities({
     department: string;
     location: string;
     description: string;
+    responsibilities?: string[];
     experienceRequired?: string;
   }[];
 }) {
@@ -224,7 +210,7 @@ export default function FullTimeOpportunities({
   const inView = useInView(sectionRef, { once: true, amount: 0.08 });
   const [selectedJob, setSelectedJob] = useState<{ _id: string; title: string } | null>(null);
 
-  const activeJobs = jobs && jobs.length > 0 ? jobs : fullTimeJobs.map((j) => ({ ...j, _id: j.id }));
+  const hasJobs = jobs && jobs.length > 0;
 
   return (
     <section
@@ -271,20 +257,31 @@ export default function FullTimeOpportunities({
         </motion.div>
 
         {/* Job grid */}
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          animate={inView ? "show" : "hidden"}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-6"
-        >
-          {activeJobs.map((job) => (
-            <JobCard
-              key={job._id}
-              job={job}
-              onApply={() => setSelectedJob({ _id: job._id, title: job.title })}
-            />
-          ))}
-        </motion.div>
+        {hasJobs ? (
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate={inView ? "show" : "hidden"}
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-6"
+          >
+            {jobs.map((job) => (
+              <JobCard
+                key={job._id}
+                job={job}
+                onApply={() => setSelectedJob({ _id: job._id, title: job.title })}
+              />
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "show" : "hidden"}
+            className="text-center py-12 px-4 rounded-2xl border border-gray-200 bg-white"
+          >
+            <p className="text-gray-400 font-medium text-sm">There is no jobs</p>
+          </motion.div>
+        )}
       </div>
 
       {selectedJob && (

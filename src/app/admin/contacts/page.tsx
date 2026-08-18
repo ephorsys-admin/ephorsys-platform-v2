@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Trash2, Loader2, Mail, ChevronRight, X } from "lucide-react";
+import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
+import { toast } from "sonner";
 
 type Submission = {
   _id: string;
@@ -24,10 +26,12 @@ function SubmissionDetail({
   submission,
   onClose,
   onStatusUpdate,
+  onDelete,
 }: {
   submission: Submission;
   onClose: () => void;
   onStatusUpdate: (id: string, status: string) => void;
+  onDelete: (id: string, name: string) => void;
 }) {
   const [status, setStatus] = useState(submission.status);
   const [saving, setSaving] = useState(false);
@@ -39,7 +43,12 @@ function SubmissionDetail({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: s }),
     });
-    if (res.ok) { setStatus(s); onStatusUpdate(submission._id, s); }
+    if (res.ok) {
+      toast.success(`Status updated to "${s}".`);
+      setStatus(s); onStatusUpdate(submission._id, s);
+    } else {
+      toast.error("Failed to update status.");
+    }
     setSaving(false);
   };
 
@@ -51,9 +60,18 @@ function SubmissionDetail({
             <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>{submission.fullName}</h2>
             <p className="text-xs text-gray-500 mt-0.5">{new Date(submission.createdAt).toLocaleDateString()}</p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => { onClose(); onDelete(submission._id, submission.fullName); }}
+              className="p-2.5 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"
+              title="Delete submission"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+            <button onClick={onClose} className="p-2.5 text-gray-400 hover:text-gray-600 transition-colors bg-gray-50 border border-gray-200 rounded-xl">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         <div className="p-6 space-y-6">
@@ -108,6 +126,7 @@ export default function AdminContactsPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Submission | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
 
   const fetchSubmissions = useCallback(async () => {
     setLoading(true);
@@ -124,9 +143,14 @@ export default function AdminContactsPage() {
   useEffect(() => { fetchSubmissions(); }, [fetchSubmissions]);
 
   const deleteSubmission = async (id: string) => {
-    if (!confirm("Delete this submission permanently?")) return;
-    await fetch(`/api/admin/contacts/${id}`, { method: "DELETE" });
-    fetchSubmissions();
+    const res = await fetch(`/api/admin/contacts/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      toast.success("Submission deleted.");
+      fetchSubmissions();
+    } else {
+      toast.error("Failed to delete submission.");
+    }
+    setDeleteTarget(null);
   };
 
   const handleStatusUpdate = (id: string, status: string) => {
@@ -184,7 +208,7 @@ export default function AdminContactsPage() {
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <button
-                  onClick={(e) => { e.stopPropagation(); deleteSubmission(sub._id); }}
+                   onClick={(e) => { e.stopPropagation(); setDeleteTarget({ id: sub._id, name: sub.fullName }); }}
                   className="p-3 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -221,6 +245,16 @@ export default function AdminContactsPage() {
           submission={selected}
           onClose={() => setSelected(null)}
           onStatusUpdate={handleStatusUpdate}
+          onDelete={(id, name) => setDeleteTarget({ id, name })}
+        />
+      )}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title="Delete Submission"
+          description={`Are you sure you want to permanently delete the submission from "${deleteTarget.name}"? This action cannot be undone.`}
+          onConfirm={() => deleteSubmission(deleteTarget.id)}
+          onClose={() => setDeleteTarget(null)}
         />
       )}
     </div>

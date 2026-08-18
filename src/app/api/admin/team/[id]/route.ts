@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
 import TeamMember from "@/models/TeamMember";
 import { teamMemberSchema } from "@/schemas/team.schema";
+import { deleteFromCloudinary } from "@/lib/cloudinary";
 
 async function requireAuth() {
   return (await getServerSession(authOptions)) ?? null;
@@ -33,7 +34,20 @@ export async function DELETE(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   await connectDB();
   const { id } = await params;
-  const member = await TeamMember.findByIdAndDelete(id);
+
+  // Retrieve member to get photo URL before deletion
+  const member = await TeamMember.findById(id).lean();
   if (!member) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  // Delete team member photo from Cloudinary
+  try {
+    if (member.photo) {
+      await deleteFromCloudinary(member.photo);
+    }
+  } catch (err) {
+    console.error("Failed to delete team member photo from Cloudinary:", err);
+  }
+
+  await TeamMember.findByIdAndDelete(id);
   return NextResponse.json({ message: "Deleted" });
 }

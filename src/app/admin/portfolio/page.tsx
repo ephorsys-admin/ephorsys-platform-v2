@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Edit2, Trash2, Eye, Loader2, FolderGit, Check, X, Star } from "lucide-react";
+import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
+import { toast } from "sonner";
 
 type Project = {
   _id: string;
@@ -24,6 +26,7 @@ export default function AdminPortfolioPage() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
 
   const fetchProjects = useCallback(async () => {
     setLoading(true);
@@ -45,17 +48,19 @@ export default function AdminPortfolioPage() {
   }, [fetchProjects]);
 
   const deleteProject = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this project case study permanently?")) return;
     try {
       const res = await fetch(`/api/admin/projects/${id}`, { method: "DELETE" });
       if (res.ok) {
+        toast.success("Project deleted successfully.");
         fetchProjects();
       } else {
-        alert("Failed to delete project");
+        toast.error("Failed to delete project.");
       }
     } catch (err) {
+      toast.error("An error occurred while deleting.");
       console.error(err);
     }
+    setDeleteTarget(null);
   };
 
   const togglePublish = async (project: Project) => {
@@ -67,9 +72,11 @@ export default function AdminPortfolioPage() {
         body: JSON.stringify({ isPublished: updatedStatus }),
       });
       if (res.ok) {
+        toast.success(`Project ${updatedStatus ? "published" : "moved to draft"}.`);
         fetchProjects();
       }
     } catch (err) {
+      toast.error("Failed to update publish status.");
       console.error(err);
     }
   };
@@ -83,9 +90,11 @@ export default function AdminPortfolioPage() {
         body: JSON.stringify({ isFeatured: updatedStatus }),
       });
       if (res.ok) {
+        toast.success(`Project ${updatedStatus ? "featured" : "unfeatured"}.`);
         fetchProjects();
       }
     } catch (err) {
+      toast.error("Failed to update featured status.");
       console.error(err);
     }
   };
@@ -202,7 +211,7 @@ export default function AdminPortfolioPage() {
                 </button>
                 {/* Delete Button */}
                 <button
-                  onClick={() => deleteProject(project._id)}
+                  onClick={() => setDeleteTarget({ id: project._id, title: project.title })}
                   className="p-3 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -232,6 +241,15 @@ export default function AdminPortfolioPage() {
             Next
           </button>
         </div>
+      )}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title="Delete Project"
+          description={`Are you sure you want to permanently delete "${deleteTarget.title}"? This action cannot be undone.`}
+          onConfirm={() => deleteProject(deleteTarget.id)}
+          onClose={() => setDeleteTarget(null)}
+        />
       )}
     </div>
   );
