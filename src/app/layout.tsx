@@ -111,7 +111,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        <Preloader />
+        {/* <Preloader /> */}
         <Navbar />
 
         <main className="flex-1">

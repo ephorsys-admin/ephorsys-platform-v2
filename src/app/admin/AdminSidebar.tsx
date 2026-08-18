@@ -12,10 +12,12 @@ import {
   Home,
   LogOut,
   ChevronRight,
+  FolderGit,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/portfolio", label: "Portfolio", icon: FolderGit },
   { href: "/admin/careers", label: "Careers", icon: Briefcase },
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/contacts", label: "Contacts", icon: Mail },

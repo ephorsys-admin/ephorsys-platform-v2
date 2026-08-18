@@ -40,13 +40,17 @@ async function seed() {
   const User = mongoose.models.User || mongoose.model("User", UserSchema);
 
   const existing = await User.findOne({ email: ADMIN_EMAIL });
+  const passwordHash = await bcrypt.hash(ADMIN_PASSWORD as string, 12);
+
   if (existing) {
-    console.log(`ℹ️   Admin user ${ADMIN_EMAIL} already exists. Skipping.`);
+    existing.passwordHash = passwordHash;
+    existing.role = "admin";
+    await existing.save();
+    console.log(`✅  Admin user ${ADMIN_EMAIL} password updated.`);
     await mongoose.disconnect();
     return;
   }
 
-  const passwordHash = await bcrypt.hash(ADMIN_PASSWORD as string, 12);
   await User.create({ email: ADMIN_EMAIL, passwordHash, role: "admin" });
 
   console.log(`✅  Admin user created: ${ADMIN_EMAIL}`);
