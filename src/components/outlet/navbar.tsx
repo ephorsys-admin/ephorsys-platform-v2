@@ -27,23 +27,23 @@ const DropdownMenu = memo(function DropdownMenu({
 }) {
   return (
     <div className="relative group">
-      <h4 className="relative px-3.5 py-2 text-md font-medium text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide flex items-center gap-1 cursor-pointer">
+      <h4 className="relative px-2.5 py-1.5 text-lg font-medium text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide flex items-center gap-1 cursor-pointer">
         {label}
-        <ChevronDown className="w-3.5 h-3.5 transition-transform duration-250 group-hover:rotate-180 stroke-[#a8c97a] group-hover:stroke-[#74c316]" />
+        <ChevronDown className="w-4 h-4 transition-transform duration-250 group-hover:rotate-180 stroke-[#a8c97a] group-hover:stroke-[#74c316]" />
         <span
           className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full bg-[#74c316] transition-all duration-300 ease-out"
           style={{ width: isActive ? "70%" : "0%" }}
         />
       </h4>
 
-      <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-56 bg-brand-white border border-[#74c316]/15 rounded-2xl p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 translate-y-1 transition-all duration-200 z-50 shadow-2xl shadow-black/60">
+      <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-52 bg-brand-white border border-[#74c316]/15 rounded-2xl p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 translate-y-1 transition-all duration-200 z-50 shadow-2xl shadow-black/60">
         {items.slice(0, 3).map(({ href, label }) => (
           <Link
             key={href}
             href={href}
-            className="block px-3.5 py-2.5 text-sm font-medium text-[#a8c97a] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
+            className="block px-3 py-2 text-sm font-medium text-[#a8c97a] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
           >
-            <h4 className="text-md font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
+            <h4 className="text-sm font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
               {label}
             </h4>
           </Link>
@@ -53,9 +53,11 @@ const DropdownMenu = memo(function DropdownMenu({
           <Link
             key={href}
             href={href}
-            className="block px-3.5 py-2.5 text-sm  text-[#74c316] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
-          ><h4 className="text-md font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
-            {label}</h4>  
+            className="block px-3 py-2 text-sm text-[#74c316] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
+          >
+            <h4 className="text-sm font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
+              {label}
+            </h4>
           </Link>
         ))}
       </div>
@@ -77,7 +79,7 @@ const DesktopNavLink = ({
 }) => (
   <Link
     href={href}
-    className={`relative px-3.5 py-2 text-md font-medium text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide group ${className ?? ""}`}
+    className={`relative px-2.5 py-1.5 text-md font-medium  text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide group ${className ?? ""}`}
   >
     {children}
     <span
@@ -272,36 +274,46 @@ export function Navbar() {
         }`}
         style={{ contain: "layout" }}
       >
-        <div className="max-w-7xl mx-auto px-1 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-18 md:h-20">
-            {/* ── Logo ── */}
-            <Link
-              href="/"
-              className="flex items-center shrink-0"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
-            <div className="relative w-16 h-16 md:w-20 md:h-20">
-  <Image
-    src="/logo.png"
-    alt="Ephorsys Logo"
-    fill
-    sizes="(max-width: 768px) 64px, 80px"
-    className="object-contain"
-    priority
-  />
-</div>
-              <h4 className=" sm:text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight text-[#74c316]">
-                Ephorsys
-              </h4>
-            </Link>
+        <div className="max-w-7xl mx-auto py-2 px-3 sm:px-6 lg:px-6">
+          <div className="flex items-center h-14 sm:h-16 md:h-16 ">
+            {/* ── Logo (left) ── */}
+            <div className="flex-1 flex justify-start lg:flex-1 ">
+              <Link
+                href="/"
+                className="flex items-center shrink-0"
+                style={{ fontFamily: "'Syne', sans-serif" }}
+              >
+                {/* Small screen logo */}
+                <div className="relative h-12 w-32 sm:hidden">
+                  <Image
+                    src="/Ephorsyslogo2.png"
+                    alt="Ephorsys Logo"
+                    fill
+                    className="object-contain object-left"
+                    priority
+                  />
+                </div>
 
-            {/* ── Desktop links ── */}
-            <div className="hidden lg:flex items-center gap-1 xl:gap-2 text-lg">
+                {/* Larger screen logo */}
+                <div className="relative hidden sm:block h-90 w-90">
+                  <Image
+                    src="/Ephorsyslogo2.png"
+                    alt="Ephorsys Logo"
+                    fill
+                    className="object-contain object-left"
+                    priority
+                  />
+                </div>
+              </Link>
+            </div>
+
+            {/* ── Desktop links (center) ── */}
+            <div className="hidden lg:flex lg:flex-1 items-center justify-center gap-2">
               <DesktopNavLink href="/" isActive={pathname === "/"}>
-                <h4>Home</h4>
+                Home
               </DesktopNavLink>
               <DesktopNavLink href="/about" isActive={pathname === "/about"}>
-                <h4>About</h4>
+                About
               </DesktopNavLink>
               <DropdownMenu
                 label="Services"
@@ -309,26 +321,26 @@ export function Navbar() {
                 isActive={isServicesActive}
               />
               <DesktopNavLink href="/blog" isActive={pathname === "/blog"}>
-                <h4>Blog</h4>
+                Blog
               </DesktopNavLink>
               <DesktopNavLink href="/portfolio" isActive={pathname === "/portfolio"}>
-                <h4>Portfolio</h4>
+                Portfolio
               </DesktopNavLink>
               <DesktopNavLink href="/career" isActive={pathname === "/career"}>
-                <h4>Career</h4>
+                Career
               </DesktopNavLink>
             </div>
 
-            {/* ── Desktop CTA ── */}
-            <div className="hidden lg:flex items-center gap-3">
-              <Link href="/contact">
+            {/* ── CTA (right) + Mobile hamburger ── */}
+            <div className="flex-1 flex items-center justify-end gap-3">
+              <Link href="/contact" className="hidden lg:block">
                 <button
                   className="
                     relative overflow-hidden
-                    px-5 py-2 lg:px-6 lg:py-2.5
-                    h-10 lg:h-11
-                    rounded-xl
-                    text-sm lg:text-md font-bold tracking-wide
+                    px-4 py-2
+                    h-9
+                    rounded-lg
+                    text-sm font-bold tracking-wide
                     transition-all duration-200
                     hover:brightness-110
                     active:scale-[0.98]
@@ -342,35 +354,35 @@ export function Navbar() {
                     fontFamily: "'DM Sans', sans-serif",
                   }}
                 >
-                  <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />
-                  <h4 className="relative">Contact Us</h4>
+                  <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
+                  <span className="relative">Contact Us</span>
                 </button>
               </Link>
-            </div>
 
-            {/* ── Mobile hamburger ── */}
-            <button
-              onClick={toggleMobile}
-              className="lg:hidden p-2 rounded-xl hover:bg-[#74c316]/8 transition-colors"
-              aria-label="Toggle menu"
-            >
-              <div className="relative w-6 h-6">
-                <Menu
-                  className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${
-                    mobileOpen
-                      ? "opacity-0 rotate-90 scale-75"
-                      : "opacity-100 rotate-0 scale-100"
-                  }`}
-                />
-                <X
-                  className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${
-                    mobileOpen
-                      ? "opacity-100 rotate-0 scale-100"
-                      : "opacity-0 -rotate-90 scale-75"
-                  }`}
-                />
-              </div>
-            </button>
+              {/* ── Mobile hamburger ── */}
+              <button
+                onClick={toggleMobile}
+                className="lg:hidden p-2 rounded-xl hover:bg-[#74c316]/8 transition-colors"
+                aria-label="Toggle menu"
+              >
+                <div className="relative w-6 h-6">
+                  <Menu
+                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${
+                      mobileOpen
+                        ? "opacity-0 rotate-90 scale-75"
+                        : "opacity-100 rotate-0 scale-100"
+                    }`}
+                  />
+                  <X
+                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${
+                      mobileOpen
+                        ? "opacity-100 rotate-0 scale-100"
+                        : "opacity-0 -rotate-90 scale-75"
+                    }`}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -382,13 +394,13 @@ export function Navbar() {
         }`}
         onClick={closeMobileMenu}
       />
-      
+
       {/* ── Mobile menu sidebar ── */}
-<div
-  className={`fixed top-0 right-0 z-[70] h-dvh w-[88vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
-    mobileOpen ? "translate-x-0" : "translate-x-full"
-  }`}
->
+      <div
+        className={`fixed top-0 right-0 z-[70] h-dvh w-[88vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#74c316]/10">
           <span
@@ -413,7 +425,7 @@ export function Navbar() {
         </div>
 
         {/* Nav items */}
-        <div className="flex-1 overflow-y-auto pb-4"> 
+        <div className="flex-1 overflow-y-auto pb-4">
           <MobileNavLink
             href="/"
             onClick={closeMobileMenu}
@@ -466,21 +478,21 @@ export function Navbar() {
         </div>
 
         {/* Mobile CTA */}
-       <div className="shrink-0 sticky bottom-0 bg-white p-4 border-t border-[#74c316]/10 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-  <Link href="/contact" onClick={closeMobileMenu} className="block">
-    <button
-      className="group relative w-full py-3.5 rounded-xl text-base font-bold tracking-wide overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer shadow-lg"
-      style={{
-        background: "#74c316",
-        color: "#021a0a",
-        fontFamily: "'DM Sans', sans-serif",
-      }}
-    >
-      <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />
-      <span className="relative">Contact Us</span>
-    </button>
-  </Link>
-</div>
+        <div className="shrink-0 sticky bottom-0 bg-white p-4 border-t border-[#74c316]/10 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+          <Link href="/contact" onClick={closeMobileMenu} className="block">
+            <button
+              className="group relative w-full py-3.5 rounded-xl text-base font-bold tracking-wide overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer shadow-lg"
+              style={{
+                background: "#74c316",
+                color: "#021a0a",
+                fontFamily: "'DM Sans', sans-serif",
+              }}
+            >
+              <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />
+              <span className="relative">Contact Us</span>
+            </button>
+          </Link>
+        </div>
       </div>
     </>
   );

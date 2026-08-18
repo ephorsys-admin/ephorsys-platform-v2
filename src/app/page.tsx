@@ -97,10 +97,10 @@ export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 font-sans">
       <HeroSection />
-      <ClientLogosSection logosData={data.logos} />
       <SlidingService />
       <AboutSection />
       <Techstack />
+      <ClientLogosSection logosData={data.logos} />
       <OurApproach />
       
       <OurServices />
@@ -112,4 +112,4 @@ export default async function Home() {
       <FAQSection />
     </div>
   );
-}
+}
