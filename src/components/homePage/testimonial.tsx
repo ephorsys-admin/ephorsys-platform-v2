@@ -77,10 +77,19 @@ const Testimonials = ({ testimonialsData }: TestimonialsProps) => {
 
       {/* Content */}
       <div className="relative z-10 w-full">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 text-center">
+            Real Stories.{" "}
+            <span
+              className="transition-colors duration-500 text-[#74C316]"
+              
+            >
+              Real Results.
+            </span>
+          </h2>
         <StaggerTestimonials testimonialsData={testimonialsData} />
       </div>
     </div>
   );
 };
 
-export { Testimonials };
+export { Testimonials };

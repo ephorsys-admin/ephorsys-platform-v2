@@ -26,6 +26,7 @@ export interface IProject extends Document {
     clientTitle: string;
     clientPhoto?: string;
   };
+  technologies: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -64,6 +65,7 @@ const ProjectSchema = new Schema<IProject>(
       clientName: { type: String },
       clientTitle: { type: String },
     },
+    technologies: { type: [String], default: [] },
   },
   { timestamps: true }
 );

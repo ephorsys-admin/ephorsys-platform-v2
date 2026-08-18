@@ -33,6 +33,7 @@ export const createProjectSchema = z.object({
   isPublished: z.boolean().default(false),
   liveUrl: z.string().optional().default(""),
   testimonial: testimonialSchema.optional(),
+  technologies: z.array(z.string()).default([]),
 });
 
 export const updateProjectSchema = createProjectSchema.partial();

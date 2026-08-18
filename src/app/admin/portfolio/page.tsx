@@ -178,18 +178,7 @@ export default function AdminPortfolioPage() {
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
-                {/* Feature Toggle */}
-                <button
-                  onClick={() => toggleFeatured(project)}
-                  title={project.isFeatured ? "Remove from Featured" : "Feature Project"}
-                  className={`p-3 rounded-xl transition-all duration-300 bg-gray-50 border border-gray-200 ${
-                    project.isFeatured
-                      ? "text-amber-500 hover:bg-amber-50"
-                      : "text-gray-400 hover:text-amber-500 hover:bg-gray-100"
-                  }`}
-                >
-                  <Star className={`w-4 h-4 ${project.isFeatured ? "fill-amber-500" : ""}`} />
-                </button>
+      
                 {/* Publish Toggle */}
                 <button
                   onClick={() => togglePublish(project)}

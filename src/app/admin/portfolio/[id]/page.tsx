@@ -77,6 +77,7 @@ export default function ProjectEditorPage() {
           setValue("testimonial.clientName", p.testimonial?.clientName ?? "");
           setValue("testimonial.clientTitle", p.testimonial?.clientTitle ?? "");
           setValue("testimonial.clientPhoto", p.testimonial?.clientPhoto ?? "");
+          setValue("technologiesInput", p.technologies ? p.technologies.join(", ") : "");
         }
       } catch (err) {
         console.error("Failed to load project details:", err);
@@ -88,6 +89,12 @@ export default function ProjectEditorPage() {
 
   const onSubmit = async (data: any) => {
     setSaving(true);
+    const tags = data.technologiesInput
+      ? data.technologiesInput.split(",").map((t: string) => t.trim()).filter(Boolean)
+      : [];
+    data.technologies = tags;
+    delete data.technologiesInput;
+
     const url = isNew ? "/api/admin/projects" : `/api/admin/projects/${id}`;
     const method = isNew ? "POST" : "PUT";
     
@@ -188,6 +195,15 @@ export default function ProjectEditorPage() {
               <input type="number" {...register("teamSize")} placeholder="e.g. 5" className={inputCls} />
               {errors.teamSize && <p className={errCls}>{errors.teamSize.message?.toString()}</p>}
             </div>
+          </div>
+
+          <div>
+            <label className={labelCls}>Technologies Used * (Comma-separated)</label>
+            <input 
+              {...register("technologiesInput", { required: true })} 
+              placeholder="e.g. Next.js/React, Tailwind CSS, HTML5, JavaScript, Laravel, PHP, MySQL" 
+              className={inputCls} 
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -322,17 +338,7 @@ export default function ProjectEditorPage() {
 
         {/* Save & Publish Toggles */}
         <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-6">
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input type="checkbox" {...register("isPublished")} className="w-4.5 h-4.5 rounded text-[#74c316] border-gray-300 focus:ring-[#74c316]" />
-              <span className="text-xs font-bold text-gray-700 uppercase tracking-wider">Publish Case Study</span>
-            </label>
-
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input type="checkbox" {...register("isFeatured")} className="w-4.5 h-4.5 rounded text-[#74c316] border-gray-300 focus:ring-[#74c316]" />
-              <span className="text-xs font-bold text-gray-700 uppercase tracking-wider">Feature on Homepage</span>
-            </label>
-          </div>
+       
 
           <div className="flex gap-3">
             <button
