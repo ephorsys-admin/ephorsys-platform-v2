@@ -4,19 +4,11 @@ import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 import {
-  ArrowRight,
-  ArrowUpRight,
   Calendar,
   Clock,
-  MessageSquare,
-  ChevronRight,
-  Brain,
   Code2,
-  Server,
   Lightbulb,
-  ShieldCheck,
   Cpu,
-  Cloud,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -40,95 +32,48 @@ interface BlogPost {
   slug: string;
 }
 
-// ─── Blog Data ────────────────────────────────────────────────────────────────
+type BlogItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  shortDescription: string;
+  content: string;
+  featuredImage: string;
+  category: string;
+  subcategory?: string;
+  readTime: string;
+  publishedAt?: string;
+  author: {
+    name: string;
+    profileImage: string;
+    role: string;
+  };
+};
 
-const posts : BlogPost[] = [
-   {
-    id: 1,
-    image: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352862/pexels-yankrukov-7698805_zwk7hu.jpg",
-    category: "Web & App Development",
-    categoryIcon: Code2,
-    categoryColor: "#2563eb",
-    categoryBg: "#eff6ff",
-    author: "Santanu Swain",
-    authorRole: "Full Stack Engineer",
-    authorAvatar: "https://i.pravatar.cc/40?img=11",
-    date: "Jan 10, 2026",
-    title: "Why Your Business Needs a Website in 2026 (Not Just Social Media)",
-    excerpt:
-      "Social media gives you reach — but a website gives you ownership. We break down why every serious business needs a professional website in 2026, and what happens when you rely only on Instagram or Facebook.",
-    featured: true,
-    slug: "why-your-business-needs-a-website-2026",
-  },
+// ─── Helper for Category Icon and Color mapping ───────────────────────────────
 
-  //  WEB & APP DEVELOPMENT 
-  {
-    id: 2,
-    image: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352403/pexels-antonio-batinic-2573434-4164418_n2p1nf.jpg",
-    category: "Web & App Development",
-    categoryIcon: Code2,
-    categoryColor: "#2563eb",
-    categoryBg: "#eff6ff",
-    author: "BiswaRanjan Rout",
-    authorRole: "Frontend Engineer",
-    authorAvatar: "https://i.pravatar.cc/40?img=12",
-    date: "Jan 18, 2026",
-    title: "React vs Next.js — Which One Should You Choose for Your Project?",
-    excerpt:
-      "Both are powerful, but they solve different problems. Our engineering team breaks down when to use React alone vs when Next.js is the smarter choice — with real project examples from our work.",
-    slug: "react-vs-nextjs-which-to-choose",
-  },
-  {
-    id: 3,
-    image: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352404/pexels-nemuel-6424586_zjpb9y.jpg",
-    category: "Web & App Development",
-    categoryIcon: Code2,
-    categoryColor: "#2563eb",
-    categoryBg: "#eff6ff",
-    author: "Sashwat Mohanty",
-    authorRole: "Tech Lead",
-    authorAvatar: "https://i.pravatar.cc/40?img=22",
-    date: "Feb 3, 2026",
-    title: "How Much Does It Cost to Build a Website in India? (2026 Guide)",
-    excerpt:
-      "From a ₹5,000 landing page to a ₹5 lakh SaaS platform — we break down what actually drives website costs in India, what you're really paying for, and how to avoid being overcharged.",
-    slug: "website-cost-india-2026",
-  },
-  {
-    id: 4,
-    image: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352859/pexels-fauxels-3184339_f4bqd4.jpg",
-    category: "Web & App Development",
-    categoryIcon: Code2,
-    categoryColor: "#2563eb",
-    categoryBg: "#eff6ff",
-    author: "Samir Kumar Swain",
-    authorRole: "UX Engineer",
-    authorAvatar: "https://i.pravatar.cc/40?img=4",
-    date: "Feb 14, 2026",
-    title: "7 Signs Your Website Is Actively Hurting Your Business",
-    excerpt:
-      "A bad website doesn't just fail to help — it actively drives customers away. Here are 7 red flags our team spots during audits, and what we do to fix them fast.",
-    slug: "7-signs-website-hurting-business",
-  },
-
-  // ── DIGITAL GROWTH & MARKETING ────────────────────────────────────────
-  {
-    id: 5,
-    image: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352863/pexels-yankrukov-7691722_rbgfzn.jpg",
-    category: "Digital Growth & Marketing",
-    categoryIcon: Lightbulb,
-    categoryColor: "#d97706",
-    categoryBg: "#fffbeb",
-    author: "Ankita Panda",
-    authorRole: "Growth Strategist",
-    authorAvatar: "https://i.pravatar.cc/40?img=5",
-    date: "Dec 20, 2025",
-    title: "How to Get Your First 100 Customers Online (Without Paid Ads)",
-    excerpt:
-      "Paid ads aren't the only path. We share the exact organic growth playbook we've used with early-stage clients — from SEO content to LinkedIn outreach — to land their first 100 customers.",
-    slug: "first-100-customers-online",
-  },
-];
+function getCategoryConfig(category: string) {
+  const normalized = category?.toLowerCase() || "";
+  if (normalized.includes("web") || normalized.includes("app") || normalized.includes("dev")) {
+    return {
+      categoryIcon: Code2,
+      categoryColor: "#2563eb",
+      categoryBg: "#eff6ff",
+    };
+  } else if (normalized.includes("growth") || normalized.includes("market") || normalized.includes("digital") || normalized.includes("seo")) {
+    return {
+      categoryIcon: Lightbulb,
+      categoryColor: "#d97706",
+      categoryBg: "#fffbeb",
+    };
+  } else {
+    return {
+      categoryIcon: Cpu,
+      categoryColor: "#10b981",
+      categoryBg: "#ecfdf5",
+    };
+  }
+}
 
 // ─── Animations ───────────────────────────────────────────────────────────────
 
@@ -252,7 +197,7 @@ function FeaturedCard({ post }: { post: BlogPost }) {
 
         {/* Footer */}
         <div className="flex items-center justify-between">
-          <Link href="/blog">
+          <Link href={`/blog#${post.slug}`}>
             <button
               className="relative overflow-hidden px-6 py-2.5 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 hover:-translate-y-px active:translate-y-0 group"
               style={{
@@ -329,7 +274,7 @@ function SideCard({ post }: { post: BlogPost }) {
           className={`mb-2 text-sm font-bold leading-snug transition-colors duration-300 sm:text-[15px] ${hovered ? "text-[#74c316]" : "text-gray-900"
             }`}
         >
-          {post.title}
+          <Link href={`/blog#${post.slug}`}>{post.title}</Link>
         </h3>
 
         {/* Excerpt */}
@@ -341,18 +286,40 @@ function SideCard({ post }: { post: BlogPost }) {
   );
 }
 
-// ─── Newsletter Strip ─────────────────────────────────────────────────────────
-
-
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function BlogSection() {
+export default function BlogSection({ blogsData }: { blogsData?: BlogItem[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.06 });
 
-  const featured = posts.find((p) => p.featured)!;
-  const sidePosts = posts.filter((p) => !p.featured);
+  // Map backend data to local structure
+  const activeBlogs = blogsData && blogsData.length > 0
+    ? blogsData.map((b, idx) => {
+        const catConfig = getCategoryConfig(b.category);
+        return {
+          id: idx + 1,
+          image: b.featuredImage || "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352862/pexels-yankrukov-7698805_zwk7hu.jpg",
+          category: b.category,
+          categoryIcon: catConfig.categoryIcon,
+          categoryColor: catConfig.categoryColor,
+          categoryBg: catConfig.categoryBg,
+          author: b.author?.name || "Ephorsys Team",
+          authorRole: b.author?.role || "Team Member",
+          authorAvatar: b.author?.profileImage || "https://i.pravatar.cc/40?img=11",
+          date: b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+          title: b.title,
+          excerpt: b.shortDescription,
+          featured: idx === 0,
+          slug: b.slug,
+        };
+      })
+    : [];
+
+  // If there are no published blogs, don't render the section at all
+  if (activeBlogs.length === 0) return null;
+
+  const featured = activeBlogs.find((p) => p.featured) || activeBlogs[0];
+  const sidePosts = activeBlogs.filter((p) => p !== featured);
 
   return (
     <section
@@ -397,9 +364,9 @@ export default function BlogSection() {
           className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2 lg:gap-7"
         >
           {/* Featured */}
-          <FeaturedCard post={featured} />
+          {featured && <FeaturedCard post={featured} />}
 
-          {/* Side posts — now 4 cards */}
+          {/* Side posts */}
           <div className="flex flex-col gap-4 sm:gap-5">
             {sidePosts.map((post) => (
               <SideCard key={post.id} post={post} />
