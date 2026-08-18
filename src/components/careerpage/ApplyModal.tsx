@@ -130,7 +130,7 @@ export default function ApplyModal({ jobId, jobTitle, onClose }: ApplyModalProps
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
       <div className="bg-white rounded-2xl w-full max-w-lg my-8 shadow-2xl relative max-h-[90vh] overflow-y-auto flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-gray-100 shrink-0">
+        <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-gray-100 shrink-0">
           <div>
             <h2 className="text-lg font-black text-[#042407]">Apply for Position</h2>
             <p className="text-xs text-gray-500 mt-0.5">{jobTitle}</p>
@@ -140,12 +140,34 @@ export default function ApplyModal({ jobId, jobTitle, onClose }: ApplyModalProps
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4 flex-1 overflow-y-auto">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="px-6 pt-3 pb-6 space-y-3 flex-1 overflow-y-auto"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Name *</label>
-              <input {...register("applicantName")} placeholder="Your name" className={inputCls} />
-              {errors.applicantName && <p className={errCls}>{errors.applicantName.message?.toString()}</p>}
+              <input
+                {...register("applicantName")}
+                placeholder="Your name"
+                className={inputCls}
+                onChange={(e) => {
+                  const value = e.target.value
+                    .replace(/[^a-zA-Z\s]/g, "")
+                    .replace(/\s{2,}/g, " ");
+
+                  setValue("applicantName", value, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  });
+                }}
+              />
+
+              {errors.applicantName && (
+                <p className={errCls}>
+                  {errors.applicantName.message?.toString()}
+                </p>
+              )}
             </div>
             <div>
               <label className={labelCls}>Email *</label>
@@ -245,8 +267,8 @@ export default function ApplyModal({ jobId, jobTitle, onClose }: ApplyModalProps
               {status === "uploading"
                 ? "Uploading Resume..."
                 : status === "submitting"
-                ? "Submitting..."
-                : "Submit Application"}
+                  ? "Submitting..."
+                  : "Submit Application"}
             </button>
           </div>
         </form>

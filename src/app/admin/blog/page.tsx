@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Edit2, Trash2, Eye, Loader2, BookOpen } from "lucide-react";
+import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
+import { toast } from "sonner";
 
 type Blog = {
   _id: string;
@@ -21,6 +23,7 @@ export default function AdminBlogPage() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
 
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
@@ -35,19 +38,29 @@ export default function AdminBlogPage() {
   useEffect(() => { fetchBlogs(); }, [fetchBlogs]);
 
   const deleteBlog = async (id: string) => {
-    if (!confirm("Delete this blog post permanently?")) return;
-    await fetch(`/api/admin/blogs/${id}`, { method: "DELETE" });
-    fetchBlogs();
+    const res = await fetch(`/api/admin/blogs/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      toast.success("Blog post deleted.");
+      fetchBlogs();
+    } else {
+      toast.error("Failed to delete blog post.");
+    }
+    setDeleteTarget(null);
   };
 
   const toggleStatus = async (blog: Blog) => {
     const newStatus = blog.status === "published" ? "draft" : "published";
-    await fetch(`/api/admin/blogs/${blog._id}`, {
+    const res = await fetch(`/api/admin/blogs/${blog._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),
     });
-    fetchBlogs();
+    if (res.ok) {
+      toast.success(`Post ${newStatus === "published" ? "published" : "moved to draft"}.`);
+      fetchBlogs();
+    } else {
+      toast.error("Failed to update status.");
+    }
   };
 
   return (
@@ -122,7 +135,7 @@ export default function AdminBlogPage() {
                   <Edit2 className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => deleteBlog(blog._id)}
+                  onClick={() => setDeleteTarget({ id: blog._id, title: blog.title })}
                   className="p-3 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -152,6 +165,15 @@ export default function AdminBlogPage() {
             Next
           </button>
         </div>
+      )}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title="Delete Blog Post"
+          description={`Are you sure you want to permanently delete "${deleteTarget.title}"? This action cannot be undone.`}
+          onConfirm={() => deleteBlog(deleteTarget.id)}
+          onClose={() => setDeleteTarget(null)}
+        />
       )}
     </div>
   );

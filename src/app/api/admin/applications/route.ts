@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
 import JobApplication from "@/models/JobApplication";
+import Job from "@/models/Job";
 
 async function requireAuth() {
   return (await getServerSession(authOptions)) ?? null;
@@ -25,6 +26,7 @@ export async function GET(request: NextRequest) {
 
   const [applications, total] = await Promise.all([
     JobApplication.find(query)
+      .populate("jobId", "type")
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)

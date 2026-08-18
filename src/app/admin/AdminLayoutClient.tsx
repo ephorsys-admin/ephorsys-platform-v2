@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import AdminSidebar from "./AdminSidebar";
+import { Toaster } from "sonner";
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -17,6 +18,13 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
       <main className="flex-1 overflow-auto">
         <div className="max-w-6xl mx-auto px-8 py-10">{children}</div>
       </main>
+      <Toaster
+        position="top-right"
+        richColors
+        toastOptions={{
+          style: { fontFamily: "inherit", fontSize: "13px" },
+        }}
+      />
     </div>
   );
 }

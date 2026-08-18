@@ -8,6 +8,7 @@ import { createBlogSchema, type CreateBlogInput } from "@/schemas/blog.schema";
 import { slugify } from "@/lib/utils";
 import { ArrowLeft, Loader2, Upload } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { toast } from "sonner";
 
 // Shared blog form used for both /admin/blog/new and /admin/blog/[id]
 export default function BlogEditorPage() {
@@ -78,10 +79,11 @@ export default function BlogEditorPage() {
       body: JSON.stringify(data),
     });
     if (res.ok) {
+      toast.success(isNew ? "Article created!" : "Article changes saved!");
       router.push("/admin/blog");
     } else {
       const err = await res.json();
-      alert(JSON.stringify(err.error));
+      toast.error(err.error ? String(err.error) : "Failed to save article.");
     }
     setSaving(false);
   };

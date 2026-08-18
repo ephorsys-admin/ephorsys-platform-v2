@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
 import Blog from "@/models/Blog";
 import { updateBlogSchema } from "@/schemas/blog.schema";
+import { deleteFromCloudinary } from "@/lib/cloudinary";
 
 async function requireAuth() {
   return (await getServerSession(authOptions)) ?? null;
@@ -56,7 +57,23 @@ export async function DELETE(
 
   await connectDB();
   const { id } = await params;
-  const blog = await Blog.findByIdAndDelete(id);
+
+  // Retrieve the blog before deleting to get image URLs
+  const blog = await Blog.findById(id).lean();
   if (!blog) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  // Delete images from Cloudinary
+  try {
+    if (blog.featuredImage) {
+      await deleteFromCloudinary(blog.featuredImage);
+    }
+    if (blog.author?.profileImage) {
+      await deleteFromCloudinary(blog.author.profileImage);
+    }
+  } catch (err) {
+    console.error("Failed to delete blog images from Cloudinary:", err);
+  }
+
+  await Blog.findByIdAndDelete(id);
   return NextResponse.json({ message: "Blog deleted" });
 }

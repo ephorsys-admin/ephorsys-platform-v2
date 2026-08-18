@@ -85,6 +85,7 @@ function JobCard({
     department: string;
     location: string;
     description: string;
+    responsibilities?: string[];
     experienceRequired?: string;
   };
   onApply: () => void;
@@ -161,11 +162,39 @@ function JobCard({
           {job.description}
         </p>
 
-        <div className="mb-5 flex flex-wrap gap-1.5">
+        {/* Requirements */}
+        <div className="mb-5 space-y-3">
+          {/* Must Have Skills */}
+          {job.responsibilities && job.responsibilities.length > 0 && (
+            <div>
+              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-700">
+                Must Have Skills
+              </p>
+
+              <div className="flex flex-wrap gap-1.5">
+                {job.responsibilities.map((resp, idx) => (
+                  <span
+                    key={idx}
+                    className="rounded-md border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-500"
+                  >
+                    {resp}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Experience */}
           {job.experienceRequired && (
-            <span className="rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[11px] font-medium text-gray-500">
-              Exp: {job.experienceRequired}
-            </span>
+            <div>
+              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-700">
+                Experience
+              </p>
+
+              <span className="inline-block rounded-md border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-500">
+                {job.experienceRequired}
+              </span>
+            </div>
           )}
         </div>
 
@@ -190,6 +219,7 @@ export default function InternshipOpportunities({
     department: string;
     location: string;
     description: string;
+    responsibilities?: string[];
     experienceRequired?: string;
   }[];
 }) {
@@ -197,7 +227,7 @@ export default function InternshipOpportunities({
   const inView = useInView(sectionRef, { once: true, amount: 0.08 });
   const [selectedJob, setSelectedJob] = useState<{ _id: string; title: string } | null>(null);
 
-  const activeJobs = jobs && jobs.length > 0 ? jobs : internshipJobs.map((j) => ({ ...j, _id: j.id }));
+  const hasJobs = jobs && jobs.length > 0;
 
   return (
     <section
@@ -241,20 +271,31 @@ export default function InternshipOpportunities({
           </div>
         </motion.div>
 
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          animate={inView ? "show" : "hidden"}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
-        >
-          {activeJobs.map((job) => (
-            <JobCard
-              key={job._id}
-              job={job}
-              onApply={() => setSelectedJob({ _id: job._id, title: job.title })}
-            />
-          ))}
-        </motion.div>
+        {hasJobs ? (
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate={inView ? "show" : "hidden"}
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+          >
+            {jobs.map((job) => (
+              <JobCard
+                key={job._id}
+                job={job}
+                onApply={() => setSelectedJob({ _id: job._id, title: job.title })}
+              />
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "show" : "hidden"}
+            className="text-center py-12 px-4 rounded-2xl border border-gray-200 bg-white"
+          >
+            <p className="text-gray-400 font-medium text-sm">There is no jobs</p>
+          </motion.div>
+        )}
       </div>
 
       {selectedJob && (
@@ -266,4 +307,4 @@ export default function InternshipOpportunities({
       )}
     </section>
   );
-}
+}

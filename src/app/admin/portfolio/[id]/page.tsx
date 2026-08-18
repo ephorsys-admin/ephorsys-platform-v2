@@ -8,6 +8,7 @@ import { createProjectSchema } from "@/schemas/project.schema";
 import { slugify } from "@/lib/utils";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { toast } from "sonner";
 
 export default function ProjectEditorPage() {
   const router = useRouter();
@@ -97,14 +98,15 @@ export default function ProjectEditorPage() {
         body: JSON.stringify(data),
       });
       if (res.ok) {
+        toast.success(isNew ? "Project case study created!" : "Project changes saved!");
         router.push("/admin/portfolio");
       } else {
         const err = await res.json();
-        alert(JSON.stringify(err.error));
+        toast.error(err.error ? String(err.error) : "Failed to save project.");
       }
     } catch (err) {
       console.error(err);
-      alert("An error occurred while saving.");
+      toast.error("An error occurred while saving.");
     } finally {
       setSaving(false);
     }

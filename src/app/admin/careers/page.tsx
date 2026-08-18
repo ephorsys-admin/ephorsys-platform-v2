@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createJobSchema, type CreateJobInput } from "@/schemas/job.schema";
 import { Plus, Edit2, Trash2, Eye, EyeOff, ChevronDown, X, Loader2, Download, ExternalLink } from "lucide-react";
 import { useAdminUiStore } from "@/store/adminUiStore";
+import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
+import { toast } from "sonner";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Job = {
@@ -24,6 +26,10 @@ type Job = {
 
 type Application = {
   _id: string;
+  jobId?: {
+    _id: string;
+    type: string;
+  };
   jobTitleSnapshot: string;
   applicantName: string;
   email: string;
@@ -93,8 +99,11 @@ function JobFormModal({
       body: JSON.stringify(data),
     });
     if (res.ok) {
+      toast.success(job ? "Job posting updated!" : "Job posting published!");
       onSaved();
       onClose();
+    } else {
+      toast.error("Failed to save job posting.");
     }
   };
 
@@ -204,10 +213,12 @@ function ApplicationDetailModal({
   application,
   onClose,
   onStatusUpdate,
+  onDelete,
 }: {
   application: Application;
   onClose: () => void;
   onStatusUpdate: (id: string, status: string) => void;
+  onDelete: (id: string, name: string) => void;
 }) {
   const [status, setStatus] = useState(application.status);
   const [saving, setSaving] = useState(false);
@@ -220,8 +231,11 @@ function ApplicationDetailModal({
       body: JSON.stringify({ status: newStatus }),
     });
     if (res.ok) {
+      toast.success(`Application status updated to "${newStatus}".`);
       setStatus(newStatus);
       onStatusUpdate(application._id, newStatus);
+    } else {
+      toast.error("Failed to update status.");
     }
     setSaving(false);
   };
@@ -232,11 +246,27 @@ function ApplicationDetailModal({
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div>
             <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>{application.applicantName}</h2>
-            <p className="text-xs text-gray-500 mt-0.5">{application.jobTitleSnapshot}</p>
+            <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-2">
+              <span>{application.jobTitleSnapshot}</span>
+              {application.jobId?.type && (
+                <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gray-800 border border-gray-200">
+                  {application.jobId.type === "internship" ? "Internship" : "Full-Time"}
+                </span>
+              )}
+            </p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => { onClose(); onDelete(application._id, application.applicantName); }}
+              title="Delete application"
+              className="p-2.5 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+            <button onClick={onClose} className="p-2.5 text-gray-400 hover:text-gray-600 transition-colors bg-gray-50 border border-gray-200 rounded-xl">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         <div className="p-6 space-y-6">
@@ -341,6 +371,8 @@ export default function CareersAdminPage() {
   const [editJob, setEditJob] = useState<Job | null>(null);
   const [showJobForm, setShowJobForm] = useState(false);
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
+  const [deleteJobTarget, setDeleteJobTarget] = useState<{ id: string; title: string } | null>(null);
+  const [deleteAppTarget, setDeleteAppTarget] = useState<{ id: string; name: string } | null>(null);
 
   const fetchJobs = useCallback(async () => {
     setLoading(true);
@@ -366,22 +398,44 @@ export default function CareersAdminPage() {
   useEffect(() => { if (tab === "applications") fetchApplications(); }, [tab, fetchApplications]);
 
   const toggleJobActive = async (job: Job) => {
-    await fetch(`/api/admin/jobs/${job._id}`, {
+    const res = await fetch(`/api/admin/jobs/${job._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isActive: !job.isActive }),
     });
-    fetchJobs();
+    if (res.ok) {
+      toast.success(`Job ${job.isActive ? "deactivated" : "activated"}.`);
+      fetchJobs();
+    } else {
+      toast.error("Failed to update job status.");
+    }
   };
 
   const deleteJob = async (id: string) => {
-    if (!confirm("Deactivate this job? It will be hidden from the public site.")) return;
-    await fetch(`/api/admin/jobs/${id}`, { method: "DELETE" });
-    fetchJobs();
+    const res = await fetch(`/api/admin/jobs/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      toast.success("Job posting deleted.");
+      fetchJobs();
+    } else {
+      toast.error("Failed to delete job posting.");
+    }
+    setDeleteJobTarget(null);
   };
 
   const handleStatusUpdate = (id: string, status: string) => {
     setApplications((prev) => prev.map((a) => (a._id === id ? { ...a, status } : a)));
+  };
+
+  const deleteApplication = async (id: string) => {
+    const res = await fetch(`/api/admin/applications/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      toast.success("Application deleted and resume removed from storage.");
+      setApplications((prev) => prev.filter((a) => a._id !== id));
+      setAppTotal((t) => t - 1);
+    } else {
+      toast.error("Failed to delete application.");
+    }
+    setDeleteAppTarget(null);
   };
 
   return (
@@ -471,7 +525,7 @@ export default function CareersAdminPage() {
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => deleteJob(job._id)}
+                    onClick={() => setDeleteJobTarget({ id: job._id, title: job.title })}
                     className="p-3 text-gray-400 hover:text-red-500 transition-colors rounded-xl bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -523,6 +577,11 @@ export default function CareersAdminPage() {
                       <span className={`text-[9px] font-black uppercase px-2.5 py-1 rounded-lg border ${STATUS_COLORS[app.status]}`}>
                         {app.status}
                       </span>
+                      {app.jobId?.type && (
+                        <span className="text-[9px] font-black uppercase px-2.5 py-1 rounded-lg border bg-gray-50 border-gray-200 text-gray-700">
+                          {app.jobId.type === "internship" ? "Internship" : "Full-Time"}
+                        </span>
+                      )}
                     </div>
                     <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
                       {app.jobTitleSnapshot} · {app.email} · {app.experience} years experience
@@ -572,6 +631,23 @@ export default function CareersAdminPage() {
           application={selectedApp}
           onClose={() => setSelectedApp(null)}
           onStatusUpdate={handleStatusUpdate}
+          onDelete={(id, name) => setDeleteAppTarget({ id, name })}
+        />
+      )}
+      {deleteJobTarget && (
+        <ConfirmDeleteModal
+          title="Delete Job Posting"
+          description={`Are you sure you want to permanently delete the position "${deleteJobTarget.title}"? Applications for this job will lose the job reference.`}
+          onConfirm={() => deleteJob(deleteJobTarget.id)}
+          onClose={() => setDeleteJobTarget(null)}
+        />
+      )}
+      {deleteAppTarget && (
+        <ConfirmDeleteModal
+          title="Delete Application"
+          description={`Are you sure you want to permanently delete the application from "${deleteAppTarget.name}"? Their resume will also be removed from cloud storage. This action cannot be undone.`}
+          onConfirm={() => deleteApplication(deleteAppTarget.id)}
+          onClose={() => setDeleteAppTarget(null)}
         />
       )}
     </div>

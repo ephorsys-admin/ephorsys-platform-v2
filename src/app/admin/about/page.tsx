@@ -8,6 +8,8 @@ import { lifeAtPhotoSchema, type LifeAtPhotoInput } from "@/schemas/lifeAtPhoto.
 import { useAdminUiStore } from "@/store/adminUiStore";
 import { Plus, Edit2, Trash2, X, Loader2, GripVertical } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
+import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
+import { toast } from "sonner";
 
 type TeamMember = { _id: string; name: string; position: string; photo: string; linkedIn?: string; category: string; order: number };
 type Photo = { _id: string; imageUrl: string; caption?: string; order: number };
@@ -24,7 +26,12 @@ function TeamMemberModal({ member, onClose, onSaved }: { member: TeamMember | nu
     const url = member ? `/api/admin/team/${member._id}` : "/api/admin/team";
     const method = member ? "PUT" : "POST";
     const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) { onSaved(); onClose(); }
+    if (res.ok) {
+      toast.success(member ? "Team member updated!" : "Team member added!");
+      onSaved(); onClose();
+    } else {
+      toast.error("Failed to save team member. Please try again.");
+    }
   };
 
   return (
@@ -86,7 +93,12 @@ function PhotoModal({ photo, onClose, onSaved }: { photo: Photo | null; onClose:
     const url = photo ? `/api/admin/life-at-photos/${photo._id}` : "/api/admin/life-at-photos";
     const method = photo ? "PUT" : "POST";
     const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) { onSaved(); onClose(); }
+    if (res.ok) {
+      toast.success(photo ? "Photo updated!" : "Photo added to gallery!");
+      onSaved(); onClose();
+    } else {
+      toast.error("Failed to save photo. Please try again.");
+    }
   };
 
   return (
@@ -136,6 +148,7 @@ export default function AdminAboutPage() {
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [editPhoto, setEditPhoto] = useState<Photo | null>(null);
   const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{ type: "member" | "photo"; id: string; name?: string } | null>(null);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -156,16 +169,20 @@ export default function AdminAboutPage() {
   useEffect(() => { if (tab === "team") fetchMembers(); }, [tab, fetchMembers]);
   useEffect(() => { if (tab === "gallery") fetchPhotos(); }, [tab, fetchPhotos]);
 
-  const deleteMember = async (id: string) => {
-    if (!confirm("Delete this team member?")) return;
-    await fetch(`/api/admin/team/${id}`, { method: "DELETE" });
-    fetchMembers();
-  };
-
-  const deletePhoto = async (id: string) => {
-    if (!confirm("Delete this photo?")) return;
-    await fetch(`/api/admin/life-at-photos/${id}`, { method: "DELETE" });
-    fetchPhotos();
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    const url = deleteTarget.type === "member"
+      ? `/api/admin/team/${deleteTarget.id}`
+      : `/api/admin/life-at-photos/${deleteTarget.id}`;
+    const res = await fetch(url, { method: "DELETE" });
+    if (res.ok) {
+      toast.success(`${deleteTarget.type === "member" ? "Team member" : "Photo"} deleted successfully.`);
+      if (deleteTarget.type === "member") fetchMembers();
+      else fetchPhotos();
+    } else {
+      toast.error("Failed to delete. Please try again.");
+    }
+    setDeleteTarget(null);
   };
 
   return (
@@ -231,7 +248,7 @@ export default function AdminAboutPage() {
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <button onClick={() => { setEditMember(m); setShowMemberModal(true); }} className="p-3 text-gray-400 hover:text-[#74c316] transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl"><Edit2 className="w-4 h-4" /></button>
-                  <button onClick={() => deleteMember(m._id)} className="p-3 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => setDeleteTarget({ type: "member", id: m._id, name: m.name })} className="p-3 text-gray-400 hover:text-red-500 transition-all duration-300 bg-gray-50 border border-gray-200 hover:bg-red-50 hover:border-red-200 rounded-xl"><Trash2 className="w-4 h-4" /></button>
                 </div>
               </div>
             ))
@@ -254,7 +271,7 @@ export default function AdminAboutPage() {
                   <img src={p.imageUrl} alt={p.caption ?? ""} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-white/90 backdrop-blur-xs group-hover:opacity-100 opacity-0 transition-opacity duration-300 flex items-center justify-center gap-3">
                     <button onClick={() => { setEditPhoto(p); setShowPhotoModal(true); }} className="p-2.5 bg-[#74c316] hover:bg-[#62a611] rounded-xl text-[#021004] transition-all"><Edit2 className="w-4 h-4" /></button>
-                    <button onClick={() => deletePhoto(p._id)} className="p-2.5 bg-red-500 hover:bg-red-650 rounded-xl text-white transition-all"><Trash2 className="w-4 h-4" /></button>
+                    <button onClick={() => setDeleteTarget({ type: "photo", id: p._id, name: p.caption || "this photo" })} className="p-2.5 bg-red-500 hover:bg-red-600 rounded-xl text-white transition-all"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 </div>
                 {p.caption && <p className="text-xs text-gray-500 font-medium px-4 py-3 truncate bg-gray-50 border-t border-gray-150">{p.caption}</p>}
@@ -266,6 +283,15 @@ export default function AdminAboutPage() {
 
       {showMemberModal && <TeamMemberModal member={editMember} onClose={() => setShowMemberModal(false)} onSaved={fetchMembers} />}
       {showPhotoModal && <PhotoModal photo={editPhoto} onClose={() => setShowPhotoModal(false)} onSaved={fetchPhotos} />}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title={deleteTarget.type === "member" ? "Delete Team Member" : "Delete Photo"}
+          description={`Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.`}
+          onConfirm={handleDelete}
+          onClose={() => setDeleteTarget(null)}
+        />
+      )}
     </div>
   );
 }
