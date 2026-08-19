@@ -21,7 +21,7 @@ import HeroStat from "@/models/HeroStat";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Home Ephorsys Pvt Ltd | Best Software Company in Bhubaneswar, Odisha",
+  title: "Ephorsys Pvt. Ltd. | Best Software Company in Bhubaneswar, Odisha",
   description:
     "Ephorsys Pvt Ltd, founded in 2025, is a leading software development company in Bhubaneswar, Odisha. We deliver custom web, mobile app, AI, and digital marketing solutions for startups and enterprises across Odisha and pan-India.",
   keywords: [

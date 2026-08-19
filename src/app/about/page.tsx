@@ -1,15 +1,13 @@
-import { LayoutGridDemo } from "@/components/aboutpage/lifeat";
 import CompanyOverview from "@/components/aboutpage/companyOverview";
-import TeamSection from "@/components/aboutpage/ourTeam";
 import AboutUs from "@/components/aboutpage/aboutUs";
 import BgHero from "@/components/outlet/bg-hero";
 import type { Metadata } from "next";
 import WhatWeDo from "@/components/aboutpage/whatwedo";
+import CertificationsSection from "@/components/aboutpage/certifications";
 
 import { connectDB } from "@/lib/db";
-import TeamMember from "@/models/TeamMember";
-import LifeAtPhoto from "@/models/LifeAtPhoto";
 import HeroStat from "@/models/HeroStat";
+import Certification from "@/models/Certification";
 
 export const dynamic = "force-dynamic";
 
@@ -68,25 +66,21 @@ export const metadata: Metadata = {
 async function getAboutData() {
   try {
     await connectDB();
-    const [members, photos, aboutStats] = await Promise.all([
-      TeamMember.find().sort({ order: 1 }).lean(),
-      LifeAtPhoto.find().sort({ order: 1 }).lean(),
+    const [aboutStats, certifications] = await Promise.all([
       HeroStat.find().sort({ order: 1 }).lean(),
+      Certification.find().sort({ order: 1 }).lean(),
     ]);
 
-    const serializedMembers = JSON.parse(JSON.stringify(members));
-    const serializedPhotos = JSON.parse(JSON.stringify(photos));
     const serializedStats = JSON.parse(JSON.stringify(aboutStats));
+    const serializedCertifications = JSON.parse(JSON.stringify(certifications));
 
     return {
-      leaders: serializedMembers.filter((m: any) => m.category === "leader"),
-      coreTeam: serializedMembers.filter((m: any) => m.category === "core"),
-      photos: serializedPhotos,
       aboutStats: serializedStats,
+      certifications: serializedCertifications,
     };
   } catch (error) {
     console.error("Failed to load about data:", error);
-    return { leaders: [], coreTeam: [], photos: [], aboutStats: [] };
+    return { aboutStats: [], certifications: [] };
   }
 }
 
@@ -108,8 +102,7 @@ export default async function About() {
       <CompanyOverview />
       <AboutUs aboutStats={data.aboutStats} />
       <WhatWeDo />
-      <LayoutGridDemo photosData={data.photos} />
-      <TeamSection leadersData={data.leaders} coreTeamData={data.coreTeam} />
+      <CertificationsSection certificationsData={data.certifications} />
     </div>
   );
 }
