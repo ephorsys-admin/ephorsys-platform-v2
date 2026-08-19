@@ -67,13 +67,13 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       {/* ── Top Nav Bar ── */}
       <div className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <Link
+          <a
             href="/portfolio"
             className="text-xs font-bold text-slate-500 hover:text-[#62a611] transition-colors flex items-center gap-1.5"
             style={{ fontFamily: "var(--font-syne)" }}
           >
             ← Back to Portfolio
-          </Link>
+          </a>
           <span
             className="text-[10px] font-extrabold uppercase tracking-widest text-[#62a611]"
             style={{ fontFamily: "var(--font-syne)" }}

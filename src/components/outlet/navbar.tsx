@@ -278,35 +278,24 @@ export function Navbar() {
           <div className="flex items-center h-14 sm:h-16 md:h-16 ">
             {/* ── Logo (left) ── */}
             <div className="flex-1 flex justify-start lg:flex-1 ">
-              <Link
-                href="/"
-                className="flex items-center shrink-0"
-                style={{ fontFamily: "'Syne', sans-serif" }}
-              >
+     
                 {/* Small screen logo */}
-                <div className="relative h-50 w-50 sm:hidden">
-                  <Image
-                    src="/Ephorsyslogo2.png"
-                    alt="Ephorsys Logo"
-                    fill
-                    sizes="128px"
-                    className="object-contain object-left"
-                    priority
-                  />
-                </div>
+        
 
                 {/* Larger screen logo */}
-                <div className="relative hidden sm:block h-90 w-90">
-                  <Image
-                    src="/Ephorsyslogo2.png"
-                    alt="Ephorsys Logo"
-                    fill
-                    sizes="360px"
-                    className="object-contain object-left"
-                    priority
-                  />
+                <div className="flex-1 flex justify-start">
+                  <Link href="/" className="flex items-center shrink-0 ">
+                    <Image
+                      src="/Ephorsyslogo2.png"
+                      alt="Ephorsys Logo"
+                      width={350}
+                      height={100}
+                      className="w-[250px] h-[90px] object-cover object-center"
+                      priority
+                    />
+                  </Link>
                 </div>
-              </Link>
+              
             </div>
 
             {/* ── Desktop links (center) ── */}
@@ -331,7 +320,10 @@ export function Navbar() {
               <DesktopNavLink href="/team" isActive={pathname === "/team"}>
                 Team
               </DesktopNavLink>
-              <DesktopNavLink href="/portfolio" isActive={pathname === "/portfolio"}>
+              <DesktopNavLink
+                href="/portfolio"
+                isActive={pathname === "/portfolio"}
+              >
                 Portfolio
               </DesktopNavLink>
             </div>
