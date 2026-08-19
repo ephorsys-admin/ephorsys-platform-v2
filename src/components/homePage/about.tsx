@@ -2,7 +2,16 @@ import Image from "next/image";
 import { BadgeCheck, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
-export default function AboutSection() {
+export default function AboutSection({ aboutStats = [] }: { aboutStats?: any[] }) {
+  const clientsItem = aboutStats.find((s) => s.order === -1) || {
+    value: "30+",
+    label: "Satisfied Clients",
+  };
+  const expItem = aboutStats.find((s) => s.order === -2) || {
+    value: "1+",
+    label: "Years of Excellence in Software Solutions",
+  };
+
   return (
     <section className="w-full bg-brand-white py-12 px-4 sm:px-8 lg:px-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
@@ -102,10 +111,10 @@ export default function AboutSection() {
           {/* Cell 2: Experience badge — col 2, row 1 */}
           <div className="rounded-xl sm:rounded-2xl bg-brand-dark flex flex-col items-center justify-center p-3 sm:p-5 md:p-6 min-h-23.75 sm:min-h-32.5 md:min-h-37.5">
             <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-none">
-              1+
+              {expItem.value}
             </span>
             <span className="text-brand-light text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">
-              Years of Excellence in Software Solutions
+              {expItem.label}
             </span>
           </div>
 
@@ -138,7 +147,7 @@ export default function AboutSection() {
               </div>
             </div>
             <span className="text-white font-semibold text-[10px] sm:text-xs md:text-sm leading-tight">
-              30+ Satisfied Clients
+              {clientsItem.value} {clientsItem.label}
             </span>
           </div>
 

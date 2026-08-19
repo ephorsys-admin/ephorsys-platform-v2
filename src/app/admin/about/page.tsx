@@ -10,6 +10,7 @@ import { Plus, Edit2, Trash2, X, Loader2, GripVertical } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
 import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
 import { toast } from "sonner";
+import { heroStatSchema } from "@/schemas/heroStat.schema";
 
 type TeamMember = { _id: string; name: string; position: string; photo: string; linkedIn?: string; category: string; order: number };
 type Photo = { _id: string; imageUrl: string; caption?: string; order: number };
@@ -136,6 +137,48 @@ function PhotoModal({ photo, onClose, onSaved }: { photo: Photo | null; onClose:
   );
 }
 
+// ─── About Stat Modal ─────────────────────────────────────────────────────────
+function AboutStatModal({ item, onClose, onSaved }: { item: any | null; onClose: () => void; onSaved: () => void }) {
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm<any>({
+    resolver: zodResolver(heroStatSchema),
+    defaultValues: item ?? { value: "", label: "", order: 0 },
+  });
+  const inputCls = "w-full rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-450 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
+  const labelCls = "text-[10px] font-bold uppercase tracking-widest text-[#42720e] block mb-1.5";
+
+  const onSubmit = async (data: any) => {
+    const url = item?._id ? `/api/admin/hero-stats/${item._id}` : "/api/admin/hero-stats";
+    const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    if (res.ok) {
+      toast.success("About Stat saved!");
+      onSaved(); onClose();
+    } else {
+      toast.error("Failed to save stat. Please try again.");
+    }
+  };
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-sm shadow-2xl text-gray-900">
+        <div className="flex items-center justify-between p-5 border-b border-gray-100">
+          <h2 className="text-lg font-black text-gray-900" style={{ fontFamily: "var(--font-syne)" }}>Edit About Stat</h2>
+          <button onClick={onClose}><X className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" /></button>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="p-5 space-y-4">
+          <div><label className={labelCls}>Value * (e.g. "13+" or "100%")</label><input {...register("value")} className={inputCls} /></div>
+          <div><label className={labelCls}>Label *</label><input {...register("label")} placeholder="Projects Shipped" className={inputCls} /></div>
+          <input type="hidden" {...register("order", { valueAsNumber: true })} />
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={onClose} className="flex-1 border border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="flex-1 bg-[#74c316] hover:bg-[#62a611] text-[#021004] rounded-xl py-3 text-xs font-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
+              {isSubmitting && <Loader2 className="w-4 h-4 animate-spin text-[#021004]" />} Save Stat
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function AdminAboutPage() {
   const { activeTab, setActiveTab } = useAdminUiStore();
@@ -143,11 +186,14 @@ export default function AdminAboutPage() {
 
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [aboutStats, setAboutStats] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [editMember, setEditMember] = useState<TeamMember | null>(null);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [editPhoto, setEditPhoto] = useState<Photo | null>(null);
   const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const [editAboutStat, setEditAboutStat] = useState<any | null>(null);
+  const [showAboutStatModal, setShowAboutStatModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ type: "member" | "photo"; id: string; name?: string } | null>(null);
 
   const fetchMembers = useCallback(async () => {
@@ -166,8 +212,17 @@ export default function AdminAboutPage() {
     setLoading(false);
   }, []);
 
+  const fetchAboutStats = useCallback(async () => {
+    setLoading(true);
+    const res = await fetch("/api/admin/hero-stats");
+    const data = await res.json();
+    setAboutStats(data.heroStats ?? []);
+    setLoading(false);
+  }, []);
+
   useEffect(() => { if (tab === "team") fetchMembers(); }, [tab, fetchMembers]);
   useEffect(() => { if (tab === "gallery") fetchPhotos(); }, [tab, fetchPhotos]);
+  useEffect(() => { if (tab === "about-stats") fetchAboutStats(); }, [tab, fetchAboutStats]);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -192,18 +247,24 @@ export default function AdminAboutPage() {
           <h1 className="text-3xl font-black text-[#042407] tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>About Settings</h1>
           <p className="text-xs text-gray-500 mt-1 font-medium">Control the public team showcase and gallery items.</p>
         </div>
-        <button
-          onClick={() => { if (tab === "team") { setEditMember(null); setShowMemberModal(true); } else { setEditPhoto(null); setShowPhotoModal(true); } }}
-          className="flex items-center gap-2 bg-[#74c316] hover:bg-[#62a611] text-[#021004] font-black text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <Plus className="w-4 h-4" strokeWidth={2.5} />
-          {tab === "team" ? "Add Member" : "Add Photo"}
-        </button>
+        {tab !== "about-stats" && (
+          <button
+            onClick={() => { if (tab === "team") { setEditMember(null); setShowMemberModal(true); } else { setEditPhoto(null); setShowPhotoModal(true); } }}
+            className="flex items-center gap-2 bg-[#74c316] hover:bg-[#62a611] text-[#021004] font-black text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Plus className="w-4 h-4" strokeWidth={2.5} />
+            {tab === "team" ? "Add Member" : "Add Photo"}
+          </button>
+        )}
       </div>
 
       {/* Tabs */}
       <div className="flex gap-1.5 bg-gray-100/85 border border-gray-200/60 rounded-2xl p-1.5 mb-8 w-fit shadow-inner">
-        {[{ key: "team", label: "Team Members" }, { key: "gallery", label: "Life at Gallery" }].map(({ key, label }) => (
+        {[
+          { key: "team", label: "Team Members" },
+          { key: "gallery", label: "Life at Gallery" },
+          { key: "about-stats", label: "About Stats" }
+        ].map(({ key, label }) => (
           <button key={key} onClick={() => setActiveTab("about", key)}
             className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
               tab === key
@@ -281,8 +342,149 @@ export default function AdminAboutPage() {
         </div>
       )}
 
+      {/* About Stats Tab */}
+      {tab === "about-stats" && !loading && (
+        <div className="space-y-6 animate-fade-in">
+          <div className="bg-white border border-gray-200/60 rounded-2xl p-6 shadow-sm">
+            <h3 className="text-xs font-bold text-[#42720e] uppercase tracking-widest mb-6">About Page Story Counter Metrics</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Stat 1: Projects Shipped (order -11) */}
+              {(() => {
+                const item = aboutStats.find((s) => s.order === -11) || {
+                  value: "13+",
+                  label: "Projects Shipped",
+                  order: -11,
+                };
+                return (
+                  <div className="bg-white border border-gray-200/60 rounded-xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:border-[#74c316]/30 transition-all">
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-400 bg-gray-50 border border-gray-200 px-2 py-1 rounded-md">Projects Shipped</span>
+                      <div className="mt-4">
+                        <p className="text-3xl font-black text-[#74c316]">{item.value}</p>
+                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">{item.label}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+                      <button
+                        onClick={() => {
+                          setEditAboutStat(item);
+                          setShowAboutStatModal(true);
+                        }}
+                        className="flex items-center gap-2 bg-[#74c316]/10 hover:bg-[#74c316]/20 text-[#42720e] font-black text-xs px-4 py-2 rounded-xl transition-all"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" strokeWidth={2.5} /> Edit
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Stat 2: Happy Clients (order -12) */}
+              {(() => {
+                const item = aboutStats.find((s) => s.order === -12) || {
+                  value: "10+",
+                  label: "Happy Clients",
+                  order: -12,
+                };
+                return (
+                  <div className="bg-white border border-gray-200/60 rounded-xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:border-[#74c316]/30 transition-all">
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-400 bg-gray-50 border border-gray-200 px-2 py-1 rounded-md">Happy Clients</span>
+                      <div className="mt-4">
+                        <p className="text-3xl font-black text-[#74c316]">{item.value}</p>
+                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">{item.label}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+                      <button
+                        onClick={() => {
+                          setEditAboutStat(item);
+                          setShowAboutStatModal(true);
+                        }}
+                        className="flex items-center gap-2 bg-[#74c316]/10 hover:bg-[#74c316]/20 text-[#42720e] font-black text-xs px-4 py-2 rounded-xl transition-all"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" strokeWidth={2.5} /> Edit
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Stat 3: On-Time Delivery (order -13) */}
+              {(() => {
+                const item = aboutStats.find((s) => s.order === -13) || {
+                  value: "100%",
+                  label: "On-Time Delivery",
+                  order: -13,
+                };
+                return (
+                  <div className="bg-white border border-gray-200/60 rounded-xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:border-[#74c316]/30 transition-all">
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-400 bg-gray-50 border border-gray-200 px-2 py-1 rounded-md">On-Time Delivery</span>
+                      <div className="mt-4">
+                        <p className="text-3xl font-black text-[#74c316]">{item.value}</p>
+                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">{item.label}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+                      <button
+                        onClick={() => {
+                          setEditAboutStat(item);
+                          setShowAboutStatModal(true);
+                        }}
+                        className="flex items-center gap-2 bg-[#74c316]/10 hover:bg-[#74c316]/20 text-[#42720e] font-black text-xs px-4 py-2 rounded-xl transition-all"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" strokeWidth={2.5} /> Edit
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Stat 4: Repeat Client Rate (order -14) */}
+              {(() => {
+                const item = aboutStats.find((s) => s.order === -14) || {
+                  value: "70%",
+                  label: "Repeat Client Rate",
+                  order: -14,
+                };
+                return (
+                  <div className="bg-white border border-gray-200/60 rounded-xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:border-[#74c316]/30 transition-all">
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-400 bg-gray-50 border border-gray-200 px-2 py-1 rounded-md">Repeat Client Rate</span>
+                      <div className="mt-4">
+                        <p className="text-3xl font-black text-[#74c316]">{item.value}</p>
+                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">{item.label}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+                      <button
+                        onClick={() => {
+                          setEditAboutStat(item);
+                          setShowAboutStatModal(true);
+                        }}
+                        className="flex items-center gap-2 bg-[#74c316]/10 hover:bg-[#74c316]/20 text-[#42720e] font-black text-xs px-4 py-2 rounded-xl transition-all"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" strokeWidth={2.5} /> Edit
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        </div>
+      )}
+
       {showMemberModal && <TeamMemberModal member={editMember} onClose={() => setShowMemberModal(false)} onSaved={fetchMembers} />}
       {showPhotoModal && <PhotoModal photo={editPhoto} onClose={() => setShowPhotoModal(false)} onSaved={fetchPhotos} />}
+      {showAboutStatModal && (
+        <AboutStatModal
+          item={editAboutStat}
+          onClose={() => setShowAboutStatModal(false)}
+          onSaved={fetchAboutStats}
+        />
+      )}
 
       {deleteTarget && (
         <ConfirmDeleteModal

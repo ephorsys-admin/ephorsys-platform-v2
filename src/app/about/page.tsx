@@ -9,6 +9,7 @@ import WhatWeDo from "@/components/aboutpage/whatwedo";
 import { connectDB } from "@/lib/db";
 import TeamMember from "@/models/TeamMember";
 import LifeAtPhoto from "@/models/LifeAtPhoto";
+import HeroStat from "@/models/HeroStat";
 
 export const dynamic = "force-dynamic";
 
@@ -67,22 +68,25 @@ export const metadata: Metadata = {
 async function getAboutData() {
   try {
     await connectDB();
-    const [members, photos] = await Promise.all([
+    const [members, photos, aboutStats] = await Promise.all([
       TeamMember.find().sort({ order: 1 }).lean(),
       LifeAtPhoto.find().sort({ order: 1 }).lean(),
+      HeroStat.find().sort({ order: 1 }).lean(),
     ]);
 
     const serializedMembers = JSON.parse(JSON.stringify(members));
     const serializedPhotos = JSON.parse(JSON.stringify(photos));
+    const serializedStats = JSON.parse(JSON.stringify(aboutStats));
 
     return {
       leaders: serializedMembers.filter((m: any) => m.category === "leader"),
       coreTeam: serializedMembers.filter((m: any) => m.category === "core"),
       photos: serializedPhotos,
+      aboutStats: serializedStats,
     };
   } catch (error) {
     console.error("Failed to load about data:", error);
-    return { leaders: [], coreTeam: [], photos: [] };
+    return { leaders: [], coreTeam: [], photos: [], aboutStats: [] };
   }
 }
 
@@ -102,7 +106,7 @@ export default async function About() {
         imageSrc="https://res.cloudinary.com/devrmpo2p/image/upload/v1774354852/pexels-divinetechygirl-1181619_buw8tg.jpg"
       />
       <CompanyOverview />
-      <AboutUs />
+      <AboutUs aboutStats={data.aboutStats} />
       <WhatWeDo />
       <LayoutGridDemo photosData={data.photos} />
       <TeamSection leadersData={data.leaders} coreTeamData={data.coreTeam} />

@@ -16,6 +16,7 @@ import { connectDB } from "@/lib/db";
 import Stat from "@/models/Stat";
 import Testimonial from "@/models/Testimonial";
 import ClientLogo from "@/models/ClientLogo";
+import HeroStat from "@/models/HeroStat";
 
 export const dynamic = "force-dynamic";
 
@@ -74,20 +75,22 @@ export const metadata: Metadata = {
 async function getHomeData() {
   try {
     await connectDB();
-    const [stats, testimonials, logos] = await Promise.all([
+    const [stats, testimonials, logos, heroStats] = await Promise.all([
       Stat.find().sort({ order: 1 }).lean(),
       Testimonial.find({ isActive: true }).sort({ order: 1 }).lean(),
       ClientLogo.find().sort({ order: 1 }).lean(),
+      HeroStat.find().sort({ order: 1 }).lean(),
     ]);
 
     return {
       stats: JSON.parse(JSON.stringify(stats)),
       testimonials: JSON.parse(JSON.stringify(testimonials)),
       logos: JSON.parse(JSON.stringify(logos)),
+      heroStats: JSON.parse(JSON.stringify(heroStats)),
     };
   } catch (error) {
     console.error("Failed to load home page data:", error);
-    return { stats: [], testimonials: [], logos: [] };
+    return { stats: [], testimonials: [], logos: [], heroStats: [] };
   }
 }
 
@@ -96,9 +99,9 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 font-sans">
-      <HeroSection />
+      <HeroSection heroStats={data.heroStats} />
       <SlidingService />
-      <AboutSection />
+      <AboutSection aboutStats={data.heroStats} />
       <Techstack />
       <ClientLogosSection logosData={data.logos} />
       <OurApproach />

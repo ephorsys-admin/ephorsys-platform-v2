@@ -126,7 +126,13 @@ function TraitPill({
 
 // Main Component
 
-export default function AboutUs() {
+export default function AboutUs({ aboutStats = [] }: { aboutStats?: any[] }) {
+  const statsItems = [
+    aboutStats.find((s) => s.order === -11) || { value: "13+", label: "Projects Shipped" },
+    aboutStats.find((s) => s.order === -12) || { value: "10+", label: "Happy Clients" },
+    aboutStats.find((s) => s.order === -13) || { value: "100%", label: "On-Time Delivery" },
+    aboutStats.find((s) => s.order === -14) || { value: "70%", label: "Repeat Client Rate" },
+  ];
   const sectionRef = useRef<HTMLElement>(null);
   const traitsRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -218,7 +224,7 @@ export default function AboutUs() {
               transition={{ duration: 0.5, delay: 0.26 }}
               className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 lg:grid-cols-2"
             >
-              {STATS.map((s, i) => (
+              {statsItems.map((s, i) => (
                 <StatChip
                   key={s.label}
                   value={s.value}
