@@ -31,22 +31,15 @@ export default function AdminSidebar() {
   return (
     <aside className="w-64 shrink-0 bg-[#62A611] text-white flex flex-col min-h-screen sticky top-0 h-screen overflow-y-auto border-r border-white">
       {/* Logo */}
-   {/* Logo */}
-<div className="flex items-center justify-center border-b border-white select-none">
-  <img
-    src="/logo.png"
-    alt="Ephorsys Logo"
-    className="w-20 h-20 object-contain"
-  />
-
-  <span
-    className="text-xl font-black tracking-tight text-white"
-    style={{ fontFamily: "var(--font-syne)" }}
-  >
-    Ephorsys
-  </span>
-</div>
-
+      <div className="flex items-center justify-center border-r border-[#62A611] select-none py-2 bg-white">
+        <div className="w-36 h-16 overflow-hidden flex items-center justify-center">
+          <img
+            src="/Ephorsyslogo2.png"
+            alt="Ephorsys Logo"
+            className="w-48 h-48 object-contain scale-150 bg-white"
+          />
+        </div>
+      </div>
       {/* Nav */}
       <nav className="flex-1 px-4 py-6 space-y-1.5">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
@@ -57,11 +50,10 @@ export default function AdminSidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group relative ${
-                isActive
-                  ? "bg-white/15 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
-                  : "text-red-100 hover:bg-white/10 hover:text-white"
-              }`}
+              className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group relative ${isActive
+                ? "bg-white/15 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
+                : "text-red-100 hover:bg-white/10 hover:text-white"
+                }`}
             >
               <Icon
                 className="w-4 h-4 shrink-0"
