@@ -2,6 +2,7 @@ import BgHero from "@/components/outlet/bg-hero";
 import BookingForm from "@/components/contactpage/BookingForm";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Metadata } from "next";
+import FAQ from "@/components/homePage/faq";
 
 export const metadata: Metadata = {
   title: "Contact  Ephorsys Pvt Ltd | Best Software Company in Bhubaneswar, Odisha",
@@ -213,6 +214,7 @@ export default function ContactPage() {
 
   </div>
 </div>
+<FAQ/>
     </div>
   );
 }

@@ -12,6 +12,8 @@ import { BsTwitterX } from "react-icons/bs";
 const companyLinks = [
   { label: "Home",       path: "/" },
   { label: "About Us",  path: "/about" },
+  { label: "Team",      path: "/team" },
+  { label: "Portfolio", path: "/portfolio" },
   { label: "Careers",   path: "/career" },
   { label: "Blog",      path: "/blog" },
   { label: "Contact Us",path: "/contact" },

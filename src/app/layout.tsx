@@ -7,6 +7,7 @@ import Footer from "@/components/outlet/footer";
 import Navbar from "@/components/outlet/navbar";
 import FloatingWhatsApp from "@/components/FoatingWhatsApp";
 import ScrollToTop from "@/components/ScrollToTop";
+import Chatbot from "@/components/Chatbot";
 import Preloader from "@/components/Preloader";
 import ScrollAnimations from "@/components/ui/scrollAnimations";
 import SocialMedia from "@/components/outlet/socialMedia";
@@ -129,7 +130,7 @@ export default function RootLayout({
         </Script>
 
         {/* Preloader */}
-        <Preloader />
+        {/* <Preloader /> */}
         <SocialMedia/>
 
         <Navbar />
@@ -137,7 +138,8 @@ export default function RootLayout({
         <main className="flex-1">
           {children}
 
-          <ScrollToTop />
+          {/* <ScrollToTop /> */}
+          <Chatbot />
 
           <FloatingWhatsApp />
         </main>

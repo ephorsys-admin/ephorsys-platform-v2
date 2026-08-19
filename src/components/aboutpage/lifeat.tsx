@@ -1,127 +1,35 @@
 import { LayoutGrid } from "../ui/layout-grid";
 
-export function LayoutGridDemo({ photosData }: { photosData?: { imageUrl: string; caption?: string }[] }) {
-    const activeCards = photosData && photosData.length > 0
-        ? photosData.map((p, idx) => ({
-              id: idx + 1,
-              content: (
-                  <div>
-                      <p className="font-bold md:text-2xl text-lg text-white">
-                          {p.caption || ""}
-                      </p>
-                  </div>
-              ),
-              className: idx % 4 === 0 || idx % 4 === 3 ? "md:col-span-2" : "col-span-1",
-              thumbnail: p.imageUrl,
-          }))
-        : cards;
+export function LayoutGridDemo({ photosData = [] }: { photosData?: { imageUrl: string; caption?: string }[] }) {
+    if (photosData.length === 0) return null;
+
+    const activeCards = photosData.map((p, idx) => ({
+        id: idx + 1,
+        content: (
+            <div>
+                <p className="font-bold md:text-2xl text-lg text-white">
+                    {p.caption || ""}
+                </p>
+            </div>
+        ),
+        className: idx % 4 === 0 || idx % 4 === 3 ? "md:col-span-2" : "col-span-1",
+        thumbnail: p.imageUrl,
+    }));
 
     return (
         <div className="min-h-screen py-16 w-full bg-black relative z-0">
-
             {/* Heading Section */}
             <div className="text-center px-3">
-
                 <h2 className="text-4xl md:text-5xl sm:text-3xl text-white mb-3 font-extrabold">
                     Life At <span className="text-[#74c316]">Ephorsys</span>
                 </h2>
-
                 <p className="text-center text-white/70 text-sm md:text-base max-w-xl mx-auto">
                     Experience a dynamic work environment where creativity meets technology,
                     empowering teams to build scalable and future-ready solutions.
                 </p>
-
             </div>
 
             <LayoutGrid cards={activeCards} />
         </div>
     );
 }
-
-const SkeletonOne = () => {
-    return (
-        <div >
-            <p className="font-bold md:text-4xl text-xl text-white">
-                House in the woods
-            </p>
-            <p className="font-normal text-base text-white"></p>
-            <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-                A serene and tranquil retreat, this house in the woods offers a peaceful
-                escape from the hustle and bustle of city life.
-            </p>
-        </div>
-    );
-};
-
-const SkeletonTwo = () => {
-    return (
-        <div>
-            <p className="font-bold md:text-4xl text-xl text-white">
-                House above the clouds
-            </p>
-            <p className="font-normal text-base text-white"></p>
-            <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-                Perched high above the world, this house offers breathtaking views and a
-                unique living experience. It&apos;s a place where the sky meets home,
-                and tranquility is a way of life.
-            </p>
-        </div>
-    );
-};
-
-const SkeletonThree = () => {
-    return (
-        <div>
-            <p className="font-bold md:text-4xl text-xl text-white">
-                Greens all over
-            </p>
-            <p className="font-normal text-base text-white"></p>
-            <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-                A house surrounded by greenery and nature&apos;s beauty. It&apos;s the
-                perfect place to relax, unwind, and enjoy life.
-            </p>
-        </div>
-    );
-};
-
-const SkeletonFour = () => {
-    return (
-        <div>
-            <p className="font-bold md:text-4xl text-xl text-white">
-                Rivers are serene
-            </p>
-            <p className="font-normal text-base text-white"></p>
-            <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-                A house by the river is a place of peace and tranquility. It&apos;s the
-                perfect place to relax, unwind, and enjoy life.
-            </p>
-        </div>
-    );
-};
-
-const cards = [
-    {
-        id: 1,
-        content: <SkeletonOne />,
-        className: "md:col-span-2",
-        thumbnail: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774350402/IMG_3920.JPG_hp7sc0.jpg",
-    },
-    {
-        id: 2,
-        content: <SkeletonTwo />,
-        className: "col-span-1",
-        thumbnail: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774350401/IMG_4138.JPG_ath8kn.jpg",
-    },
-    {
-        id: 3,
-        content: <SkeletonThree />,
-        className: "col-span-1",
-        thumbnail: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774350401/IMG_3925.JPG_wqdozj.jpg",
-    },
-    {
-        id: 4,
-        content: <SkeletonFour />,
-        className: "md:col-span-2",
-        thumbnail: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774350400/WhatsApp_Image_2026-03-24_at_3.05.01_PM_izykas.jpg",
-    },
-];

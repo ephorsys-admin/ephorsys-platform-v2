@@ -13,16 +13,18 @@ import {
   LogOut,
   ChevronRight,
   FolderGit,
+  Info,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/portfolio", label: "Portfolio", icon: FolderGit },
-  { href: "/admin/careers", label: "Careers", icon: Briefcase },
-  { href: "/admin/blog", label: "Blog", icon: FileText },
-  { href: "/admin/contacts", label: "Contacts", icon: Mail },
-  { href: "/admin/about", label: "About Page", icon: Users },
   { href: "/admin/home", label: "Home Page", icon: Home },
+  { href: "/admin/about", label: "About Page", icon: Info },
+  { href: "/admin/team", label: "Team Page", icon: Users },
+  { href: "/admin/blog", label: "Blog", icon: FileText },
+  { href: "/admin/careers", label: "Careers", icon: Briefcase },
+  { href: "/admin/contacts", label: "Contacts", icon: Mail },
+  { href: "/admin/portfolio", label: "Portfolio", icon: FolderGit },
 ];
 
 export default function AdminSidebar() {

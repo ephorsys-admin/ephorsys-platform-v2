@@ -27,7 +27,7 @@ const DropdownMenu = memo(function DropdownMenu({
 }) {
   return (
     <div className="relative group">
-      <h4 className="relative px-2.5 py-1.5 text-lg font-medium text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide flex items-center gap-1 cursor-pointer">
+      <h4 className="relative px-2.5 py-1.5 text-base font-body font-medium text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide flex items-center gap-1 cursor-pointer">
         {label}
         <ChevronDown className="w-4 h-4 transition-transform duration-250 group-hover:rotate-180 stroke-[#a8c97a] group-hover:stroke-[#74c316]" />
         <span
@@ -43,7 +43,7 @@ const DropdownMenu = memo(function DropdownMenu({
             href={href}
             className="block px-3 py-2 text-sm font-medium text-[#a8c97a] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
           >
-            <h4 className="text-sm font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
+            <h4 className="text-sm font-body font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
               {label}
             </h4>
           </Link>
@@ -55,7 +55,7 @@ const DropdownMenu = memo(function DropdownMenu({
             href={href}
             className="block px-3 py-2 text-sm text-[#74c316] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
           >
-            <h4 className="text-sm font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
+            <h4 className="text-sm font-body font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
               {label}
             </h4>
           </Link>
@@ -79,7 +79,7 @@ const DesktopNavLink = ({
 }) => (
   <Link
     href={href}
-    className={`relative px-2.5 py-1.5 text-md font-medium  text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide group ${className ?? ""}`}
+    className={`relative px-2.5 py-1.5 text-base font-body font-medium  text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide group ${className ?? ""}`}
   >
     {children}
     <span
@@ -124,7 +124,7 @@ const MobileDropdown = memo(function MobileDropdown({
         "
         aria-expanded={isOpen}
       >
-        <span className="relative text-base font-semibold text-[#74c316] group-hover:text-[#5fa010] transition-colors duration-150">
+        <span className="relative text-base font-body font-semibold text-[#74c316] group-hover:text-[#5fa010] transition-colors duration-150">
           {label}
           {/* Active underline */}
           {isActive && (
@@ -152,7 +152,7 @@ const MobileDropdown = memo(function MobileDropdown({
               className={`
                 group/item flex items-center gap-2
                 px-5 py-3
-                text-sm font-medium
+                text-sm font-body font-medium
                 text-[#5a8a25]
                 transition-all duration-150
                 hover:bg-[#74c316]/10
@@ -200,7 +200,7 @@ const MobileNavLink = ({
   >
     <span
       className={`
-        relative text-base font-semibold
+        relative text-base font-body font-semibold
         transition-colors duration-150
         group-hover:text-[#5fa010]
         ${isActive ? "text-[#74c316]" : "text-[#74c316]"}
@@ -284,7 +284,7 @@ export function Navbar() {
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 {/* Small screen logo */}
-                <div className="relative h-12 w-32 sm:hidden">
+                <div className="relative h-50 w-50 sm:hidden">
                   <Image
                     src="/Ephorsyslogo2.png"
                     alt="Ephorsys Logo"
@@ -325,11 +325,14 @@ export function Navbar() {
               <DesktopNavLink href="/blog" isActive={pathname === "/blog"}>
                 Blog
               </DesktopNavLink>
-              <DesktopNavLink href="/portfolio" isActive={pathname === "/portfolio"}>
-                Portfolio
-              </DesktopNavLink>
               <DesktopNavLink href="/career" isActive={pathname === "/career"}>
                 Career
+              </DesktopNavLink>
+              <DesktopNavLink href="/team" isActive={pathname === "/team"}>
+                Team
+              </DesktopNavLink>
+              <DesktopNavLink href="/portfolio" isActive={pathname === "/portfolio"}>
+                Portfolio
               </DesktopNavLink>
             </div>
 
@@ -342,7 +345,7 @@ export function Navbar() {
                     px-4 py-2
                     h-9
                     rounded-lg
-                    text-sm font-bold tracking-wide
+                    text-sm font-body font-bold tracking-wide
                     transition-all duration-200
                     hover:brightness-110
                     active:scale-[0.98]
@@ -353,7 +356,6 @@ export function Navbar() {
                   style={{
                     background: "#74c316",
                     color: "#021a0a",
-                    fontFamily: "'DM Sans', sans-serif",
                   }}
                 >
                   <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
@@ -455,6 +457,14 @@ export function Navbar() {
           </MobileNavLink>
 
           <MobileNavLink
+            href="/team"
+            onClick={closeMobileMenu}
+            isActive={pathname === "/team"}
+          >
+            Team
+          </MobileNavLink>
+
+          <MobileNavLink
             href="/blog"
             onClick={closeMobileMenu}
             isActive={pathname === "/blog"}
@@ -483,11 +493,10 @@ export function Navbar() {
         <div className="shrink-0 sticky bottom-0 bg-white p-4 border-t border-[#74c316]/10 pb-[calc(1rem+env(safe-area-inset-bottom))]">
           <Link href="/contact" onClick={closeMobileMenu} className="block">
             <button
-              className="group relative w-full py-3.5 rounded-xl text-base font-bold tracking-wide overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer shadow-lg"
+              className="group relative w-full py-3.5 rounded-xl text-base font-body font-bold tracking-wide overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer shadow-lg"
               style={{
                 background: "#74c316",
                 color: "#021a0a",
-                fontFamily: "'DM Sans', sans-serif",
               }}
             >
               <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />

@@ -157,7 +157,7 @@
   body {
     @apply bg-background text-foreground;
     background-color: var(--color-brand-white);
-    /* font-family: font-heading; */
+    font-family: var(--font-inter);
 
     /* Smooth rendering */
     -webkit-font-smoothing: antialiased;

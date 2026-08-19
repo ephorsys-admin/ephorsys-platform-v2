@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category");
 
     const query: Record<string, unknown> = {};
-    if (category === "leader" || category === "core") {
+    if (category === "leader" || category === "core" || category === "core-developer" || category === "core-digital-marketing" || category === "core-business-development-executive") {
       query.category = category;
     }
 
