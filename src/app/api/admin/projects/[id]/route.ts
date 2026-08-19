@@ -38,7 +38,18 @@ export async function PUT(
   const parsed = updateProjectSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
 
-  const project = await Project.findByIdAndUpdate(id, parsed.data, { new: true });
+  const { technologiesInput, ...updateFields } = parsed.data;
+
+  // Only update fields that were explicitly sent in the request body to prevent Zod defaults
+  // from overwriting unprovided fields (e.g. when toggling isPublished/isFeatured)
+  const filteredUpdateFields: any = {};
+  for (const key of Object.keys(body)) {
+    if (key in updateFields) {
+      filteredUpdateFields[key] = (updateFields as any)[key];
+    }
+  }
+
+  const project = await Project.findByIdAndUpdate(id, filteredUpdateFields, { new: true });
   if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json({ project });
 }

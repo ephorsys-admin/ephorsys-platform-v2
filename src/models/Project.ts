@@ -64,6 +64,7 @@ const ProjectSchema = new Schema<IProject>(
       text: { type: String },
       clientName: { type: String },
       clientTitle: { type: String },
+      clientPhoto: { type: String },
     },
     technologies: { type: [String], default: [] },
   },

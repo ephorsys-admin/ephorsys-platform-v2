@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     if (category) query.category = category;
     if (isFeatured === "true") query.isFeatured = true;
 
-    const projects = await Project.find(query).sort({ isFeatured: -1, startDate: -1 }).lean();
+    const projects = await Project.find(query).sort({ createdAt: -1 }).lean();
     return NextResponse.json({ projects });
   } catch (error) {
     console.error("GET /api/projects error:", error);
