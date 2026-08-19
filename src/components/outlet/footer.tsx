@@ -72,16 +72,15 @@ export default function Footer() {
        {/* ── Col 1: Logo + Contact + Social ── */}
 <div className="flex flex-col gap-4 sm:col-span-2  lg:col-span-1 ">
   <Link href="/" className="inline-flex items-center gap-2">
-    <Image
-      src="/logo.png"
-      alt="Ephorsys Logo"
-      width={36}
-      height={36}
-      className="h-8 w-8 sm:h-12 sm:w-12 object-contain"
-    />
-    <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter text-[#74c316]">
-      Ephorsys
-    </h2>
+<Image
+                      src="/Ephorsyslogo2.png"
+                      alt="Ephorsys Logo"
+                      width={300}
+                      height={90}
+                      className="w-[300px] h-[80px] object-cover "
+                      priority
+                    />
+
   </Link>
 
   <p className="text-sm text-[#c5e08a]/80 leading-relaxed max-w-xs">
