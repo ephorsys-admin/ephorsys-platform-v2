@@ -289,6 +289,7 @@ export function Navbar() {
                     src="/Ephorsyslogo2.png"
                     alt="Ephorsys Logo"
                     fill
+                    sizes="128px"
                     className="object-contain object-left"
                     priority
                   />
@@ -300,6 +301,7 @@ export function Navbar() {
                     src="/Ephorsyslogo2.png"
                     alt="Ephorsys Logo"
                     fill
+                    sizes="360px"
                     className="object-contain object-left"
                     priority
                   />

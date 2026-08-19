@@ -9,6 +9,7 @@ import FloatingWhatsApp from "@/components/FoatingWhatsApp";
 import ScrollToTop from "@/components/ScrollToTop";
 import Preloader from "@/components/Preloader";
 import ScrollAnimations from "@/components/ui/scrollAnimations";
+import SocialMedia from "@/components/outlet/socialMedia";
 
 
 const syne = Syne({
@@ -129,6 +130,7 @@ export default function RootLayout({
 
         {/* Preloader */}
         <Preloader />
+        <SocialMedia/>
 
         <Navbar />
 
