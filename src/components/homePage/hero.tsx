@@ -3,15 +3,35 @@
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 
-export default function HeroSection() {
+export default function HeroSection({ heroStats = [] }: { heroStats?: any[] }) {
   const router = useRouter();
   const hexRef = useRef(null);
 
-  const statsRows = [
-    { icon: "〜", label: "Projects Delivered", val: "20+" },
-    { icon: "◷", label: "Active Clients", val: "15+" },
-    { icon: "○", label: "Success Rates", val: "100%" },
+  const satisfactionStat = heroStats.find((s) => s.order === 0) || {
+    value: "99.9%",
+    label: "client satisfaction",
+  };
+
+  const dbProgressStats = heroStats.filter((s) => s.order > 0);
+  const defaultProgressRows = [
+    { label: "Projects Delivered", val: "20+" },
+    { label: "Active Clients", val: "15+" },
+    { label: "Success Rates", val: "100%" },
   ];
+
+  const defaultIcons = ["〜", "◷", "○"];
+
+  const statsRows = dbProgressStats.length > 0
+    ? dbProgressStats.map((item, idx) => ({
+        icon: defaultIcons[idx] || "✓",
+        label: item.label,
+        val: item.value,
+      }))
+    : defaultProgressRows.map((item, idx) => ({
+        icon: defaultIcons[idx] || "✓",
+        label: item.label,
+        val: item.val,
+      }));
 
   return (
     <>
@@ -124,11 +144,11 @@ export default function HeroSection() {
                             shadow-[0_6px_30px_rgba(0,0,0,0.10)]">
               <div className="font-syne text-3xl font-extrabold leading-none"
                 style={{ color: "var(--green-dark)" }}>
-                99.9%
+                {satisfactionStat.value}
               </div>
-              <div className="text-[0.7rem] font-bold tracking-widest mt-1"
+              <div className="text-[0.7rem] font-bold tracking-widest mt-1 uppercase"
                 style={{ color: "var(--text-muted)" }}>
-                client satisfaction
+                {satisfactionStat.label}
               </div>
             </div>
 
@@ -224,11 +244,11 @@ export default function HeroSection() {
                             shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-10">
               <div className="font-syne text-[2.4rem] font-extrabold leading-none"
                 style={{ color: "var(--green-dark)" }}>
-                99.9%
+                {satisfactionStat.value}
               </div>
-              <div className="text-[0.7rem] font-bold tracking-widest mt-1"
+              <div className="text-[0.7rem] font-bold tracking-widest mt-1 uppercase"
                 style={{ color: "var(--text-muted)" }}>
-                client satisfaction
+                {satisfactionStat.label}
               </div>
             </div>
 

@@ -14,8 +14,8 @@ export default function ScrollToTop() {
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
 
-      const progress = (scrollTop / height) * 100;
-
+      // const progress = (scrollTop / height) * 100;
+      const progress = height > 0 ? Math.min(Math.max((scrollTop / height) * 100, 0), 100) : 0;
       setScrollProgress(progress);
       setShow(scrollTop > 200);
     };
