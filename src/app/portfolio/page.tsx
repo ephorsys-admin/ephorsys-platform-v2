@@ -7,13 +7,16 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Portfolio | Ephorsys Pvt Ltd",
-  description: "Explore our engineered solutions, live platforms, and software system case studies. Specialized in custom web applications, mobile apps, and LLM integrations.",
+  description:
+    "Explore our engineered solutions, live platforms, and software system case studies. Specialized in custom web applications, mobile apps, and LLM integrations.",
 };
 
 async function getProjects() {
   try {
     await connectDB();
-    const projects = await Project.find({ isPublished: true }).sort({ isFeatured: -1, startDate: -1 }).lean();
+    const projects = await Project.find({ isPublished: true })
+      .sort({ createdAt: -1 })
+      .lean();
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
     console.error("Failed to load portfolio projects:", error);
@@ -35,111 +38,116 @@ export default async function PortfolioPage() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-black selection:text-white select-none pb-20">
-      {/* Monospace System Header */}
-      <div className="border-b border-slate-200 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between text-[10px] sm:text-xs tracking-widest text-zinc-500 font-mono font-bold">
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 bg-[#62a611]" />
-            <span className="text-black">SYSTEM :: PORTFOLIO</span>
-          </div>
-          <div className="flex items-center gap-4 sm:gap-8">
-            <span>ENGINEERS</span>
-            <span className="border-b border-black pb-0.5 text-black">ACTIVE LOGS</span>
-            <span className="hidden sm:inline">PROTOCOLS</span>
-            <span className="hidden sm:inline">ARCHIVE</span>
-          </div>
-        </div>
-      </div>
+  const formatDateRange = (startStr?: string, endStr?: string) => {
+    if (!startStr) return "";
+    const options: Intl.DateTimeFormatOptions = { month: "short", year: "numeric" };
+    try {
+      const start = new Date(startStr).toLocaleDateString("en-US", options);
+      const end = endStr ? new Date(endStr).toLocaleDateString("en-US", options) : "Present";
+      return `${start} - ${end}`;
+    } catch (e) {
+      return "";
+    }
+  };
 
-      {/* Hero Headline */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 border-b border-slate-200 bg-white">
-        <h1 
-          className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter text-black uppercase leading-none"
+  return (
+    <div className="min-h-screen bg-white text-slate-900 selection:bg-[#62a611] selection:text-white select-none">
+
+      {/* ── Hero / Header ── */}
+      <section className="pt-16 pb-10 text-center px-4 border-b border-slate-100">
+        <p
+          className="text-[10px] font-extrabold uppercase tracking-[0.3em] text-[#62a611] mb-5"
           style={{ fontFamily: "var(--font-syne)" }}
         >
-          Engineered<br />Outcomes.
+          Portfolio
+        </p>
+        <h1
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 leading-tight mb-5"
+          style={{ fontFamily: "var(--font-syne)" }}
+        >
+          Projects We Are Proud Of
         </h1>
-      </div>
-
-      {/* Meta Bar */}
-      <div className="border-b border-slate-200 bg-white font-mono">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[10px] sm:text-xs tracking-wider text-zinc-500">
-          <div>
-            <span className="font-bold text-black">[ LOC ]</span> 20.2961° N, 85.8245° E (BHUBANESWAR)
-          </div>
-          <div className="sm:text-center">
-            <span className="font-bold text-black">[ BUILD ]</span> V4.0.2-STABLE
-          </div>
-          <div className="sm:text-right">
-            <span className="font-bold text-black">[ DEPT ]</span> SOFTWARE ARCHITECTURE
-          </div>
-        </div>
-      </div>
-
-      {/* Card Grid Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <p className="text-xs sm:text-sm md:text-base text-slate-500 max-w-lg mx-auto leading-relaxed">
+          Browse highlights below —{" "}
+          <span className="text-[#62a611] font-semibold italic">
+            open any project for the full story, features and tech stack.
+          </span>
+        </p>
+      </section>
+ 
+      {/* ── Card Grid ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
         {projects.length === 0 ? (
-          <div className="py-20 text-center text-xs tracking-widest text-zinc-400 font-mono">
-            [ NO ACTIVE CASE STUDIES CONFIGURED ]
+          <div className="py-24 text-center text-xs tracking-widest text-slate-400 font-mono">
+            No projects published yet.
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {projects.map((project: any) => (
-              <div 
-                key={project._id} 
-                className="bg-white border border-slate-200/80 rounded-3xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 flex flex-col group"
+              <article
+                key={project._id}
+                className="bg-white border border-[#62A611]/35 rounded-[2rem] overflow-hidden flex flex-col group shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(98,166,17,0.15)] hover:-translate-y-0.5 transition-all duration-300"
               >
                 {/* Thumbnail Image Section */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-150 border-b border-slate-100">
+                <div className="relative w-full aspect-[16/8] overflow-hidden bg-slate-50 border-b border-[#62A611]/15 flex items-center justify-center">
                   <img
                     src={project.thumbnailImage}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-103"
+                    className="w-full h-full object-contain p-2 sm:p-3 transition-transform duration-500 ease-in-out group-hover:scale-[1.02]"
                   />
+
                   {/* Category Pill Overlay */}
-                  <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm border border-slate-200/50 text-slate-800 px-3.5 py-1 text-[9px] sm:text-[10px] font-extrabold rounded-full shadow-sm">
+                  <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm border border-slate-200/60 text-[#3e5c76] px-4 py-1 text-xs font-bold rounded-full shadow-sm">
                     {getCategoryBadgeLabel(project.category)}
                   </div>
                 </div>
-
-                {/* Info Text Area */}
-                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
-                  <div>
-                    {/* Client Industry Subtitle */}
-                    <span className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">
+                {/* Body Content Area */}
+                <div className="flex flex-col flex-1 p-5 sm:p-6">
+                  {/* Client Industry Subtitle (Uppercase) */}
+                  {project.clientIndustry && (
+                    <span className="text-[9px] sm:text-[10px] md:text-xs font-bold uppercase tracking-wider text-[#8da9c4] mb-2 block">
                       {project.clientIndustry}
                     </span>
-                    {/* Project Title */}
-                    <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 mb-3 tracking-tight leading-tight">
-                      {project.title}
-                    </h3>
-                    {/* Project Tagline */}
-                    <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed mb-5 line-clamp-3">
-                      {project.tagline}
-                    </p>
+                  )}
 
-                    {/* Technologies Tags List */}
-                    {project.technologies && project.technologies.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {project.technologies.map((tech: string, idx: number) => (
-                          <span 
-                            key={idx} 
-                            className="bg-slate-50 border border-slate-200/50 text-slate-500 px-2.5 py-0.5 rounded-lg text-[10px] font-semibold font-sans tracking-wide"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  {/* Project Title */}
+                  <h2
+                    className="text-base sm:text-lg lg:text-[1.2rem] font-black text-slate-900 leading-snug mb-2.5 tracking-tight"
+                    style={{ fontFamily: "var(--font-syne)" }}
+                  >
+                    {project.title}
+                  </h2>
 
-                  {/* Actions Bar */}
-                  <div className="border-t border-slate-100 pt-4 flex items-center justify-between font-sans">
+                  {/* Project Tagline / Description */}
+                  <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed line-clamp-3 mb-4.5 flex-1 font-medium">
+                    {project.tagline}
+                  </p>
+
+                  {/* Technologies Tags List */}
+                  {project.technologies?.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-5">
+                      {project.technologies.map((tech: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="bg-slate-50 border border-slate-200/70 text-slate-500 text-[9px] sm:text-[10px] font-semibold px-2.5 py-0.5 rounded-full tracking-wide"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {project.startDate && (
+                    <div className="text-[9px] sm:text-[10px] font-semibold text-slate-400 mb-4 uppercase tracking-wider">
+                      Timeline: <span className="text-slate-600 font-bold ml-1">{formatDateRange(project.startDate, project.endDate)}</span>
+                    </div>
+                  )}
+
+                  {/* Actions Bar (Footer) */}
+                  <div className="flex items-center justify-between font-sans mt-auto">
                     <Link
                       href={`/portfolio/${project.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-[#62a611] hover:underline"
+                      className="text-xs sm:text-sm font-bold text-[#62a611] hover:text-[#50880e] flex items-center gap-1 transition-colors"
                     >
                       View Details →
                     </Link>
@@ -148,47 +156,52 @@ export default async function PortfolioPage() {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-[10px] font-bold text-zinc-400 hover:text-black uppercase tracking-wider"
+                        className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
                       >
-                        Live ↗
+                        Live
                       </a>
                     )}
                   </div>
+
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}
-      </div>
+      </section>
 
-      {/* Footer / CTA Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-10 border-t border-slate-200 mt-12 bg-white rounded-3xl shadow-sm">
-        <div>
-          <h2 
-            className="text-3xl md:text-5xl font-black tracking-tighter text-black uppercase leading-none mb-4"
-            style={{ fontFamily: "var(--font-syne)" }}
-          >
-            Ready to<br />Build?
-          </h2>
-          <Link
-            href="/contact"
-            className="inline-block bg-black hover:bg-zinc-850 text-white font-bold text-[10px] sm:text-xs uppercase tracking-widest px-6 py-3.5 transition-all duration-300 active:scale-[0.98] rounded-xl"
-          >
-            INITIALIZE CONNECTION
-          </Link>
+      {/* ── CTA Footer ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
+        <div className="bg-[#62a611] rounded-3xl px-6 py-9 sm:px-14 sm:py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <div>
+            <p
+              className="text-white/70 text-[9px] sm:text-[10px] font-extrabold uppercase tracking-[0.2em] mb-2"
+              style={{ fontFamily: "var(--font-syne)" }}
+            >
+              Start a Project
+            </p>
+            <h2
+              className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white leading-tight mb-5"
+              style={{ fontFamily: "var(--font-syne)" }}
+            >
+              Ready to Build?
+            </h2>
+            <Link
+              href="/contact"
+              className="inline-block bg-white text-[#62a611] font-black text-[10px] sm:text-xs uppercase tracking-wider px-5 py-3.5 sm:px-7 sm:py-3.5 rounded-xl hover:bg-white/90 active:scale-[0.98] transition-all duration-200"
+              style={{ fontFamily: "var(--font-syne)" }}
+            >
+              Initialize Connection →
+            </Link>
+          </div>
+          <div className="flex flex-col gap-2 text-[9px] sm:text-xs text-white/70 md:text-right font-mono">
+            <div><span className="font-bold text-white">[ SYSTEM ]</span> ONLINE</div>
+            <div><span className="font-bold text-white">[ EST ]</span> 2025</div>
+            <div><span className="font-bold text-white">[ RIGHTS ]</span> © 2026 EPHORSYS PRIVATE LIMITED</div>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 text-[10px] sm:text-xs text-zinc-500 md:text-right font-mono">
-          <div>
-            <span className="font-bold text-black">[ SYSTEM ]</span> ONLINE
-          </div>
-          <div>
-            <span className="font-bold text-black">[ EST ]</span> 2025
-          </div>
-          <div>
-            <span className="font-bold text-black">[ RIGHTS ]</span> © 2026 EPHORSYS PRIVATE LIMITED
-          </div>
-        </div>
-      </div>
+      </section>
+
     </div>
   );
 }

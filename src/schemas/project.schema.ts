@@ -34,6 +34,7 @@ export const createProjectSchema = z.object({
   liveUrl: z.string().optional().default(""),
   testimonial: testimonialSchema.optional(),
   technologies: z.array(z.string()).default([]),
+  technologiesInput: z.string().optional().default(""),
 });
 
 export const updateProjectSchema = createProjectSchema.partial();

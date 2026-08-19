@@ -42,8 +42,9 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
 
   // Generate UUID id
+  const { technologiesInput, ...projectFields } = parsed.data;
   const projectData = {
-    ...parsed.data,
+    ...projectFields,
     id: crypto.randomUUID(),
   };
 

@@ -28,12 +28,27 @@ export default function ProjectEditorPage() {
   } = useForm<any>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
+      title: "",
+      slug: "",
       category: "web_dev",
+      clientName: "",
+      clientIndustry: "",
+      thumbnailImage: "",
+      tagline: "",
+      overview: "",
+      solution: "",
+      role: "",
+      teamSize: 1,
+      startDate: "",
+      endDate: "",
+      durationText: "",
       status: "completed",
       isFeatured: false,
       isPublished: false,
-      teamSize: 1,
+      liveUrl: "",
       testimonial: { text: "", clientName: "", clientTitle: "", clientPhoto: "" },
+      technologies: [],
+      technologiesInput: "",
     },
   });
 
@@ -328,7 +343,7 @@ export default function ProjectEditorPage() {
             <div>
               <label className={labelCls}>Contact Person Photo</label>
               <ImageUpload
-                value={watch("testimonial.clientPhoto")}
+                value={watch("testimonial.clientPhoto") ?? ""}
                 onChange={(url) => setValue("testimonial.clientPhoto", url)}
                 folder="portfolio"
               />
