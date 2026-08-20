@@ -25,6 +25,7 @@ const NAV_ITEMS = [
   { href: "/admin/careers", label: "Careers", icon: Briefcase },
   { href: "/admin/contacts", label: "Contacts", icon: Mail },
   { href: "/admin/portfolio", label: "Portfolio", icon: FolderGit },
+  { href: "/admin/consultancy", label: "Consultancy", icon: FolderGit },
 ];
 
 export default function AdminSidebar() {
