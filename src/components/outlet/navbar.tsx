@@ -267,35 +267,34 @@ export function Navbar() {
   return (
     <>
       <nav
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          scrolled
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
             ? "bg-brand-white border-b border-[#74c316]/10 shadow-md"
             : "bg-brand-white border-b border-transparent"
-        }`}
+          }`}
         style={{ contain: "layout" }}
       >
         <div className="max-w-7xl mx-auto py-2 px-3 sm:px-6 lg:px-6">
           <div className="flex items-center h-14 sm:h-16 md:h-16 ">
             {/* ── Logo (left) ── */}
             <div className="flex-1 flex justify-start lg:flex-1 ">
-     
-                {/* Small screen logo */}
-        
 
-                {/* Larger screen logo */}
-                <div className="flex-1 flex justify-start">
-                  <Link href="/" className="flex items-center shrink-0 ">
-                    <Image
-                      src="/Ephorsyslogo2.png"
-                      alt="Ephorsys Logo"
-                      width={350}
-                      height={100}
-                      className="w-[250px] h-[90px] object-cover object-center"
-                      priority
-                    />
-                  </Link>
-                </div>
-              
+              {/* Small screen logo */}
+
+
+              {/* Larger screen logo */}
+              <div className="flex-1 flex justify-start">
+                <Link href="/" className="flex items-center shrink-0 ">
+                  <Image
+                    src="/Ephorsyslogo2.png"
+                    alt="Ephorsys Logo"
+                    width={350}
+                    height={100}
+                    className="w-[250px] h-[90px] object-cover object-center"
+                    priority
+                  />
+                </Link>
+              </div>
+
             </div>
 
             {/* ── Desktop links (center) ── */}
@@ -326,11 +325,17 @@ export function Navbar() {
               >
                 Portfolio
               </DesktopNavLink>
+              <DesktopNavLink
+                href="/contact"
+                isActive={pathname === "/contact"}
+              >
+                Contact
+              </DesktopNavLink>
             </div>
 
             {/* ── CTA (right) + Mobile hamburger ── */}
             <div className="flex-1 flex items-center justify-end gap-3">
-              <Link href="/contact" className="hidden lg:block">
+              <Link href="/consultancy" className="hidden lg:block">
                 <button
                   className="
                     relative overflow-hidden
@@ -351,7 +356,7 @@ export function Navbar() {
                   }}
                 >
                   <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
-                  <span className="relative">Contact Us</span>
+                  <span className="relative">Book Free Consultancy</span>
                 </button>
               </Link>
 
@@ -363,18 +368,16 @@ export function Navbar() {
               >
                 <div className="relative w-6 h-6">
                   <Menu
-                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${
-                      mobileOpen
+                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${mobileOpen
                         ? "opacity-0 rotate-90 scale-75"
                         : "opacity-100 rotate-0 scale-100"
-                    }`}
+                      }`}
                   />
                   <X
-                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${
-                      mobileOpen
+                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${mobileOpen
                         ? "opacity-100 rotate-0 scale-100"
                         : "opacity-0 -rotate-90 scale-75"
-                    }`}
+                      }`}
                   />
                 </div>
               </button>
@@ -385,17 +388,15 @@ export function Navbar() {
 
       {/* ── Mobile menu overlay ── */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
-          mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         onClick={closeMobileMenu}
       />
 
       {/* ── Mobile menu sidebar ── */}
       <div
-        className={`fixed top-0 right-0 z-[70] h-dvh w-[88vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
-          mobileOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 z-[70] h-dvh w-[88vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${mobileOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#74c316]/10">
@@ -463,7 +464,13 @@ export function Navbar() {
           >
             Blog
           </MobileNavLink>
-
+          <MobileNavLink
+            href="/career"
+            onClick={closeMobileMenu}
+            isActive={pathname === "/career"}
+          >
+            Career
+          </MobileNavLink>
           <MobileNavLink
             href="/portfolio"
             onClick={closeMobileMenu}
@@ -473,17 +480,17 @@ export function Navbar() {
           </MobileNavLink>
 
           <MobileNavLink
-            href="/career"
+            href="/contact"
             onClick={closeMobileMenu}
-            isActive={pathname === "/career"}
+            isActive={pathname === "/contact"}
           >
-            Career
+            Contact
           </MobileNavLink>
         </div>
 
         {/* Mobile CTA */}
         <div className="shrink-0 sticky bottom-0 bg-white p-4 border-t border-[#74c316]/10 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-          <Link href="/contact" onClick={closeMobileMenu} className="block">
+          <Link href="/consultancy" onClick={closeMobileMenu} className="block">
             <button
               className="group relative w-full py-3.5 rounded-xl text-base font-body font-bold tracking-wide overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer shadow-lg"
               style={{
@@ -492,7 +499,7 @@ export function Navbar() {
               }}
             >
               <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />
-              <span className="relative">Contact Us</span>
+              <span className="relative">Book Free Consultancy</span>
             </button>
           </Link>
         </div>

@@ -373,6 +373,13 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               </p>
               <Link
                 href="/contact"
+                className="block w-full bg-white text-[#62a611] text-xs font-black text-center py-2.5 rounded-xl hover:bg-white/90 active:scale-[0.98] transition-all duration-200 mb-3"
+                style={{ fontFamily: "var(--font-syne)" }}
+              >
+                Contact Us
+              </Link>
+              <Link
+                href="/consultancy"
                 className="block w-full bg-white text-[#62a611] text-xs font-black text-center py-2.5 rounded-xl hover:bg-white/90 active:scale-[0.98] transition-all duration-200"
                 style={{ fontFamily: "var(--font-syne)" }}
               >
