@@ -9,6 +9,7 @@ import { slugify } from "@/lib/utils";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import ImageUpload from "@/components/admin/ImageUpload";
 import { toast } from "sonner";
+import { usePortfolioEditorStore } from "@/store/portfolioStore";
 
 export default function ProjectEditorPage() {
   const router = useRouter();
@@ -46,11 +47,20 @@ export default function ProjectEditorPage() {
       isFeatured: false,
       isPublished: false,
       liveUrl: "",
+      socialLinks: { instagram: "", facebook: "", youtube: "", primary: "instagram" },
       testimonial: { text: "", clientName: "", clientTitle: "", clientPhoto: "" },
       technologies: [],
       technologiesInput: "",
     },
   });
+
+  // ── Zustand category sync ──
+  const { selectedCategory, setSelectedCategory } = usePortfolioEditorStore();
+  const watchedCategory = watch("category");
+
+  useEffect(() => {
+    setSelectedCategory(watchedCategory);
+  }, [watchedCategory, setSelectedCategory]);
 
   const title = watch("title");
 
@@ -88,6 +98,10 @@ export default function ProjectEditorPage() {
           setValue("isFeatured", p.isFeatured ?? false);
           setValue("isPublished", p.isPublished ?? false);
           setValue("liveUrl", p.liveUrl ?? "");
+          setValue("socialLinks.instagram", p.socialLinks?.instagram ?? "");
+          setValue("socialLinks.facebook", p.socialLinks?.facebook ?? "");
+          setValue("socialLinks.youtube", p.socialLinks?.youtube ?? "");
+          setValue("socialLinks.primary", p.socialLinks?.primary ?? "instagram");
           setValue("testimonial.text", p.testimonial?.text ?? "");
           setValue("testimonial.clientName", p.testimonial?.clientName ?? "");
           setValue("testimonial.clientTitle", p.testimonial?.clientTitle ?? "");
@@ -108,7 +122,12 @@ export default function ProjectEditorPage() {
       ? data.technologiesInput.split(",").map((t: string) => t.trim()).filter(Boolean)
       : [];
     data.technologies = tags;
-    delete data.technologiesInput;
+    // Clean up category-specific URL/social links fields to avoid conflicts
+    if (data.category === "marketing") {
+      data.liveUrl = "";
+    } else {
+      data.socialLinks = { instagram: "", facebook: "", youtube: "", primary: "instagram" };
+    }
 
     const url = isNew ? "/api/admin/projects" : `/api/admin/projects/${id}`;
     const method = isNew ? "POST" : "PUT";
@@ -282,8 +301,40 @@ export default function ProjectEditorPage() {
             </div>
 
             <div>
-              <label className={labelCls}>External Live Project Link (Optional)</label>
-              <input {...register("liveUrl")} placeholder="https://..." className={inputCls} />
+              {selectedCategory === "marketing" ? (
+                /* ── Social Media Links (Digital Marketing) ── */
+                <div className="space-y-4">
+                  <label className={labelCls}>Social Media Links</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className={labelCls}>Instagram URL</label>
+                      <input {...register("socialLinks.instagram")} placeholder="https://instagram.com/..." className={inputCls} />
+                    </div>
+                    <div>
+                      <label className={labelCls}>Facebook URL</label>
+                      <input {...register("socialLinks.facebook")} placeholder="https://facebook.com/..." className={inputCls} />
+                    </div>
+                    <div>
+                      <label className={labelCls}>YouTube URL</label>
+                      <input {...register("socialLinks.youtube")} placeholder="https://youtube.com/..." className={inputCls} />
+                    </div>
+                  </div>
+                  <div>
+                    <label className={labelCls}>Primary Link (Shown on Card) *</label>
+                    <select {...register("socialLinks.primary")} className={`${inputCls} [&>option]:bg-white`}>
+                      <option value="instagram">Instagram</option>
+                      <option value="facebook">Facebook</option>
+                      <option value="youtube">YouTube</option>
+                    </select>
+                  </div>
+                </div>
+              ) : (
+                /* ── Standard Live URL ── */
+                <div>
+                  <label className={labelCls}>External Live Project Link</label>
+                  <input {...register("liveUrl")} placeholder="https://..." className={inputCls} />
+                </div>
+              )}
             </div>
           </div>
         </div>

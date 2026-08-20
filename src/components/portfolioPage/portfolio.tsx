@@ -151,16 +151,37 @@ export default async function PortfolioPage() {
                     >
                       View Details →
                     </Link>
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
-                      >
-                        Live
-                      </a>
-                    )}
+                    {(() => {
+                      if (project.category === "marketing" && project.socialLinks) {
+                        const platform = project.socialLinks.primary || "instagram";
+                        const url = project.socialLinks[platform];
+                        if (url) {
+                          return (
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
+                            >
+                              Live
+                            </a>
+                          );
+                        }
+                      }
+                      if (project.liveUrl) {
+                        return (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
+                          >
+                            Live
+                          </a>
+                        );
+                      }
+                      return null;
+                    })()}
                   </div>
 
                 </div>
