@@ -20,6 +20,12 @@ export interface IProject extends Document {
   isFeatured: boolean;
   isPublished: boolean;
   liveUrl?: string;
+  socialLinks?: {
+    instagram?: string;
+    facebook?: string;
+    youtube?: string;
+    primary?: "instagram" | "facebook" | "youtube";
+  };
   testimonial?: {
     text: string;
     clientName: string;
@@ -60,6 +66,12 @@ const ProjectSchema = new Schema<IProject>(
     isFeatured: { type: Boolean, default: false },
     isPublished: { type: Boolean, default: false },
     liveUrl: { type: String },
+    socialLinks: {
+      instagram: { type: String },
+      facebook: { type: String },
+      youtube: { type: String },
+      primary: { type: String, enum: ["instagram", "facebook", "youtube"], default: "instagram" },
+    },
     testimonial: {
       text: { type: String },
       clientName: { type: String },
@@ -70,6 +82,10 @@ const ProjectSchema = new Schema<IProject>(
   },
   { timestamps: true }
 );
+
+if (mongoose.models && mongoose.models.Project) {
+  delete (mongoose.models as any).Project;
+}
 
 const ProjectModel: Model<IProject> =
   mongoose.models.Project || mongoose.model<IProject>("Project", ProjectSchema);

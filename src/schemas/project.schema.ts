@@ -10,6 +10,13 @@ export const testimonialSchema = z.object({
   clientPhoto: z.string().optional().default(""),
 });
 
+export const socialLinksSchema = z.object({
+  instagram: z.string().optional().default(""),
+  facebook: z.string().optional().default(""),
+  youtube: z.string().optional().default(""),
+  primary: z.enum(["instagram", "facebook", "youtube"]).optional().default("instagram"),
+});
+
 export const createProjectSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
   slug: z
@@ -32,6 +39,7 @@ export const createProjectSchema = z.object({
   isFeatured: z.boolean().default(false),
   isPublished: z.boolean().default(false),
   liveUrl: z.string().optional().default(""),
+  socialLinks: socialLinksSchema.optional(),
   testimonial: testimonialSchema.optional(),
   technologies: z.array(z.string()).default([]),
   technologiesInput: z.string().optional().default(""),
