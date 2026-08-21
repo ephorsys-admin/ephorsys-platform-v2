@@ -17,6 +17,7 @@ import Stat from "@/models/Stat";
 import Testimonial from "@/models/Testimonial";
 import ClientLogo from "@/models/ClientLogo";
 import HeroStat from "@/models/HeroStat";
+import BlogModel from "@/models/Blog";
 
 export const dynamic = "force-dynamic";
 
@@ -75,11 +76,12 @@ export const metadata: Metadata = {
 async function getHomeData() {
   try {
     await connectDB();
-    const [stats, testimonials, logos, heroStats] = await Promise.all([
+    const [stats, testimonials, logos, heroStats, blogs] = await Promise.all([
       Stat.find().sort({ order: 1 }).lean(),
       Testimonial.find({ isActive: true }).sort({ order: 1 }).lean(),
       ClientLogo.find().sort({ order: 1 }).lean(),
       HeroStat.find().sort({ order: 1 }).lean(),
+      BlogModel.find({ status: "published" }).sort({ publishedAt: -1 }).limit(5).lean(),
     ]);
 
     return {
@@ -87,10 +89,11 @@ async function getHomeData() {
       testimonials: JSON.parse(JSON.stringify(testimonials)),
       logos: JSON.parse(JSON.stringify(logos)),
       heroStats: JSON.parse(JSON.stringify(heroStats)),
+      blogs: JSON.parse(JSON.stringify(blogs)),
     };
   } catch (error) {
     console.error("Failed to load home page data:", error);
-    return { stats: [], testimonials: [], logos: [], heroStats: [] };
+    return { stats: [], testimonials: [], logos: [], heroStats: [], blogs: [] };
   }
 }
 
@@ -104,11 +107,11 @@ export default async function Home() {
       <AboutSection aboutStats={data.heroStats} />
       <Techstack />
       <ClientLogosSection logosData={data.logos} />
-      <OurApproach />
+      <OurApproach approachStats={data.heroStats} />
       
       <OurServices />
       
-      <BlogSection />
+      <BlogSection blogsData={data.blogs} />
       <WhatWeProvide />
       <StatsSection statsData={data.stats} />
       <Testimonials testimonialsData={data.testimonials} />
