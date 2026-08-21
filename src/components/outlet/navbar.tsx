@@ -10,6 +10,7 @@ const SERVICES = [
   { href: "/services/app-development", label: "App Development" },
   { href: "/services/web-development", label: "Web Development" },
   { href: "/services/software-development", label: "Software Development" },
+  { href: "/services/ai-development", label: "AI Development" },
   { href: "/services/product-design", label: "Product Design" },
   { href: "/services/digital-marketing", label: "Digital Marketing" },
   { href: "/services/seo", label: "SEO" },

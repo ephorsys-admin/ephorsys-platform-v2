@@ -1202,4 +1202,193 @@ export const servicesData: Record<string, ServiceData> = {
       "Content-heavy sites needing a proper keyword strategy",
     ],
   },
+
+  "ai-development": {
+    // Core
+    title: "AI Development",
+    description:
+      "Custom AI solutions that automate workflows, unlock insights, and give your business a competitive edge.",
+    longDescription:
+      "Harness the power of artificial intelligence with our custom AI development services. We build intelligent systems ranging from LLM-powered chatbots to predictive analytics engines and computer vision pipelines, tailored to your specific business problem.",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop",
+    features: [
+      "LLM Integration & Custom Chatbots",
+      "AI Automation & Workflow Agents",
+      "Predictive Analytics & ML Models",
+      "Computer Vision Solutions",
+      "RAG (Retrieval-Augmented Generation) Systems",
+    ],
+
+    // Extended
+    tagline: "AI that actually solves your business problem — not just a demo.",
+    heroStats: [
+      { value: "25+", label: "AI Systems Shipped" },
+      { value: "60%", label: "Avg Task Automation" },
+      { value: "99.9%", label: "Uptime on Deployed Models" },
+      { value: "3x", label: "Faster Decision Making" },
+    ],
+    whatWeDeliver: [
+      {
+        title: "Custom LLM Integration",
+        desc: "Connect GPT, Claude, or open-source models into your product with proper prompt engineering and guardrails.",
+      },
+      {
+        title: "RAG & Knowledge Base Systems",
+        desc: "Let your AI answer questions using your own company data — docs, PDFs, databases — accurately and securely.",
+      },
+      {
+        title: "AI Agents & Automation",
+        desc: "Autonomous agents that handle repetitive tasks — data entry, email triage, report generation — end to end.",
+      },
+      {
+        title: "Predictive & ML Models",
+        desc: "Forecasting, churn prediction, recommendation engines, and anomaly detection built on your historical data.",
+      },
+      {
+        title: "Computer Vision",
+        desc: "Object detection, OCR, quality inspection, and image classification pipelines for real-world use cases.",
+      },
+      {
+        title: "Model Fine-Tuning & Evaluation",
+        desc: "Fine-tune models on your domain data and build evaluation pipelines to track accuracy and drift over time.",
+      },
+    ],
+    process: [
+      {
+        step: "01",
+        title: "Problem Discovery & Feasibility",
+        desc: "We identify the right AI approach for your problem and validate feasibility before writing any code.",
+      },
+      {
+        step: "02",
+        title: "Data Audit & Preparation",
+        desc: "We assess your available data, clean it, and structure it for training or retrieval.",
+      },
+      {
+        step: "03",
+        title: "Prototype & Model Selection",
+        desc: "Rapid prototyping with the best-fit model (LLM, custom ML, or hybrid), tested against real scenarios.",
+      },
+      {
+        step: "04",
+        title: "Integration & Guardrails",
+        desc: "We integrate the model into your product with safety checks, rate limiting, and fallback logic.",
+      },
+      {
+        step: "05",
+        title: "Deployment & Monitoring",
+        desc: "Production deployment with logging, evaluation dashboards, and a handover walkthrough for your team.",
+      },
+    ],
+    techStack: [
+      { category: "LLMs & APIs", tools: ["OpenAI", "Anthropic Claude", "Gemini", "Llama", "Mistral"] },
+      { category: "ML/Frameworks", tools: ["PyTorch", "TensorFlow", "scikit-learn", "Hugging Face"] },
+      { category: "Vector & RAG", tools: ["Pinecone", "Weaviate", "LangChain", "LlamaIndex"] },
+      { category: "Infra", tools: ["AWS SageMaker", "Vercel AI SDK", "Docker", "FastAPI"] },
+    ],
+    pricing: [
+      {
+        name: "AI Chatbot / Assistant",
+        price: "₹39,999",
+        period: "one-time",
+        description: "Custom LLM-powered chatbot trained on your business content.",
+        features: [
+          "Up to 1 knowledge base source",
+          "Custom prompt engineering",
+          "Website widget integration",
+          "Basic analytics dashboard",
+          "1 month support",
+        ],
+      },
+      {
+        name: "RAG & Automation System",
+        price: "₹89,999",
+        period: "one-time",
+        description: "Full RAG pipeline with automation agents for internal or customer-facing use.",
+        features: [
+          "Multiple data source integration",
+          "Custom agent workflows",
+          "Role-based access control",
+          "Evaluation & monitoring dashboard",
+          "Analytics integration",
+          "2 months support",
+        ],
+        highlight: true,
+      },
+      {
+        name: "Custom AI Platform",
+        price: "Custom",
+        period: "project-based",
+        description: "End-to-end AI product — ML models, agents, or vision systems built for scale.",
+        features: [
+          "Custom model training/fine-tuning",
+          "Scalable inference architecture",
+          "Data pipeline & MLOps setup",
+          "Admin & analytics panel",
+          "Ongoing retainer available",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Do you build with existing LLM APIs or train custom models?",
+        answer:
+          "Both — most use cases are best solved with fine-tuned prompts on existing LLMs, but for specialized problems we train custom models. We'll recommend the right fit.",
+      },
+      {
+        question: "Can the AI use our own company data?",
+        answer:
+          "Yes. We build RAG pipelines that let the AI reference your documents, databases, or knowledge base securely, without retraining the model.",
+      },
+      {
+        question: "How do you prevent the AI from giving wrong answers?",
+        answer:
+          "We implement guardrails, source citations, confidence thresholds, and human-in-the-loop review for critical outputs.",
+      },
+      {
+        question: "Do you handle data privacy and security?",
+        answer:
+          "Yes. We follow data minimization practices, secure API handling, and can deploy on-premise or in your private cloud if required.",
+      },
+      {
+        question: "How long does an AI project take?",
+        answer:
+          "Simple chatbot integrations can ship in 2-3 weeks. Custom ML models or multi-agent systems typically take 6-16 weeks depending on data readiness.",
+      },
+    ],
+    testimonials: [
+      {
+        name: "Ankit Verma",
+        role: "Operations Head",
+        company: "SwiftLogix",
+        quote:
+          "The AI agent they built now handles 70% of our support tickets automatically. Our team finally has time to focus on complex cases.",
+        avatar: "https://i.pravatar.cc/80?img=45",
+      },
+      {
+        name: "Priya Nair",
+        role: "Founder",
+        company: "MedConnect",
+        quote:
+          "They built a RAG system on top of our medical documentation that our staff now use daily. Accuracy and speed exceeded expectations.",
+        avatar: "https://i.pravatar.cc/80?img=56",
+      },
+    ],
+    deliverables: [
+      "Model/architecture documentation",
+      "Source code (GitHub repo)",
+      "Evaluation & monitoring dashboard",
+      "Data pipeline documentation",
+      "API documentation",
+      "Deployment & handover guide",
+    ],
+    timeline: "3 – 16 weeks depending on scope",
+    idealFor: [
+      "Businesses wanting to automate repetitive workflows",
+      "Companies with large document/data repositories needing smart search",
+      "Startups building AI-native products",
+      "Teams needing predictive insights from historical data",
+    ],
+  },
 };

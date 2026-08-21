@@ -90,6 +90,7 @@ export default function BookingForm() {
     "Other",
     "Web Application Development",
     "Mobile App Development",
+    "AI Development & Automation",
     "Digital Growth & Marketing",
     "Graphic Design",
     "SEO Optimization",
