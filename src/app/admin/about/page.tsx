@@ -20,12 +20,17 @@ function AboutStatModal({ item, onClose, onSaved }: { item: any | null; onClose:
 
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/hero-stats/${item._id}` : "/api/admin/hero-stats";
-    const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) {
-      toast.success("About Stat saved!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save stat. Please try again.");
+    try {
+      const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        toast.success("About Stat saved!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save stat. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving stat.");
     }
   };
   return (
@@ -62,16 +67,21 @@ function CertificationModal({ item, onClose, onSaved }: { item: any | null; onCl
 
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/certifications/${item._id}` : "/api/admin/certifications";
-    const res = await fetch(url, {
-      method: item?._id ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      toast.success("Certification saved!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save certification. Please try again.");
+    try {
+      const res = await fetch(url, {
+        method: item?._id ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        toast.success("Certification saved!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save certification. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving certification.");
     }
   };
 

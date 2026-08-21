@@ -65,19 +65,25 @@ function SubmissionDetail({
 
   const updateStatus = async (s: string) => {
     setSaving(true);
-    const res = await fetch(`/api/admin/consultancy/${submission._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: s }),
-    });
-    if (res.ok) {
-      toast.success(`Status updated to "${s}".`);
-      setStatus(s);
-      onStatusUpdate(submission._id, s);
-    } else {
-      toast.error("Failed to update status.");
+    try {
+      const res = await fetch(`/api/admin/consultancy/${submission._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: s }),
+      });
+      if (res.ok) {
+        toast.success(`Status updated to "${s}".`);
+        setStatus(s);
+        onStatusUpdate(submission._id, s);
+      } else {
+        toast.error("Failed to update status.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while updating status.");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   const InfoCard = ({
@@ -229,12 +235,18 @@ export default function AdminConsultancyPage() {
     setLoading(true);
     const params = new URLSearchParams({ page: String(page) });
     if (statusFilter) params.set("status", statusFilter);
-    const res = await fetch(`/api/admin/consultancy?${params}`);
-    const data = await res.json();
-    setSubmissions(data.submissions ?? []);
-    setTotal(data.total ?? 0);
-    setPages(data.pages ?? 1);
-    setLoading(false);
+    try {
+      const res = await fetch(`/api/admin/consultancy?${params}`);
+      const data = await res.json();
+      setSubmissions(data.submissions ?? []);
+      setTotal(data.total ?? 0);
+      setPages(data.pages ?? 1);
+    } catch (err) {
+      console.error("Failed to fetch submissions:", err);
+      toast.error("Failed to load submissions.");
+    } finally {
+      setLoading(false);
+    }
   }, [page, statusFilter]);
 
   useEffect(() => {
@@ -244,16 +256,22 @@ export default function AdminConsultancyPage() {
   /* ── Delete ────────────────────────────────────────────────────────────── */
 
   const deleteSubmission = async (id: string) => {
-    const res = await fetch(`/api/admin/consultancy/${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      toast.success("Consultancy request deleted.");
-      fetchSubmissions();
-    } else {
-      toast.error("Failed to delete submission.");
+    try {
+      const res = await fetch(`/api/admin/consultancy/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        toast.success("Consultancy request deleted.");
+        fetchSubmissions();
+      } else {
+        toast.error("Failed to delete submission.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while deleting.");
+    } finally {
+      setDeleteTarget(null);
     }
-    setDeleteTarget(null);
   };
 
   /* ── Inline status update ──────────────────────────────────────────────── */

@@ -25,12 +25,17 @@ function TeamMemberModal({ member, onClose, onSaved }: { member: TeamMember | nu
   const onSubmit = async (data: any) => {
     const url = member ? `/api/admin/team/${member._id}` : "/api/admin/team";
     const method = member ? "PUT" : "POST";
-    const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) {
-      toast.success(member ? "Team member updated!" : "Team member added!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save team member. Please try again.");
+    try {
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        toast.success(member ? "Team member updated!" : "Team member added!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save team member. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving team member.");
     }
   };
 
@@ -95,12 +100,17 @@ function PhotoModal({ photo, onClose, onSaved }: { photo: Photo | null; onClose:
   const onSubmit = async (data: any) => {
     const url = photo ? `/api/admin/life-at-photos/${photo._id}` : "/api/admin/life-at-photos";
     const method = photo ? "PUT" : "POST";
-    const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) {
-      toast.success(photo ? "Photo updated!" : "Photo added to gallery!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save photo. Please try again.");
+    try {
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        toast.success(photo ? "Photo updated!" : "Photo added to gallery!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save photo. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving photo.");
     }
   };
 
@@ -192,15 +202,21 @@ export default function AdminTeamPage() {
     const url = deleteTarget.type === "member"
       ? `/api/admin/team/${deleteTarget.id}`
       : `/api/admin/life-at-photos/${deleteTarget.id}`;
-    const res = await fetch(url, { method: "DELETE" });
-    if (res.ok) {
-      toast.success(`${deleteTarget.type === "member" ? "Team member" : "Photo"} deleted successfully.`);
-      if (deleteTarget.type === "member") fetchMembers();
-      else fetchPhotos();
-    } else {
-      toast.error("Failed to delete. Please try again.");
+    try {
+      const res = await fetch(url, { method: "DELETE" });
+      if (res.ok) {
+        toast.success(`${deleteTarget.type === "member" ? "Team member" : "Photo"} deleted successfully.`);
+        if (deleteTarget.type === "member") fetchMembers();
+        else fetchPhotos();
+      } else {
+        toast.error("Failed to delete. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while deleting.");
+    } finally {
+      setDeleteTarget(null);
     }
-    setDeleteTarget(null);
   };
 
   return (

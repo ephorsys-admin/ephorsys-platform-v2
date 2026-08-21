@@ -48,24 +48,30 @@ export default function BlogEditorPage() {
   useEffect(() => {
     if (isNew) return;
     (async () => {
-      const res = await fetch(`/api/admin/blogs/${id}`);
-      const data = await res.json();
-      if (data.blog) {
-        const b = data.blog;
-        setValue("title", b.title);
-        setValue("slug", b.slug);
-        setValue("shortDescription", b.shortDescription);
-        setValue("content", b.content);
-        setValue("featuredImage", b.featuredImage);
-        setValue("category", b.category);
-        setValue("subcategory", b.subcategory ?? "");
-        setValue("readTime", b.readTime);
-        setValue("status", b.status);
-        setValue("author.name", b.author.name);
-        setValue("author.profileImage", b.author.profileImage);
-        setValue("author.role", b.author.role);
+      try {
+        const res = await fetch(`/api/admin/blogs/${id}`);
+        const data = await res.json();
+        if (data.blog) {
+          const b = data.blog;
+          setValue("title", b.title);
+          setValue("slug", b.slug);
+          setValue("shortDescription", b.shortDescription);
+          setValue("content", b.content);
+          setValue("featuredImage", b.featuredImage);
+          setValue("category", b.category);
+          setValue("subcategory", b.subcategory ?? "");
+          setValue("readTime", b.readTime);
+          setValue("status", b.status);
+          setValue("author.name", b.author.name);
+          setValue("author.profileImage", b.author.profileImage);
+          setValue("author.role", b.author.role);
+        }
+      } catch (err) {
+        console.error("Failed to load article details:", err);
+        toast.error("Failed to load article details.");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     })();
   }, [id, isNew, setValue]);
 
@@ -73,19 +79,25 @@ export default function BlogEditorPage() {
     setSaving(true);
     const url = isNew ? "/api/admin/blogs" : `/api/admin/blogs/${id}`;
     const method = isNew ? "POST" : "PUT";
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      toast.success(isNew ? "Article created!" : "Article changes saved!");
-      router.push("/admin/blog");
-    } else {
-      const err = await res.json();
-      toast.error(err.error ? String(err.error) : "Failed to save article.");
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        toast.success(isNew ? "Article created!" : "Article changes saved!");
+        router.push("/admin/blog");
+      } else {
+        const err = await res.json();
+        toast.error(err.error ? String(err.error) : "Failed to save article.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving.");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   const inputCls = "w-full rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-405 px-3.5 py-2.5 text-sm outline-none focus:border-[#74c316] focus:ring-4 focus:ring-[#74c316]/10 transition-all duration-300";
