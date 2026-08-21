@@ -273,7 +273,7 @@ export function Navbar() {
           }`}
         style={{ contain: "layout" }}
       >
-        <div className="max-w-7xl mx-auto py-2 px-3 sm:px-6 lg:px-6">
+        <div className="max-w-7xl mx-auto py-2 px-3 sm:px-2 lg:px-2">
           <div className="flex items-center h-14 sm:h-16 md:h-16 ">
             {/* ── Logo (left) ── */}
             <div className="flex-1 flex justify-start lg:flex-1 ">
@@ -313,11 +313,11 @@ export function Navbar() {
               <DesktopNavLink href="/blog" isActive={pathname === "/blog"}>
                 Blog
               </DesktopNavLink>
-              <DesktopNavLink href="/career" isActive={pathname === "/career"}>
-                Career
-              </DesktopNavLink>
               <DesktopNavLink href="/team" isActive={pathname === "/team"}>
                 Team
+              </DesktopNavLink>
+              <DesktopNavLink href="/career" isActive={pathname === "/career"}>
+                Career
               </DesktopNavLink>
               <DesktopNavLink
                 href="/portfolio"

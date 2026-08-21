@@ -114,11 +114,7 @@ export default function Industry() {
                             </div>
 
                             {/* Green dot accent — bottom right */}
-                            <div className="absolute -bottom-3 -right-3 w-10 h-10 rounded-full bg-[#74c316] z-10 flex items-center justify-center shadow-lg shadow-[#74c316]/40">
-                                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </div>
+                       
                         </div>
                     </div>
 

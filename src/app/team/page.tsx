@@ -53,7 +53,7 @@ export default async function Team() {
   const data = await getTeamData();
 
   return (
-    <div className="flex flex-col min-h-screen bg-zinc-50 font-sans">
+    <div className="flex flex-col min-h-screen bg-zinc-50 ">
       <BgHero
         tag="Our Team"
         heading={
@@ -73,7 +73,7 @@ export default async function Team() {
       <LayoutGridDemo photosData={data.photos} />
 
       {/* Ready to Join Our Team? Section */}
-      <section className="bg-zinc-50 border-t border-gray-150 py-20 px-6 text-center relative overflow-hidden">
+      <section className="bg-zinc-50 py-20 px-6 text-center relative overflow-hidden">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6" style={{ fontFamily: "var(--font-syne)" }}>
             Ready to <span className="text-[#74C316]">Join Our Team?</span>

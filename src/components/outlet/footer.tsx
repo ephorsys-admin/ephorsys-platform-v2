@@ -53,7 +53,7 @@ export default function Footer() {
                        mx-2 sm:mx-4 md:mx-6 mb-4">
 
       {/* Watermark — desktop only */}
-      <div className="absolute inset-0 mt-70  flex font-heading justify-center pointer-events-none select-none">
+      <div className="absolute inset-0 mt-100  flex font-heading justify-center pointer-events-none select-none">
         <h1 className="hidden lg:block lg:text-8xl lg:pt-36 xl:text-9xl xl:pt-6
                          bg-linear-to-t from-[#74c316]/10 via-[#74c316]/25 to-[#74c316]/15
                          bg-clip-text text-transparent font-extrabold ">

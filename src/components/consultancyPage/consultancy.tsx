@@ -62,29 +62,29 @@ const defaultForm: FormState = {
 /* ─── Benefits list ──────────────────────────────────────────────────────────── */
 
 const BENEFITS = [
-  { icon: Clock, text: "30-minute free strategy call — no obligation" },
-  { icon: MessageCircle, text: "Discuss your specific business challenge" },
-  { icon: Target, text: "Get a clear solution recommendation" },
-  { icon: Zap, text: "Understand timeline and pricing" },
-  { icon: Users, text: "Speak directly with our technical team" },
-  { icon: Shield, text: "Response within 4-8 business hours" },
+  { icon: Clock, text: "30-minute complimentary consultation" },
+  { icon: MessageCircle, text: "Understand your goals and business requirements" },
+  { icon: Target, text: "Explore the right technology and development approach" },
+  { icon: Zap, text: "Discuss project scope, features, and priorities" },
+  { icon: Users, text: "Get a realistic development roadmap" },
+  { icon: Shield, text: "Receive transparent pricing with no hidden commitments" },
 ] as const;
 
 /* ─── Service tags ───────────────────────────────────────────────────────────── */
 
 const SERVICE_TAGS = [
-  "Website Development",
-  "E-commerce",
-  "Social Media",
-  "SEO",
+  "Web & Software Solutions",
+  "Mobile Applications",
+  "Business Automation",
+  "AI Solutions",
   "Google/Meta Ads",
   "HRMS",
   "CRM",
-  "Fleet Management",
-  "Custom Dashboard",
-  "ERP",
-  "Mobile App",
-  "Offshore Development",
+  "Custom Dashboards",
+  "Cloud Solutions",
+  "E-Commerce Platforms",
+  "UI/UX Engineering",
+  "SaaS Product Development",
 ] as const;
 
 /* ─── Animation variants ─────────────────────────────────────────────────────── */
@@ -260,16 +260,13 @@ export default function ConsultancyPage() {
             {/* Heading */}
             <motion.div custom={0} variants={fadeUp}>
               <h2
-                className="text-3xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-gray-900 leading-tight tracking-tight"
+                className="text-2xl sm:text-2xl lg:text-[2.65rem] font-extrabold text-gray-900 leading-tight tracking-tight"
                 style={{ fontFamily: "var(--font-syne)" }}
               >
-                What Happens in the Consultation?
+           Let’s Turn Your Business Idea Into Reality
               </h2>
-              <p className="mt-4 text-gray-500 leading-relaxed text-[0.95rem] max-w-lg">
-                Our team will understand your business, your current challenges
-                and what you are looking to build or improve. We will recommend
-                the right solution, share a rough timeline and give you an
-                honest cost estimate.
+              <p className="mt-4 text-gray-500 leading-relaxed text-sm max-w-lg">
+               Every business has different goals, challenges, and opportunities. Our consultation starts with understanding where you are today and identifying the technology that can help you move forward.
               </p>
             </motion.div>
 
@@ -597,7 +594,7 @@ export default function ConsultancyPage() {
 
               {/* Footer note */}
               <p className="text-center text-xs text-gray-400 mt-1">
-                We respond within 4-8 business hours. No spam, ever.
+Our team will review your request and respond within 4–8 business hours.
               </p>
             </form>
           </motion.div>
