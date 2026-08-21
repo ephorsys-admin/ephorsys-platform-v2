@@ -3,17 +3,19 @@ import Job from "@/models/Job";
 import JobApplication from "@/models/JobApplication";
 import Blog from "@/models/Blog";
 import ContactSubmission from "@/models/ContactSubmission";
-import { Briefcase, FileText, Mail, Users } from "lucide-react";
+import ConsultancySubmission from "@/models/ConsultancySubmission";
+import { Briefcase, FileText, Mail, Users, Headphones } from "lucide-react";
 
 async function getStats() {
   await connectDB();
-  const [jobs, applications, blogs, contacts] = await Promise.all([
+  const [jobs, applications, blogs, contacts, consultancies] = await Promise.all([
     Job.countDocuments({ isActive: true }),
     JobApplication.countDocuments({ status: "new" }),
     Blog.countDocuments({ status: "published" }),
     ContactSubmission.countDocuments({ status: "new" }),
+    ConsultancySubmission.countDocuments({ status: "new" }),
   ]);
-  return { jobs, applications, blogs, contacts };
+  return { jobs, applications, blogs, contacts, consultancies };
 }
 
 export default async function DashboardPage() {
@@ -24,6 +26,7 @@ export default async function DashboardPage() {
     { label: "New Applications", value: stats.applications, icon: Users, color: "#3b82f6" },
     { label: "Published Blogs", value: stats.blogs, icon: FileText, color: "#8b5cf6" },
     { label: "New Contacts", value: stats.contacts, icon: Mail, color: "#f59e0b" },
+    { label: "Consultancy", value: stats.consultancies, icon: Headphones, color: "#10b981" },
   ];
 
   return (
@@ -37,7 +40,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Grid of stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {cards.map(({ label, value, icon: Icon, color }) => (
           <div
             key={label}
@@ -69,6 +72,7 @@ export default async function DashboardPage() {
             { href: "/admin/careers?tab=applications", label: "Job Applicants Inbox" },
             { href: "/admin/blog", label: "Publish Articles" },
             { href: "/admin/contacts", label: "Contact Submissions" },
+            { href: "/admin/consultancy", label: "Consultancy Leads" },
             { href: "/admin/about", label: "Team & Life Gallery" },
             { href: "/admin/home", label: "Homepage Metrics & Logos" },
           ].map(({ href, label }) => (

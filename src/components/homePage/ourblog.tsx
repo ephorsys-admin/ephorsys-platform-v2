@@ -286,36 +286,92 @@ function SideCard({ post }: { post: BlogPost }) {
   );
 }
 
+// ─── Fallback Data ─────────────────────────────────────────────────────────────
+
+const fallbackBlogs: BlogItem[] = [
+  {
+    _id: "fb1",
+    title: "Why Your Business Needs a Website in 2026 (Not Just Social Media)",
+    slug: "why-your-business-needs-a-website-2026",
+    shortDescription: "Social media gives you reach — but a website gives you ownership. We break down why every serious business needs a professional website in 2026, and what happens when you rely only on Instagram or Facebook.",
+    content: "Content",
+    featuredImage: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352862/pexels-yankrukov-7698805_zwk7hu.jpg",
+    category: "Web & App Development",
+    subcategory: "Web Dev",
+    readTime: "5 min read",
+    publishedAt: "2026-01-10T00:00:00.000Z",
+    author: {
+      name: "Shantanu Sabyasachi Swain",
+      profileImage: "https://i.pravatar.cc/40?img=11",
+      role: "Full Stack Engineer",
+    },
+  },
+  {
+    _id: "fb2",
+    title: "React vs Next.js — Which One Should You Choose for Your Project?",
+    slug: "react-vs-nextjs-which-to-choose",
+    shortDescription: "Both are powerful, but they solve different problems. Our engineering team breaks down when to use React alone vs when Next.js is the smarter choice — with real project examples from our work.",
+    content: "Content",
+    featuredImage: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352403/pexels-antonio-batinic-2573434-4164418_n2p1nf.jpg",
+    category: "Web & App Development",
+    subcategory: "Web Dev",
+    readTime: "5 min read",
+    publishedAt: "2026-01-18T00:00:00.000Z",
+    author: {
+      name: "BiswaRanjan Rout",
+      profileImage: "https://i.pravatar.cc/40?img=12",
+      role: "Frontend Engineer",
+    },
+  },
+  {
+    _id: "fb3",
+    title: "How Much Does It Cost to Build a Website in India? (2026 Guide)",
+    slug: "website-cost-india-2026",
+    shortDescription: "From a ₹5,000 landing page to a ₹5 lakh SaaS platform — we break down what actually drives website costs in India, what you're really paying for, and how to avoid being overcharged.",
+    content: "Content",
+    featuredImage: "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352404/pexels-nemuel-6424586_zjpb9y.jpg",
+    category: "Web & App Development",
+    subcategory: "Web Dev",
+    readTime: "5 min read",
+    publishedAt: "2026-02-03T00:00:00.000Z",
+    author: {
+      name: "Sashwat Mohanty",
+      profileImage: "https://i.pravatar.cc/40?img=14",
+      role: "Tech Lead",
+    },
+  },
+];
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function BlogSection({ blogsData }: { blogsData?: BlogItem[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.06 });
 
-  // Map backend data to local structure
-  const activeBlogs = blogsData && blogsData.length > 0
-    ? blogsData.map((b, idx) => {
-        const catConfig = getCategoryConfig(b.category);
-        return {
-          id: idx + 1,
-          image: b.featuredImage || "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352862/pexels-yankrukov-7698805_zwk7hu.jpg",
-          category: b.category,
-          categoryIcon: catConfig.categoryIcon,
-          categoryColor: catConfig.categoryColor,
-          categoryBg: catConfig.categoryBg,
-          author: b.author?.name || "Ephorsys Team",
-          authorRole: b.author?.role || "Team Member",
-          authorAvatar: b.author?.profileImage || "https://i.pravatar.cc/40?img=11",
-          date: b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
-          title: b.title,
-          excerpt: b.shortDescription,
-          featured: idx === 0,
-          slug: b.slug,
-        };
-      })
-    : [];
+  const displayBlogs = blogsData && blogsData.length > 0 ? blogsData : fallbackBlogs;
 
-  // If there are no published blogs, don't render the section at all
+  // Map data to local structure
+  const activeBlogs = displayBlogs.map((b, idx) => {
+    const catConfig = getCategoryConfig(b.category);
+    return {
+      id: idx + 1,
+      image: b.featuredImage || "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352862/pexels-yankrukov-7698805_zwk7hu.jpg",
+      category: b.category,
+      categoryIcon: catConfig.categoryIcon,
+      categoryColor: catConfig.categoryColor,
+      categoryBg: catConfig.categoryBg,
+      author: b.author?.name || "Ephorsys Team",
+      authorRole: b.author?.role || "Team Member",
+      authorAvatar: b.author?.profileImage || "https://i.pravatar.cc/40?img=11",
+      date: b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+      title: b.title,
+      excerpt: b.shortDescription,
+      featured: idx === 0,
+      slug: b.slug,
+    };
+  });
+
+  // If there are no blogs to display (should not happen with fallbacks), don't render
   if (activeBlogs.length === 0) return null;
 
   const featured = activeBlogs.find((p) => p.featured) || activeBlogs[0];
