@@ -24,12 +24,17 @@ function StatModal({ item, onClose, onSaved }: { item: any | null; onClose: () =
   });
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/stats/${item._id}` : "/api/admin/stats";
-    const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) {
-      toast.success(item?._id ? "Stat updated!" : "Stat created!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save stat. Please try again.");
+    try {
+      const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        toast.success(item?._id ? "Stat updated!" : "Stat created!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save stat. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving stat.");
     }
   };
   return (
@@ -62,12 +67,17 @@ function TestimonialModal({ item, onClose, onSaved }: { item: any | null; onClos
   });
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/testimonials/${item._id}` : "/api/admin/testimonials";
-    const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) {
-      toast.success(item?._id ? "Testimonial updated!" : "Testimonial added!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save testimonial. Please try again.");
+    try {
+      const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        toast.success(item?._id ? "Testimonial updated!" : "Testimonial added!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save testimonial. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving testimonial.");
     }
   };
   return (
@@ -117,12 +127,17 @@ function LogoModal({ item, onClose, onSaved }: { item: any | null; onClose: () =
   });
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/client-logos/${item._id}` : "/api/admin/client-logos";
-    const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) {
-      toast.success(item?._id ? "Logo updated!" : "Logo added!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save logo. Please try again.");
+    try {
+      const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        toast.success(item?._id ? "Logo updated!" : "Logo added!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save logo. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving logo.");
     }
   };
   return (
@@ -164,12 +179,17 @@ function HeroStatModal({ item, defaultOrder, onClose, onSaved }: { item: any | n
   });
   const onSubmit = async (data: any) => {
     const url = item?._id ? `/api/admin/hero-stats/${item._id}` : "/api/admin/hero-stats";
-    const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    if (res.ok) {
-      toast.success(item?._id ? "Hero Stat saved!" : "Hero Stat created!");
-      onSaved(); onClose();
-    } else {
-      toast.error("Failed to save Hero Stat. Please try again.");
+    try {
+      const res = await fetch(url, { method: item?._id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        toast.success(item?._id ? "Hero Stat saved!" : "Hero Stat created!");
+        onSaved(); onClose();
+      } else {
+        toast.error("Failed to save Hero Stat. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving Hero Stat.");
     }
   };
   const isFixed = item?.order === 0 || defaultOrder === 0 || (item?.order !== undefined && item?.order < 0) || (defaultOrder !== undefined && defaultOrder < 0);
@@ -229,10 +249,61 @@ export default function AdminHomePage() {
   // Delete confirm state
   const [deleteTarget, setDeleteTarget] = useState<{ type: "stat" | "testimonial" | "logo" | "hero-stat"; id: string; name?: string } | null>(null);
 
-  const fetchStats = useCallback(async () => { setLoading(true); const r = await fetch("/api/admin/stats"); const d = await r.json(); setStats(d.stats ?? []); setLoading(false); }, []);
-  const fetchTestimonials = useCallback(async () => { setLoading(true); const r = await fetch("/api/admin/testimonials"); const d = await r.json(); setTestimonials(d.testimonials ?? []); setLoading(false); }, []);
-  const fetchLogos = useCallback(async () => { setLoading(true); const r = await fetch("/api/admin/client-logos"); const d = await r.json(); setLogos(d.logos ?? []); setLoading(false); }, []);
-  const fetchHeroStats = useCallback(async () => { setLoading(true); const r = await fetch("/api/admin/hero-stats"); const d = await r.json(); setHeroStats(d.heroStats ?? []); setLoading(false); }, []);
+  const fetchStats = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/stats");
+      const d = await r.json();
+      setStats(d.stats ?? []);
+    } catch (err) {
+      console.error("Failed to fetch stats:", err);
+      toast.error("Failed to load stats.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchTestimonials = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/testimonials");
+      const d = await r.json();
+      setTestimonials(d.testimonials ?? []);
+    } catch (err) {
+      console.error("Failed to fetch testimonials:", err);
+      toast.error("Failed to load testimonials.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchLogos = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/client-logos");
+      const d = await r.json();
+      setLogos(d.logos ?? []);
+    } catch (err) {
+      console.error("Failed to fetch client logos:", err);
+      toast.error("Failed to load client logos.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchHeroStats = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/hero-stats");
+      const d = await r.json();
+      setHeroStats(d.heroStats ?? []);
+    } catch (err) {
+      console.error("Failed to fetch hero stats:", err);
+      toast.error("Failed to load hero stats.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => { if (tab === "stats") fetchStats(); }, [tab, fetchStats]);
   useEffect(() => { if (tab === "testimonials") fetchTestimonials(); }, [tab, fetchTestimonials]);
@@ -247,26 +318,37 @@ export default function AdminHomePage() {
       logo: `/api/admin/client-logos/${deleteTarget.id}`,
       "hero-stat": `/api/admin/hero-stats/${deleteTarget.id}`,
     };
-    const res = await fetch(endpoints[deleteTarget.type], { method: "DELETE" });
-    if (res.ok) {
-      toast.success(`${deleteTarget.type.charAt(0).toUpperCase() + deleteTarget.type.slice(1).replace("-", " ")} deleted successfully.`);
-      if (deleteTarget.type === "stat") fetchStats();
-      else if (deleteTarget.type === "testimonial") fetchTestimonials();
-      else if (deleteTarget.type === "logo") fetchLogos();
-      else fetchHeroStats();
-    } else {
-      toast.error("Failed to delete. Please try again.");
+    try {
+      const res = await fetch(endpoints[deleteTarget.type], { method: "DELETE" });
+      if (res.ok) {
+        toast.success(`${deleteTarget.type.charAt(0).toUpperCase() + deleteTarget.type.slice(1).replace("-", " ")} deleted successfully.`);
+        if (deleteTarget.type === "stat") fetchStats();
+        else if (deleteTarget.type === "testimonial") fetchTestimonials();
+        else if (deleteTarget.type === "logo") fetchLogos();
+        else fetchHeroStats();
+      } else {
+        toast.error("Failed to delete. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while deleting.");
+    } finally {
+      setDeleteTarget(null);
     }
-    setDeleteTarget(null);
   };
 
   const toggleTestimonial = async (t: TestimonialItem) => {
-    const res = await fetch(`/api/admin/testimonials/${t._id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ isActive: !t.isActive }) });
-    if (res.ok) {
-      toast.success(`Testimonial ${t.isActive ? "hidden" : "activated"}.`);
-      fetchTestimonials();
-    } else {
-      toast.error("Failed to update status.");
+    try {
+      const res = await fetch(`/api/admin/testimonials/${t._id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ isActive: !t.isActive }) });
+      if (res.ok) {
+        toast.success(`Testimonial ${t.isActive ? "hidden" : "activated"}.`);
+        fetchTestimonials();
+      } else {
+        toast.error("Failed to update status.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while updating status.");
     }
   };
 

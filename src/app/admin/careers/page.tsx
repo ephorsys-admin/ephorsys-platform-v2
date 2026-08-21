@@ -93,17 +93,22 @@ function JobFormModal({
 
     const url = job ? `/api/admin/jobs/${job._id}` : "/api/admin/jobs";
     const method = job ? "PUT" : "POST";
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      toast.success(job ? "Job posting updated!" : "Job posting published!");
-      onSaved();
-      onClose();
-    } else {
-      toast.error("Failed to save job posting.");
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        toast.success(job ? "Job posting updated!" : "Job posting published!");
+        onSaved();
+        onClose();
+      } else {
+        toast.error("Failed to save job posting.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving job posting.");
     }
   };
 
@@ -225,19 +230,25 @@ function ApplicationDetailModal({
 
   const updateStatus = async (newStatus: string) => {
     setSaving(true);
-    const res = await fetch(`/api/admin/applications/${application._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    });
-    if (res.ok) {
-      toast.success(`Application status updated to "${newStatus}".`);
-      setStatus(newStatus);
-      onStatusUpdate(application._id, newStatus);
-    } else {
-      toast.error("Failed to update status.");
+    try {
+      const res = await fetch(`/api/admin/applications/${application._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        toast.success(`Application status updated to "${newStatus}".`);
+        setStatus(newStatus);
+        onStatusUpdate(application._id, newStatus);
+      } else {
+        toast.error("Failed to update status.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while updating status.");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   return (
@@ -376,50 +387,73 @@ export default function CareersAdminPage() {
 
   const fetchJobs = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/jobs");
-    const data = await res.json();
-    setJobs(data.jobs ?? []);
-    setLoading(false);
+    try {
+      const res = await fetch("/api/admin/jobs");
+      const data = await res.json();
+      setJobs(data.jobs ?? []);
+    } catch (err) {
+      console.error("Failed to fetch jobs:", err);
+      toast.error("Failed to load jobs.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const fetchApplications = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams({ page: String(appPage) });
     if (statusFilter) params.set("status", statusFilter);
-    const res = await fetch(`/api/admin/applications?${params}`);
-    const data = await res.json();
-    setApplications(data.applications ?? []);
-    setAppTotal(data.total ?? 0);
-    setAppPages(data.pages ?? 1);
-    setLoading(false);
+    try {
+      const res = await fetch(`/api/admin/applications?${params}`);
+      const data = await res.json();
+      setApplications(data.applications ?? []);
+      setAppTotal(data.total ?? 0);
+      setAppPages(data.pages ?? 1);
+    } catch (err) {
+      console.error("Failed to fetch applications:", err);
+      toast.error("Failed to load applications.");
+    } finally {
+      setLoading(false);
+    }
   }, [appPage, statusFilter]);
 
   useEffect(() => { fetchJobs(); }, [fetchJobs]);
   useEffect(() => { if (tab === "applications") fetchApplications(); }, [tab, fetchApplications]);
 
   const toggleJobActive = async (job: Job) => {
-    const res = await fetch(`/api/admin/jobs/${job._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isActive: !job.isActive }),
-    });
-    if (res.ok) {
-      toast.success(`Job ${job.isActive ? "deactivated" : "activated"}.`);
-      fetchJobs();
-    } else {
-      toast.error("Failed to update job status.");
+    try {
+      const res = await fetch(`/api/admin/jobs/${job._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: !job.isActive }),
+      });
+      if (res.ok) {
+        toast.success(`Job ${job.isActive ? "deactivated" : "activated"}.`);
+        fetchJobs();
+      } else {
+        toast.error("Failed to update job status.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while updating job status.");
     }
   };
 
   const deleteJob = async (id: string) => {
-    const res = await fetch(`/api/admin/jobs/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Job posting deleted.");
-      fetchJobs();
-    } else {
-      toast.error("Failed to delete job posting.");
+    try {
+      const res = await fetch(`/api/admin/jobs/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Job posting deleted.");
+        fetchJobs();
+      } else {
+        toast.error("Failed to delete job posting.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while deleting job posting.");
+    } finally {
+      setDeleteJobTarget(null);
     }
-    setDeleteJobTarget(null);
   };
 
   const handleStatusUpdate = (id: string, status: string) => {
@@ -427,15 +461,21 @@ export default function CareersAdminPage() {
   };
 
   const deleteApplication = async (id: string) => {
-    const res = await fetch(`/api/admin/applications/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Application deleted and resume removed from storage.");
-      setApplications((prev) => prev.filter((a) => a._id !== id));
-      setAppTotal((t) => t - 1);
-    } else {
-      toast.error("Failed to delete application.");
+    try {
+      const res = await fetch(`/api/admin/applications/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Application deleted and resume removed from storage.");
+        setApplications((prev) => prev.filter((a) => a._id !== id));
+        setAppTotal((t) => t - 1);
+      } else {
+        toast.error("Failed to delete application.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while deleting application.");
+    } finally {
+      setDeleteAppTarget(null);
     }
-    setDeleteAppTarget(null);
   };
 
   return (

@@ -4,13 +4,16 @@ import { authOptions } from "@/lib/auth";
 import { cloudinary } from "@/lib/cloudinary";
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const body = await request.json();
   const { folder = "ephorsys", public_id } = body;
+
+  // Allow unauthenticated signature generation ONLY for the "resumes" folder
+  if (folder !== "resumes") {
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user as any)?.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  }
 
   const timestamp = Math.round(new Date().getTime() / 1000);
   const paramsToSign: Record<string, string | number> = {

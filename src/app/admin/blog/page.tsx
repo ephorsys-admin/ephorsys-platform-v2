@@ -27,39 +27,56 @@ export default function AdminBlogPage() {
 
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
-    const res = await fetch(`/api/admin/blogs?page=${page}`);
-    const data = await res.json();
-    setBlogs(data.blogs ?? []);
-    setPages(data.pages ?? 1);
-    setTotal(data.total ?? 0);
-    setLoading(false);
+    try {
+      const res = await fetch(`/api/admin/blogs?page=${page}`);
+      const data = await res.json();
+      setBlogs(data.blogs ?? []);
+      setPages(data.pages ?? 1);
+      setTotal(data.total ?? 0);
+    } catch (err) {
+      console.error("Failed to fetch blogs:", err);
+      toast.error("Failed to load blog posts.");
+    } finally {
+      setLoading(false);
+    }
   }, [page]);
 
   useEffect(() => { fetchBlogs(); }, [fetchBlogs]);
 
   const deleteBlog = async (id: string) => {
-    const res = await fetch(`/api/admin/blogs/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Blog post deleted.");
-      fetchBlogs();
-    } else {
-      toast.error("Failed to delete blog post.");
+    try {
+      const res = await fetch(`/api/admin/blogs/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Blog post deleted.");
+        fetchBlogs();
+      } else {
+        toast.error("Failed to delete blog post.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while deleting.");
+    } finally {
+      setDeleteTarget(null);
     }
-    setDeleteTarget(null);
   };
 
   const toggleStatus = async (blog: Blog) => {
     const newStatus = blog.status === "published" ? "draft" : "published";
-    const res = await fetch(`/api/admin/blogs/${blog._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    });
-    if (res.ok) {
-      toast.success(`Post ${newStatus === "published" ? "published" : "moved to draft"}.`);
-      fetchBlogs();
-    } else {
-      toast.error("Failed to update status.");
+    try {
+      const res = await fetch(`/api/admin/blogs/${blog._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        toast.success(`Post ${newStatus === "published" ? "published" : "moved to draft"}.`);
+        fetchBlogs();
+      } else {
+        toast.error("Failed to update status.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while updating status.");
     }
   };
 
