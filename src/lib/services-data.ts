@@ -143,7 +143,7 @@ export const servicesData: Record<string, ServiceData> = {
     pricing: [
       {
         name: "Starter",
-        price: "₹1,20,000",
+        price: "₹50,000",
         period: "one-time",
         description: "Perfect for MVPs and early-stage startups validating an idea.",
         features: [
@@ -156,7 +156,7 @@ export const servicesData: Record<string, ServiceData> = {
       },
       {
         name: "Growth",
-        price: "₹2,80,000",
+        price: "₹1,20,000",
         period: "one-time",
         description: "Full-featured app for businesses ready to scale.",
         features: [
@@ -525,7 +525,7 @@ export const servicesData: Record<string, ServiceData> = {
     pricing: [
       {
         name: "Startup",
-        price: "₹2,00,000",
+        price: "₹1,00,000",
         period: "one-time",
         description: "Ideal for building a focused MVP or internal tool.",
         features: [
@@ -539,7 +539,7 @@ export const servicesData: Record<string, ServiceData> = {
       },
       {
         name: "Scale",
-        price: "₹5,00,000",
+        price: "₹3,00,000",
         period: "one-time",
         description: "Full-featured software product ready for real users and real scale.",
         features: [

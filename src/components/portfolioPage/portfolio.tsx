@@ -54,27 +54,28 @@ export default async function PortfolioPage() {
     <div className="min-h-screen bg-white text-slate-900 selection:bg-[#62a611] selection:text-white select-none">
 
       {/* ── Hero / Header ── */}
-      <section className="pt-16 pb-10 text-center px-4 border-b border-slate-100">
-        <p
-          className="text-[10px] font-extrabold uppercase tracking-[0.3em] text-[#62a611] mb-5"
-          style={{ fontFamily: "var(--font-syne)" }}
-        >
-          Portfolio
-        </p>
-        <h1
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 leading-tight mb-5"
-          style={{ fontFamily: "var(--font-syne)" }}
-        >
-          Projects We Are Proud Of
-        </h1>
-        <p className="text-xs sm:text-sm md:text-base text-slate-500 max-w-lg mx-auto leading-relaxed">
-          Browse highlights below —{" "}
-          <span className="text-[#62a611] font-semibold italic">
-            open any project for the full story, features and tech stack.
-          </span>
-        </p>
-      </section>
- 
+    <section className="pt-8 pb-6 text-center px-4 border-b border-slate-100">
+  <p
+    className="text-[9px] font-extrabold uppercase tracking-[0.25em] text-[#62a611] mb-3"
+    style={{ fontFamily: "var(--font-syne)" }}
+  >
+    Portfolio
+  </p>
+
+  <h1
+    className="text-xl sm:text-2xl md:text-3xl lg:text-[2.8rem] font-black tracking-tight text-slate-900 leading-tight mb-3"
+    style={{ fontFamily: "var(--font-syne)" }}
+  >
+    Projects We <span className="text-[#62a611]">Are Proud Of</span>
+  </h1>
+
+  <p className="text-xs sm:text-sm md:text-sm text-slate-500 max-w-lg mx-auto leading-relaxed">
+    Browse highlights below —{" "}
+    <span className="text-[#62a611] font-semibold italic">
+      open any project for the full story, features and tech stack.
+    </span>
+  </p>
+</section>
       {/* ── Card Grid ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
         {projects.length === 0 ? (
@@ -208,11 +209,11 @@ export default async function PortfolioPage() {
               Ready to Build?
             </h2>
             <Link
-              href="/contact"
+              href="/consultancy"
               className="inline-block bg-white text-[#62a611] font-black text-[10px] sm:text-xs uppercase tracking-wider px-5 py-3.5 sm:px-7 sm:py-3.5 rounded-xl hover:bg-white/90 active:scale-[0.98] transition-all duration-200"
               style={{ fontFamily: "var(--font-syne)" }}
             >
-              Initialize Connection →
+             Schedule a Free Consultation →
             </Link>
           </div>
           <div className="flex flex-col gap-2 text-[9px] sm:text-xs text-white/70 md:text-right font-mono">
