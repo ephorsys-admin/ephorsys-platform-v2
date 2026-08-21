@@ -25,16 +25,24 @@ async function getProjects() {
 }
 
 const INDUSTRY_TAGS = [
-  "Healthcare & Medical",
-  "Automotive & Car Rental",
-  "Education & E-Learning",
-  "Schools & Educational Institutions",
-  "Salon & Spa",
-  "Events & Event Management",
-  "Food & Hospitality",
-  "E-Commerce & Retail",
-  "Jewellery & Lifestyle",
-  "NGO & Foundations",
+"Website Development",
+"Web Application Development",
+"Custom Software Development",
+"Mobile App Development",
+"E-Commerce Development",
+"UI/UX Design",
+"Frontend Development",
+"Backend Development",
+"Full-Stack Development",
+"API Development & Integration",
+"Cloud & DevOps Solutions",
+"AI & Machine Learning Solutions",
+"CRM & ERP Development",
+"Maintenance & Support",
+"Website Redesign & Optimization",
+"Education & Healthcare",
+"Hotel Booking / Hospitality",
+"Travel & Transportation"
 ];
 
 export default async function PortfolioHero() {
@@ -74,44 +82,50 @@ export default async function PortfolioHero() {
 
                 <div className="relative max-w-7xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
 
-                    {/* Breadcrumb */}
-                    <nav className="flex items-center gap-2 text-xs text-white/50 font-semibold mb-8 tracking-wide">
-                        <Link href="/" className="hover:text-white transition-colors duration-200">
-                            Home
-                        </Link>
-                        <span className="text-white/30">›</span>
-                        <span className="text-white/90">Portfolio</span>
-                    </nav>
+    {/* Breadcrumb */}
+    <nav className="flex items-center gap-2 text-xs text-white/50 font-semibold mb-8 tracking-wide">
+        <Link href="/" className="hover:text-white transition-colors duration-200">
+            Home
+        </Link>
+        <span className="text-white/30">›</span>
+        <span className="text-white/90">Portfolio</span>
+    </nav>
 
-                    {/* Title */}
-                    <h1
-                        className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight tracking-tight mb-4"
-                        style={{ fontFamily: "var(--font-syne)" }}
-                    >
-                        Proven Work
-                    </h1>
+    {/* Two-column row: text left, tags right */}
+    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
 
-                    {/* Subtitle */}
-                    <p className="text-sm sm:text-[0.95rem] text-white/65 max-w-xl leading-relaxed mb-10">
-                        Explore the digital products and technology solutions we've delivered
-                        across healthcare, mobility, education, e-commerce, hospitality, and
-                        other industries.
-                    </p>
+        {/* Left: Title + Subtitle */}
+        <div className="max-w-xl">
+            <h1
+                className="text-4xl sm:text-5xl md:text-6xl font-black text-white  mb-4"
+                style={{ fontFamily: "var(--font-syne)" }}
+            >
+                Proven Work
+            </h1>
 
-                    {/* Industry Pill Tags */}
-                    <div className="flex flex-wrap gap-2.5">
-                        {INDUSTRY_TAGS.map((tag) => (
-                            <span
-                                key={tag}
-                                className="border border-white/20 text-white/80 text-xs font-semibold px-4 py-1.5 rounded-full"
-                                style={{ background: "rgba(255,255,255,0.07)" }}
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
+            <p className="text-sm sm:text-[0.95rem] text-white/65 leading-relaxed">
+                Explore the digital products and technology solutions we've delivered
+                across healthcare, mobility, education, e-commerce, hospitality, and
+                other industries.
+            </p>
+        </div>
 
-                </div>
+        {/* Right: Industry Pill Tags */}
+        <div className="flex flex-wrap gap-2 lg:justify-end lg:max-w-md">
+            {INDUSTRY_TAGS.map((tag) => (
+                <span
+                    key={tag}
+                    className="border border-white/20 text-white/90 text-[10px] font-semibold px-2.5 py-1 rounded-full bg-black"
+                    style={{ background: "rgba(255,255,255,0.07)" }}
+                >
+                    {tag}
+                </span>
+            ))}
+        </div>
+
+    </div>
+
+</div>
             </section>
 
         </div>

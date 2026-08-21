@@ -235,18 +235,32 @@ export default function AboutUs({ aboutStats = [] }: { aboutStats?: any[] }) {
             </motion.div>
 
             {/* CTA */}
-            <Link href="/contact">
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: 0.5 }}
-                className="group mt-8 flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition-all duration-300 hover:brightness-110 cursor-pointer ml-8 md:ml-auto md:mr-auto lg:ml-8 lg:mr-0"
-                style={{ background: "#74c316" }}
-              >
-                Start a Project with Us
-              </motion.button>
-            </Link>
+           <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+  <Link href="/consultancy">
+    <motion.button
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.45, delay: 0.5 }}
+      className="group flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition-all duration-300 hover:brightness-110 cursor-pointer"
+      style={{ background: "#74c316" }}
+    >
+      Start a Project with Us
+    </motion.button>
+  </Link>
+
+  <Link href="/portfolio">
+    <motion.button
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.45, delay: 0.6 }}
+      className="group flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white border border-white/20 transition-all duration-300 hover:bg-[#62a611] cursor-pointer"
+    >
+      Explore Our Projects
+    </motion.button>
+  </Link>
+</div>
           </div>
         </div>
 

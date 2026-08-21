@@ -218,7 +218,7 @@ export default function Chatbot() {
             max-w-[calc(100vw-1.5rem)]
 
             bg-zinc-950/95
-            border border-zinc-800
+            
             rounded-2xl sm:rounded-3xl
             shadow-[0_12px_45px_rgba(0,0,0,0.75)]
             backdrop-blur-md
@@ -359,9 +359,7 @@ export default function Chatbot() {
               <div
                 key={m.id}
                 className={`flex ${
-                  m.sender === "user"
-                    ? "justify-end"
-                    : "justify-start"
+                  m.sender === "user" ? "justify-end" : "justify-start"
                 }`}
               >
                 <div
