@@ -494,7 +494,7 @@ export default async function ServicePage({
                 </ul>
 
                 {/* CTA button */}
-                <Link href="/contact">
+                <Link href="/consultancy">
                   <div
                     className={`
                       w-full text-center rounded-xl py-3
