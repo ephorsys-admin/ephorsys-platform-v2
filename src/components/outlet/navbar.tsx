@@ -4,7 +4,24 @@ import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Smartphone,
+  Globe,
+  Code2,
+  Bot,
+  Palette,
+  Megaphone,
+  Search,
+  Building2,
+  BookOpen,
+  Users,
+  Layers,
+  Zap,
+  BarChart3,
+} from "lucide-react";
 
 const SERVICES = [
   { href: "/services/app-development", label: "App Development" },
@@ -16,52 +33,326 @@ const SERVICES = [
   { href: "/services/seo", label: "SEO" },
 ] as const;
 
-/* ─── Desktop dropdown ─────────────────────────────────────────────────────── */
+const COMPANY = [
+  { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
+  { href: "/team", label: "Team" },
+] as const;
+
+/* ─── Meta map ──────────────────────────────────────────────────────────────── */
+type IconComponent = React.FC<{ className?: string }>;
+
+// iconBg  = pill background   iconColor = icon stroke color
+const ITEM_META: Record<
+  string,
+  { icon: IconComponent; desc: string; iconBg: string; iconColor: string }
+> = {
+  "App Development": {
+    icon: Smartphone,
+    desc: "iOS & Android solutions",
+    iconBg: "bg-emerald-500/20",
+    iconColor: "text-emerald-300",
+  },
+  "Web Development": {
+    icon: Globe,
+    desc: "Modern, scalable websites",
+    iconBg: "bg-sky-500/20",
+    iconColor: "text-sky-300",
+  },
+  "Software Development": {
+    icon: Code2,
+    desc: "Custom software systems",
+    iconBg: "bg-violet-500/20",
+    iconColor: "text-violet-300",
+  },
+  "AI Development": {
+    icon: Bot,
+    desc: "Intelligent AI-powered apps",
+    iconBg: "bg-amber-500/20",
+    iconColor: "text-amber-300",
+  },
+  "Product Design": {
+    icon: Palette,
+    desc: "UI/UX that users love",
+    iconBg: "bg-pink-500/20",
+    iconColor: "text-pink-300",
+  },
+  "Digital Marketing": {
+    icon: Megaphone,
+    desc: "Grow your online presence",
+    iconBg: "bg-orange-500/20",
+    iconColor: "text-orange-300",
+  },
+  SEO: {
+    icon: BarChart3,
+    desc: "Rank higher, get found",
+    iconBg: "bg-teal-500/20",
+    iconColor: "text-teal-300",
+  },
+  About: {
+    icon: Building2,
+    desc: "Our story & mission",
+    iconBg: "bg-lime-500/20",
+    iconColor: "text-lime-300",
+  },
+  Blog: {
+    icon: BookOpen,
+    desc: "Insights & articles",
+    iconBg: "bg-cyan-500/20",
+    iconColor: "text-cyan-300",
+  },
+  Team: {
+    icon: Users,
+    desc: "The people behind it",
+    iconBg: "bg-fuchsia-500/20",
+    iconColor: "text-fuchsia-300",
+  },
+};
+
+/* ─── Full-width Mega Menu ──────────────────────────────────────────────────── */
 const DropdownMenu = memo(function DropdownMenu({
   label,
   items,
   isActive,
+  navRef,
 }: {
   label: string;
   items: readonly { href: string; label: string }[];
   isActive?: boolean;
+  navRef: React.RefObject<HTMLElement | null>;
 }) {
-  return (
-    <div className="relative group">
-      <h4 className="relative px-2.5 py-1.5 text-base font-body font-medium text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide flex items-center gap-1 cursor-pointer">
-        {label}
-        <ChevronDown className="w-4 h-4 transition-transform duration-250 group-hover:rotate-180 stroke-[#a8c97a] group-hover:stroke-[#74c316]" />
-        <span
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full bg-[#74c316] transition-all duration-300 ease-out"
-          style={{ width: isActive ? "70%" : "0%" }}
-        />
-      </h4>
+  const [open, setOpen] = useState(false);
+  const [panelTop, setPanelTop] = useState(0);
+  const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-      <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-52 bg-brand-white border border-[#74c316]/15 rounded-2xl p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 translate-y-1 transition-all duration-200 z-50 shadow-2xl shadow-black/60">
-        {items.slice(0, 3).map(({ href, label }) => (
-          <Link
-            key={href}
-            href={href}
-            className="block px-3 py-2 text-sm font-medium text-[#a8c97a] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
+  /* ── Position helpers ── */
+  const calcTop = useCallback(() => {
+    if (navRef.current)
+      setPanelTop(navRef.current.getBoundingClientRect().bottom);
+  }, [navRef]);
+
+  useEffect(() => {
+    if (open) calcTop();
+  }, [open, calcTop]);
+
+  useEffect(() => {
+    if (!open) return;
+    window.addEventListener("scroll", calcTop, { passive: true });
+    window.addEventListener("resize", calcTop, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", calcTop);
+      window.removeEventListener("resize", calcTop);
+    };
+  }, [open, calcTop]);
+
+  const handleEnter = () => {
+    if (leaveTimer.current) clearTimeout(leaveTimer.current);
+    setOpen(true);
+  };
+  const handleLeave = () => {
+    leaveTimer.current = setTimeout(() => setOpen(false), 100);
+  };
+
+  /* ── Column splits ──
+     Services (7 items) → 3 columns: 3 / 2 / 2
+     Company  (3 items) → 2 columns: 2 / 1          */
+  const isServices = label === "Services";
+
+  const columns: Array<{ heading: string; items: typeof items }> = isServices
+    ? [
+        { heading: "Build", items: items.slice(0, 3) },
+        { heading: "Design", items: items.slice(3, 5) },
+        { heading: "Grow", items: items.slice(5) },
+      ]
+    : [
+        { heading: "Company", items: items.slice(0, 2) },
+        { heading: "More", items: items.slice(2) },
+      ];
+
+  /* ── Single item renderer ── */
+  const renderItem = ({
+    href,
+    label: itemLabel,
+  }: {
+    href: string;
+    label: string;
+  }) => {
+    const meta = ITEM_META[itemLabel];
+    const Icon = meta?.icon ?? Layers;
+    const iconBg = meta?.iconBg ?? "bg-white/10";
+    const iconColor = meta?.iconColor ?? "text-white/70";
+    const desc = meta?.desc ?? "";
+
+    return (
+      <Link
+        key={href}
+        href={href}
+        role="menuitem"
+        onClick={() => setOpen(false)}
+        className="
+          group/item flex items-start gap-3 px-3 py-2.5 rounded-xl
+          transition-all duration-150
+          hover:bg-white/6
+        "
+      >
+        {/* Colored icon pill */}
+        <div
+          className={`
+          w-9 h-9 rounded-xl flex-shrink-0 flex items-center justify-center
+          transition-all duration-150 mt-0.5
+          ${iconBg}
+          group-hover/item:scale-110
+        `}
+        >
+          <Icon className={`w-[18px] h-[18px] ${iconColor}`} />
+        </div>
+
+        {/* Label + desc */}
+        <div className="flex flex-col min-w-0">
+          <span className="text-sm font-semibold text-white/90 group-hover/item:text-white transition-colors duration-150 leading-tight">
+            {itemLabel}
+          </span>
+          {desc && (
+            <span className="text-[11px] text-white/40 group-hover/item:text-white/60 transition-colors duration-150 mt-0.5 leading-snug">
+              {desc}
+            </span>
+          )}
+        </div>
+      </Link>
+    );
+  };
+
+  return (
+    <div
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      className="relative"
+      role="navigation"
+      aria-label={label}
+    >
+      {/* ── Trigger ── */}
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="true"
+        aria-expanded={open}
+        className={`
+          relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+          text-sm font-body font-semibold tracking-wide
+          transition-all duration-200 cursor-pointer select-none
+          ${
+            isActive
+              ? "bg-[#74c316]/12 text-[#4a8c00]"
+              : "text-[#74c316] hover:bg-[#74c316]/8 hover:text-[#4a8c00]"
+          }
+        `}
+      >
+        {label}
+        <ChevronDown
+          className={`
+          w-3.5 h-3.5 flex-shrink-0 transition-transform duration-200
+          ${open || isActive ? "stroke-[#4a8c00]" : "stroke-[#74c316]"}
+          ${open ? "rotate-180" : ""}
+        `}
+        />
+        {isActive && (
+          <span className="absolute -bottom-0.5 left-3 right-3 h-[2px] rounded-full bg-[#74c316]" />
+        )}
+      </button>
+
+      {/* ── Full-width panel ── */}
+      {open && (
+        <div
+          onMouseEnter={handleEnter}
+          onMouseLeave={handleLeave}
+          role="menu"
+          style={{ top: panelTop }}
+          className="fixed left-0 right-0 z-[999]"
+        >
+          {/* Top green accent hairline */}
+          <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#74c316]/60 to-transparent" />
+
+          {/* Dark panel */}
+          <div
+            className="relative border-b border-white/8 shadow-[0_24px_80px_rgba(0,0,0,0.55)]"
+            style={{
+              background:
+                "linear-gradient(135deg, #0a1a07 0%, #0d2209 40%, #0a1a07 100%)",
+            }}
           >
-            <h4 className="text-sm font-body font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
-              {label}
-            </h4>
-          </Link>
-        ))}
-        <div className="my-1.5 h-px " />
-        {items.slice(3).map(({ href, label }) => (
-          <Link
-            key={href}
-            href={href}
-            className="block px-3 py-2 text-sm text-[#74c316] hover:text-[#74c316] hover:scale-105 rounded-lg transition-all duration-150 hover:pl-5"
-          >
-            <h4 className="text-sm font-body font-medium text-[#a8c97a] group-hover:text-[#74c316] transition-colors">
-              {label}
-            </h4>
-          </Link>
-        ))}
-      </div>
+            {/* Subtle radial glow blob top-center */}
+            <div
+              className="pointer-events-none absolute inset-0 overflow-hidden"
+              aria-hidden
+            >
+              <div
+                className="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-25"
+                style={{
+                  background:
+                    "radial-gradient(ellipse, #74c316 0%, transparent 70%)",
+                }}
+              />
+            </div>
+
+            <div className="relative max-w-7xl mx-auto px-8 py-7">
+              {/* Column grid — 3 cols for Services, 2 for Company */}
+              <div
+                className={`grid gap-x-6 ${isServices ? "grid-cols-3" : "grid-cols-2"}`}
+              >
+                {columns.map((col, ci) => (
+                  <div
+                    key={ci}
+                    className={
+                      ci < columns.length - 1
+                        ? "border-r border-white/8 pr-6"
+                        : ""
+                    }
+                  >
+                    {/* Column heading */}
+                    <p
+                      className="
+                      text-[10px] font-bold uppercase tracking-[0.16em]
+                      text-[#74c316]/50 mb-3 px-3
+                    "
+                    >
+                      {col.heading}
+                    </p>
+                    <div className="space-y-0.5">
+                      {col.items.map(renderItem)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom CTA strip */}
+              <div className="mt-6 pt-4 border-t border-white/8 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {/* <Zap className="w-3.5 h-3.5 text-[#74c316]/60" /> */}
+                  <span className="text-xs text-white/35 font-medium">
+                    Not sure which service fits your project?
+                  </span>
+                </div>
+                <Link
+                  href="/consultancy"
+                  onClick={() => setOpen(false)}
+                  className="
+                    group/cta flex items-center gap-1.5
+                    text-xs font-bold text-[#74c316]
+                    hover:text-[#a0e040]
+                    transition-colors duration-150
+                  "
+                >
+                  Book a free consultation
+                  <span className="transition-transform duration-150 group-hover/cta:translate-x-0.5 inline-block">
+                    →
+                  </span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 });
@@ -80,7 +371,7 @@ const DesktopNavLink = ({
 }) => (
   <Link
     href={href}
-    className={`relative px-2.5 py-1.5 text-base font-body font-medium  text-[#74c316] hover:text-[#74c316] rounded-lg transition-all tracking-wide group ${className ?? ""}`}
+    className={`relative px-2.5 py-1.5 text-sm font-body font-semibold text-[#74c316] hover:text-[#4a8c00] hover:bg-[#74c316]/8 rounded-lg transition-all tracking-wide group ${className ?? ""}`}
   >
     {children}
     <span
@@ -109,64 +400,62 @@ const MobileDropdown = memo(function MobileDropdown({
   isActive?: boolean;
 }) {
   const isOpen = activeDropdown === name;
+
   return (
     <div>
-      {/* Trigger row — full-width hover bg, text + chevron both animate */}
       <button
         onClick={() => onToggle(name)}
-        className="
-          group w-full text-left
-          px-6 py-4
-          flex items-center justify-between
-          tracking-wide
-          transition-colors duration-150
-          hover:bg-[#74c316]/8
-          border-b border-[#74c316]/8
-        "
+        type="button"
+        className="group w-full text-left px-6 py-4 flex items-center justify-between tracking-wide transition-colors duration-150 hover:bg-[#74c316]/8 border-b border-[#74c316]/8"
         aria-expanded={isOpen}
       >
-        <span className="relative text-base font-body font-semibold text-[#74c316] group-hover:text-[#5fa010] transition-colors duration-150">
+        <span className="relative text-base font-body font-semibold text-[#74c316] group-hover:text-[#4a8c00] transition-colors duration-150">
           {label}
-          {/* Active underline */}
           {isActive && (
             <span className="absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full bg-[#74c316]" />
           )}
         </span>
         <ChevronDown
-          className={`
-            w-4 h-4 flex-shrink-0
-            transition-transform duration-300
-            group-hover:stroke-[#5fa010]
-            ${isOpen ? "rotate-180 stroke-[#74c316]" : "stroke-[#74c316]"}
-          `}
+          className={`w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:stroke-[#4a8c00] ${
+            isOpen ? "rotate-180 stroke-[#74c316]" : "stroke-[#74c316]"
+          }`}
         />
       </button>
 
-      {/* Submenu panel */}
       {isOpen && (
         <div className="bg-[#f7fff0] mx-3 mb-2 rounded-xl border border-[#74c316]/12 overflow-hidden">
-          {items.map(({ href, label }, i) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={onClose}
-              className={`
-                group/item flex items-center gap-2
-                px-5 py-3
-                text-sm font-body font-medium
-                text-[#5a8a25]
-                transition-all duration-150
-                hover:bg-[#74c316]/10
-                hover:text-[#3d6b12]
-                hover:pl-7
-                ${i < items.length - 1 ? "border-b border-[#74c316]/8" : ""}
-              `}
-            >
-              {/* Dot indicator */}
-              <span className="w-1.5 h-1.5 rounded-full bg-[#74c316]/30 group-hover/item:bg-[#74c316] transition-colors duration-150 flex-shrink-0" />
-              {label}
-            </Link>
-          ))}
+          {items.map(({ href, label: itemLabel }, i) => {
+            const meta = ITEM_META[itemLabel];
+            const Icon: IconComponent =
+              meta?.icon ??
+              (({ className }) => <span className={className}>⚡</span>);
+            const desc = meta?.desc ?? "";
+
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={onClose}
+                className={`group/item flex items-center gap-3 px-4 py-3 text-sm font-body font-medium text-[#5a8a25] transition-all duration-150 hover:bg-[#74c316]/10 hover:text-[#3d6b12] ${
+                  i < items.length - 1 ? "border-b border-[#74c316]/8" : ""
+                }`}
+              >
+                <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center bg-[#74c316]/10 group-hover/item:bg-[#74c316]/20 transition-colors duration-150">
+                  <Icon className="w-3.5 h-3.5 text-[#4a8c00]" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-sm font-semibold text-[#2d5a00] leading-tight">
+                    {itemLabel}
+                  </span>
+                  {desc && (
+                    <span className="text-xs text-[#74c316]/60 mt-0.5 leading-tight">
+                      {desc}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
@@ -190,25 +479,12 @@ const MobileNavLink = ({
   <Link
     href={href}
     onClick={onClick}
-    className="
-      group flex items-center justify-between
-      px-6 py-4
-      transition-colors duration-150
-      hover:bg-[#74c316]/8
-      border-b border-[#74c316]/8 last:border-b-0
-      tracking-wide
-    "
+    className="group flex items-center justify-between px-6 py-4 transition-colors duration-150 hover:bg-[#74c316]/8 border-b border-[#74c316]/8 last:border-b-0 tracking-wide"
   >
     <span
-      className={`
-        relative text-base font-body font-semibold
-        transition-colors duration-150
-        group-hover:text-[#5fa010]
-        ${isActive ? "text-[#74c316]" : "text-[#74c316]"}
-      `}
+      className={`relative text-base font-body font-semibold transition-colors duration-150 group-hover:text-[#4a8c00] ${isActive ? "text-[#74c316]" : "text-[#74c316]"}`}
     >
       {children}
-      {/* Active underline */}
       <span
         className="absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#74c316] transition-all duration-300"
         style={{ width: isActive ? "100%" : "0%" }}
@@ -227,12 +503,14 @@ export function Navbar() {
   const pathname = usePathname();
   if (pathname.startsWith("/admin")) return null;
 
+  const navRef = useRef<HTMLElement>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isServicesActive = SERVICES.some((s) => pathname === s.href);
+  const isCompanyActive = COMPANY.some((item) => pathname === item.href);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -267,58 +545,59 @@ export function Navbar() {
 
   return (
     <>
+      {/* NOTE: removed `contain: layout` — it clips fixed-position children */}
       <nav
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
+        ref={navRef}
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+          scrolled
             ? "bg-brand-white border-b border-[#74c316]/10 shadow-md"
             : "bg-brand-white border-b border-transparent"
-          }`}
-        style={{ contain: "layout" }}
+        }`}
       >
         <div className="max-w-7xl mx-auto py-2 px-3 sm:px-2 lg:px-2">
-          <div className="flex items-center h-14 sm:h-16 md:h-16 ">
-            {/* ── Logo (left) ── */}
-            <div className="flex-1 flex justify-start lg:flex-1 ">
-
-              {/* Small screen logo */}
-
-
-              {/* Larger screen logo */}
-              <div className="flex-1 flex justify-start">
-                <Link href="/" className="flex items-center shrink-0 ">
-                  <Image
-                    src="/Ephorsyslogo2.png"
-                    alt="Ephorsys Logo"
-                    width={350}
-                    height={100}
-                    className="w-[250px] h-[90px] object-cover object-center"
-                    priority
-                  />
-                </Link>
-              </div>
-
+          <div className="flex items-center h-14 sm:h-16 md:h-16">
+            {/* Logo */}
+            <div className="flex-1 flex justify-start">
+              <Link href="/" className="flex items-center shrink-0">
+                <Image
+                  src="/Ephorsyslogo2.png"
+                  alt="Ephorsys Logo"
+                  width={350}
+                  height={100}
+                  className="w-[250px] h-[90px] object-cover object-center"
+                  priority
+                />
+              </Link>
             </div>
 
-            {/* ── Desktop links (center) ── */}
+            {/* Desktop links */}
             <div className="hidden lg:flex lg:flex-1 items-center justify-center gap-2">
               <DesktopNavLink href="/" isActive={pathname === "/"}>
                 Home
               </DesktopNavLink>
-              <DesktopNavLink href="/about" isActive={pathname === "/about"}>
-                About
-              </DesktopNavLink>
+
+              <DropdownMenu
+                label="Company"
+                items={COMPANY}
+                isActive={isCompanyActive}
+                navRef={navRef}
+              />
+
               <DropdownMenu
                 label="Services"
                 items={SERVICES}
                 isActive={isServicesActive}
+                navRef={navRef}
               />
-              <DesktopNavLink href="/blog" isActive={pathname === "/blog"}>
-                Blog
-              </DesktopNavLink>
-              <DesktopNavLink href="/team" isActive={pathname === "/team"}>
-                Team
-              </DesktopNavLink>
+
               <DesktopNavLink href="/career" isActive={pathname === "/career"}>
                 Career
+              </DesktopNavLink>
+              <DesktopNavLink
+                href="/"
+                isActive={pathname === "/"}
+              >
+                Courses
               </DesktopNavLink>
               <DesktopNavLink
                 href="/portfolio"
@@ -334,51 +613,31 @@ export function Navbar() {
               </DesktopNavLink>
             </div>
 
-            {/* ── CTA (right) + Mobile hamburger ── */}
+            {/* CTA + hamburger */}
             <div className="flex-1 flex items-center justify-end gap-3">
               <Link href="/consultancy" className="hidden lg:block">
                 <button
-                  className="
-                    relative overflow-hidden
-                    px-4 py-2
-                    h-9
-                    rounded-lg
-                    text-sm font-body font-bold tracking-wide
-                    transition-all duration-200
-                    hover:brightness-110
-                    active:scale-[0.98]
-                    group
-                    whitespace-nowrap
-                    cursor-pointer
-                  "
-                  style={{
-                    background: "#74c316",
-                    color: "#021a0a",
-                  }}
+                  type="button"
+                  className="relative overflow-hidden px-4 py-2 h-9 rounded-lg text-sm font-body font-bold tracking-wide transition-all duration-200 hover:brightness-110 active:scale-[0.98] group whitespace-nowrap cursor-pointer"
+                  style={{ background: "#74c316", color: "#021a0a" }}
                 >
                   <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
                   <span className="relative">Book Free Consultancy</span>
                 </button>
               </Link>
 
-              {/* ── Mobile hamburger ── */}
               <button
                 onClick={toggleMobile}
+                type="button"
                 className="lg:hidden p-2 rounded-xl hover:bg-[#74c316]/8 transition-colors"
                 aria-label="Toggle menu"
               >
                 <div className="relative w-6 h-6">
                   <Menu
-                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${mobileOpen
-                        ? "opacity-0 rotate-90 scale-75"
-                        : "opacity-100 rotate-0 scale-100"
-                      }`}
+                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${mobileOpen ? "opacity-0 rotate-90 scale-75" : "opacity-100 rotate-0 scale-100"}`}
                   />
                   <X
-                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${mobileOpen
-                        ? "opacity-100 rotate-0 scale-100"
-                        : "opacity-0 -rotate-90 scale-75"
-                      }`}
+                    className={`absolute inset-0 w-6 h-6 text-[#74c316] transition-all duration-300 ${mobileOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-75"}`}
                   />
                 </div>
               </button>
@@ -387,19 +646,16 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* ── Mobile menu overlay ── */}
+      {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onClick={closeMobileMenu}
       />
 
-      {/* ── Mobile menu sidebar ── */}
+      {/* Mobile sidebar */}
       <div
-        className={`fixed top-0 right-0 z-[70] h-dvh w-[88vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${mobileOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 z-[70] h-dvh w-[88vw] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#74c316]/10">
           <span
             className="text-xl font-extrabold tracking-tight text-[#74c316]"
@@ -409,20 +665,13 @@ export function Navbar() {
           </span>
           <button
             onClick={closeMobileMenu}
-            className="
-              p-2 rounded-xl
-              text-[#74c316]
-              transition-colors duration-150
-              hover:bg-[#74c316]/10
-              hover:text-[#5fa010]
-              active:scale-95
-            "
+            type="button"
+            className="p-2 rounded-xl text-[#74c316] transition-colors duration-150 hover:bg-[#74c316]/10 hover:text-[#4a8c00] active:scale-95"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Nav items */}
         <div className="flex-1 overflow-y-auto pb-4">
           <MobileNavLink
             href="/"
@@ -432,6 +681,15 @@ export function Navbar() {
             Home
           </MobileNavLink>
 
+          <MobileDropdown
+            label="Company"
+            name="company"
+            items={COMPANY}
+            activeDropdown={activeDropdown}
+            onToggle={toggleDropdown}
+            onClose={closeMobileMenu}
+            isActive={isCompanyActive}
+          />
           <MobileDropdown
             label="Services"
             name="services"
@@ -443,34 +701,18 @@ export function Navbar() {
           />
 
           <MobileNavLink
-            href="/about"
-            onClick={closeMobileMenu}
-            isActive={pathname === "/about"}
-          >
-            About
-          </MobileNavLink>
-
-          <MobileNavLink
-            href="/team"
-            onClick={closeMobileMenu}
-            isActive={pathname === "/team"}
-          >
-            Team
-          </MobileNavLink>
-
-          <MobileNavLink
-            href="/blog"
-            onClick={closeMobileMenu}
-            isActive={pathname === "/blog"}
-          >
-            Blog
-          </MobileNavLink>
-          <MobileNavLink
             href="/career"
             onClick={closeMobileMenu}
             isActive={pathname === "/career"}
           >
             Career
+          </MobileNavLink>
+          <MobileNavLink
+            href="/"
+            onClick={closeMobileMenu}
+            isActive={pathname === "/"}
+          >
+            Courses
           </MobileNavLink>
           <MobileNavLink
             href="/portfolio"
@@ -479,7 +721,6 @@ export function Navbar() {
           >
             Portfolio
           </MobileNavLink>
-
           <MobileNavLink
             href="/contact"
             onClick={closeMobileMenu}
@@ -489,15 +730,12 @@ export function Navbar() {
           </MobileNavLink>
         </div>
 
-        {/* Mobile CTA */}
         <div className="shrink-0 sticky bottom-0 bg-white p-4 border-t border-[#74c316]/10 pb-[calc(1rem+env(safe-area-inset-bottom))]">
           <Link href="/consultancy" onClick={closeMobileMenu} className="block">
             <button
+              type="button"
               className="group relative w-full py-3.5 rounded-xl text-base font-body font-bold tracking-wide overflow-hidden transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer shadow-lg"
-              style={{
-                background: "#74c316",
-                color: "#021a0a",
-              }}
+              style={{ background: "#74c316", color: "#021a0a" }}
             >
               <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl" />
               <span className="relative">Book Free Consultancy</span>
