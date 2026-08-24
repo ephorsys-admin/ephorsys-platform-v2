@@ -14,13 +14,12 @@ import {
   Bot,
   Palette,
   Megaphone,
-  Search,
+  BarChart3,
   Building2,
   BookOpen,
   Users,
   Layers,
-  Zap,
-  BarChart3,
+  ArrowRight,
 } from "lucide-react";
 
 const SERVICES = [
@@ -42,71 +41,44 @@ const COMPANY = [
 /* ─── Meta map ──────────────────────────────────────────────────────────────── */
 type IconComponent = React.FC<{ className?: string }>;
 
-// iconBg  = pill background   iconColor = icon stroke color
-const ITEM_META: Record<
-  string,
-  { icon: IconComponent; desc: string; iconBg: string; iconColor: string }
-> = {
+const ITEM_META: Record<string, { icon: IconComponent; desc: string }> = {
   "App Development": {
     icon: Smartphone,
-    desc: "iOS & Android solutions",
-    iconBg: "bg-emerald-500/20",
-    iconColor: "text-emerald-300",
+    desc: "iOS & Android solutions built for scale and performance.",
   },
   "Web Development": {
     icon: Globe,
-    desc: "Modern, scalable websites",
-    iconBg: "bg-sky-500/20",
-    iconColor: "text-sky-300",
+    desc: "Modern, scalable websites and web applications.",
   },
   "Software Development": {
     icon: Code2,
-    desc: "Custom software systems",
-    iconBg: "bg-violet-500/20",
-    iconColor: "text-violet-300",
+    desc: "Custom software systems tailored to your business needs.",
   },
   "AI Development": {
     icon: Bot,
-    desc: "Intelligent AI-powered apps",
-    iconBg: "bg-amber-500/20",
-    iconColor: "text-amber-300",
+    desc: "Intelligent AI-powered applications and integrations.",
   },
   "Product Design": {
     icon: Palette,
-    desc: "UI/UX that users love",
-    iconBg: "bg-pink-500/20",
-    iconColor: "text-pink-300",
+    desc: "UI/UX design that users love and engage with intuitively.",
   },
   "Digital Marketing": {
     icon: Megaphone,
-    desc: "Grow your online presence",
-    iconBg: "bg-orange-500/20",
-    iconColor: "text-orange-300",
+    desc: "Grow your online presence and reach your target audience.",
   },
   SEO: {
     icon: BarChart3,
-    desc: "Rank higher, get found",
-    iconBg: "bg-teal-500/20",
-    iconColor: "text-teal-300",
+    desc: "Rank higher in search results and get found organically.",
   },
-  About: {
-    icon: Building2,
-    desc: "Our story & mission",
-    iconBg: "bg-lime-500/20",
-    iconColor: "text-lime-300",
-  },
-  Blog: {
-    icon: BookOpen,
-    desc: "Insights & articles",
-    iconBg: "bg-cyan-500/20",
-    iconColor: "text-cyan-300",
-  },
-  Team: {
-    icon: Users,
-    desc: "The people behind it",
-    iconBg: "bg-fuchsia-500/20",
-    iconColor: "text-fuchsia-300",
-  },
+  About: { icon: Building2, desc: "Our story & mission." },
+  Blog: { icon: BookOpen, desc: "Insights & articles." },
+  Team: { icon: Users, desc: "The people behind it." },
+};
+
+/* Column headings per menu — matches the BUILD / DESIGN / GROW grouping */
+const COLUMN_HEADINGS: Record<string, string[]> = {
+  Services: ["BUILD", "DESIGN & AI", "GROW"],
+  Company: ["OVERVIEW", "CONNECT"],
 };
 
 /* ─── Full-width Mega Menu ──────────────────────────────────────────────────── */
@@ -126,7 +98,6 @@ const DropdownMenu = memo(function DropdownMenu({
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  /* ── Position helpers ── */
   const calcTop = useCallback(() => {
     if (navRef.current)
       setPanelTop(navRef.current.getBoundingClientRect().bottom);
@@ -159,15 +130,17 @@ const DropdownMenu = memo(function DropdownMenu({
      Company  (3 items) → 2 columns: 2 / 1          */
   const isServices = label === "Services";
 
+  const headings = COLUMN_HEADINGS[label] ?? [];
+
   const columns: Array<{ heading: string; items: typeof items }> = isServices
     ? [
-        { heading: "Build", items: items.slice(0, 3) },
-        { heading: "Design", items: items.slice(3, 5) },
-        { heading: "Grow", items: items.slice(5) },
+        { heading: headings[0] ?? "", items: items.slice(0, 3) },
+        { heading: headings[1] ?? "", items: items.slice(3, 5) },
+        { heading: headings[2] ?? "", items: items.slice(5) },
       ]
     : [
-        { heading: "Company", items: items.slice(0, 2) },
-        { heading: "More", items: items.slice(2) },
+        { heading: headings[0] ?? "", items: items.slice(0, 2) },
+        { heading: headings[1] ?? "", items: items.slice(2) },
       ];
 
   /* ── Single item renderer ── */
@@ -180,8 +153,6 @@ const DropdownMenu = memo(function DropdownMenu({
   }) => {
     const meta = ITEM_META[itemLabel];
     const Icon = meta?.icon ?? Layers;
-    const iconBg = meta?.iconBg ?? "bg-white/10";
-    const iconColor = meta?.iconColor ?? "text-white/70";
     const desc = meta?.desc ?? "";
 
     return (
@@ -191,30 +162,29 @@ const DropdownMenu = memo(function DropdownMenu({
         role="menuitem"
         onClick={() => setOpen(false)}
         className="
-          group/item flex items-start gap-3 px-3 py-2.5 rounded-xl
-          transition-all duration-150
-          hover:bg-white/6
+          group/item flex items-start gap-3 py-2.5
+          transition-colors duration-150
         "
       >
-        {/* Colored icon pill */}
+        {/* Icon square */}
         <div
-          className={`
-          w-9 h-9 rounded-xl flex-shrink-0 flex items-center justify-center
-          transition-all duration-150 mt-0.5
-          ${iconBg}
-          group-hover/item:scale-110
-        `}
+          className="
+          w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center
+          bg-gray-100 border border-gray-200/70
+          transition-all duration-150
+          group-hover/item:bg-[#74c316]/10 group-hover/item:border-[#74c316]/30
+        "
         >
-          <Icon className={`w-[18px] h-[18px] ${iconColor}`} />
+          <Icon className="w-4 h-4 text-gray-700 group-hover/item:text-[#4a8c00] transition-colors duration-150" />
         </div>
 
         {/* Label + desc */}
-        <div className="flex flex-col min-w-0">
-          <span className="text-sm font-semibold text-white/90 group-hover/item:text-white transition-colors duration-150 leading-tight">
+        <div className="flex flex-col min-w-0 pt-0.5">
+          <span className="text-sm font-bold text-gray-900 leading-tight">
             {itemLabel}
           </span>
           {desc && (
-            <span className="text-[11px] text-white/40 group-hover/item:text-white/60 transition-colors duration-150 mt-0.5 leading-snug">
+            <span className="text-xs text-gray-500 mt-0.5 leading-snug max-w-[200px]">
               {desc}
             </span>
           )}
@@ -270,55 +240,25 @@ const DropdownMenu = memo(function DropdownMenu({
           style={{ top: panelTop }}
           className="fixed left-0 right-0 z-[999]"
         >
-          {/* Top green accent hairline */}
-          <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#74c316]/60 to-transparent" />
-
-          {/* Dark panel */}
-          <div
-            className="relative border-b border-white/8 shadow-[0_24px_80px_rgba(0,0,0,0.55)]"
-            style={{
-              background:
-                "linear-gradient(135deg, #0a1a07 0%, #0d2209 40%, #0a1a07 100%)",
-            }}
-          >
-            {/* Subtle radial glow blob top-center */}
-            <div
-              className="pointer-events-none absolute inset-0 overflow-hidden"
-              aria-hidden
-            >
+          {/* Light panel */}
+          <div className="relative bg-white border-b border-gray-100 shadow-[0_24px_60px_rgba(0,0,0,0.10)]">
+            <div className="relative max-w-6xl mx-auto px-8 py-6">
+              {/* Column grid */}
               <div
-                className="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-25"
-                style={{
-                  background:
-                    "radial-gradient(ellipse, #74c316 0%, transparent 70%)",
-                }}
-              />
-            </div>
-
-            <div className="relative max-w-7xl mx-auto px-8 py-7">
-              {/* Column grid — 3 cols for Services, 2 for Company */}
-              <div
-                className={`grid gap-x-6 ${isServices ? "grid-cols-3" : "grid-cols-2"}`}
+                className={`grid gap-x-10 ${isServices ? "grid-cols-3" : "grid-cols-2"}`}
               >
                 {columns.map((col, ci) => (
-                  <div
-                    key={ci}
-                    className={
-                      ci < columns.length - 1
-                        ? "border-r border-white/8 pr-6"
-                        : ""
-                    }
-                  >
+                  <div key={ci}>
                     {/* Column heading */}
-                    <p
-                      className="
-                      text-[10px] font-bold uppercase tracking-[0.16em]
-                      text-[#74c316]/50 mb-3 px-3
-                    "
-                    >
-                      {col.heading}
-                    </p>
-                    <div className="space-y-0.5">
+                    {col.heading && (
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="w-4 h-px bg-gray-300" />
+                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-gray-400">
+                          {col.heading}
+                        </p>
+                      </div>
+                    )}
+                    <div className="divide-y divide-gray-100">
                       {col.items.map(renderItem)}
                     </div>
                   </div>
@@ -326,27 +266,25 @@ const DropdownMenu = memo(function DropdownMenu({
               </div>
 
               {/* Bottom CTA strip */}
-              <div className="mt-6 pt-4 border-t border-white/8 flex items-center justify-between">
+              <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  {/* <Zap className="w-3.5 h-3.5 text-[#74c316]/60" /> */}
-                  <span className="text-xs text-white/35 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#74c316]" />
+                  <span className="text-xs text-gray-600 font-medium">
                     Not sure which service fits your project?
                   </span>
                 </div>
-                <Link
-                  href="/consultancy"
-                  onClick={() => setOpen(false)}
-                  className="
-                    group/cta flex items-center gap-1.5
-                    text-xs font-bold text-[#74c316]
-                    hover:text-[#a0e040]
-                    transition-colors duration-150
-                  "
-                >
-                  Book a free consultation
-                  <span className="transition-transform duration-150 group-hover/cta:translate-x-0.5 inline-block">
-                    →
-                  </span>
+                <Link href="/consultancy" onClick={() => setOpen(false)}>
+                  <button
+                    type="button"
+                    className="group/cta relative overflow-hidden flex items-center gap-1.5 px-4 py-2 h-9 rounded-lg text-sm font-body font-bold tracking-wide transition-all duration-200 hover:brightness-110 active:scale-[0.98] whitespace-nowrap cursor-pointer"
+                    style={{ background: "#74c316", color: "#021a0a" }}
+                  >
+                    <span className="absolute inset-0 bg-white/10 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-200 rounded-lg" />
+                    <span className="relative flex items-center gap-1.5">
+                      Book a free consultation
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover/cta:translate-x-0.5" />
+                    </span>
+                  </button>
                 </Link>
               </div>
             </div>
@@ -545,7 +483,6 @@ export function Navbar() {
 
   return (
     <>
-      {/* NOTE: removed `contain: layout` — it clips fixed-position children */}
       <nav
         ref={navRef}
         className={`sticky top-0 z-50 w-full transition-all duration-300 ${
@@ -582,7 +519,6 @@ export function Navbar() {
                 isActive={isCompanyActive}
                 navRef={navRef}
               />
-
               <DropdownMenu
                 label="Services"
                 items={SERVICES}
@@ -593,10 +529,7 @@ export function Navbar() {
               <DesktopNavLink href="/career" isActive={pathname === "/career"}>
                 Career
               </DesktopNavLink>
-              <DesktopNavLink
-                href="/"
-                isActive={pathname === "/"}
-              >
+              <DesktopNavLink href="/" isActive={pathname === "/"}>
                 Courses
               </DesktopNavLink>
               <DesktopNavLink

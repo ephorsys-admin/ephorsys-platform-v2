@@ -8,6 +8,7 @@ import CertificationsSection from "@/components/aboutpage/certifications";
 import { connectDB } from "@/lib/db";
 import HeroStat from "@/models/HeroStat";
 import Certification from "@/models/Certification";
+import FounderVision from "@/components/aboutpage/founderVision";
 
 export const dynamic = "force-dynamic";
 
@@ -102,7 +103,8 @@ export default async function About() {
       <CompanyOverview />
       <AboutUs aboutStats={data.aboutStats} />
       <WhatWeDo />
-      <CertificationsSection certificationsData={data.certifications} />
+      <FounderVision/>
+      {/* <CertificationsSection certificationsData={data.certifications} /> */}
     </div>
   );
 }
