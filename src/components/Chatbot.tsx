@@ -214,6 +214,7 @@ export default function Chatbot() {
             /* Large Desktop */
             lg:right-6
             lg:w-[430px]
+            lg:h-[430px]
 
             max-w-[calc(100vw-1.5rem)]
 

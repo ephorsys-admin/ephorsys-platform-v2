@@ -263,7 +263,7 @@ export default function ConsultancyPage() {
                 className="text-2xl sm:text-2xl lg:text-[2.65rem] font-extrabold text-gray-900 leading-tight tracking-tight"
                 style={{ fontFamily: "var(--font-syne)" }}
               >
-           Let’s Turn Your Business Idea Into Reality
+           Let’s Turn Your Business <span className="text-[#74c316]">Idea Into Reality</span> 
               </h2>
               <p className="mt-4 text-gray-500 leading-relaxed text-sm max-w-lg">
                Every business has different goals, challenges, and opportunities. Our consultation starts with understanding where you are today and identifying the technology that can help you move forward.
