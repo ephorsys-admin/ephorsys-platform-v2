@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { connectDB } from "@/lib/db";
 import Project from "@/models/Project";
+import { ExternalLink } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -66,13 +67,13 @@ export default async function PortfolioPage() {
     className="text-xl sm:text-2xl md:text-3xl lg:text-[2.8rem] font-black tracking-tight text-slate-900 leading-tight mb-3"
     style={{ fontFamily: "var(--font-syne)" }}
   >
-    Projects We <span className="text-[#62a611]">Are Proud Of</span>
+    Our Work  <span className="text-[#62a611]">Speaks for Us</span>
   </h1>
 
   <p className="text-xs sm:text-sm md:text-sm text-slate-500 max-w-lg mx-auto leading-relaxed">
-    Browse highlights below —{" "}
+    Take a look at what we’ve built —{" "}
     <span className="text-[#62a611] font-semibold italic">
-      open any project for the full story, features and tech stack.
+      explore the features, process and technology behind every project.
     </span>
   </p>
 </section>
@@ -90,11 +91,11 @@ export default async function PortfolioPage() {
                 className="bg-white border border-[#62A611]/35 rounded-[2rem] overflow-hidden flex flex-col group shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(98,166,17,0.15)] hover:-translate-y-0.5 transition-all duration-300"
               >
                 {/* Thumbnail Image Section */}
-                <div className="relative w-full aspect-[16/8] overflow-hidden bg-slate-50 border-b border-[#62A611]/15 flex items-center justify-center">
+                <div className="relative w-full aspect-[16/8] overflow-hidden bg-slate-50 border-b border-[#62A611]/15">
                   <img
                     src={project.thumbnailImage}
                     alt={project.title}
-                    className="w-full h-full object-contain p-2 sm:p-3 transition-transform duration-500 ease-in-out group-hover:scale-[1.02]"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-[1.02]"
                   />
 
                   {/* Category Pill Overlay */}
@@ -113,7 +114,7 @@ export default async function PortfolioPage() {
 
                   {/* Project Title */}
                   <h2
-                    className="text-base sm:text-lg lg:text-[1.2rem] font-black text-slate-900 leading-snug mb-2.5 tracking-tight"
+                    className="text-base sm:text-lg lg:text-[1.2rem] font-black text-slate-900 group-hover:text-[#62a611] transition-colors duration-300 leading-snug mb-2.5 tracking-tight"
                     style={{ fontFamily: "var(--font-syne)" }}
                   >
                     {project.title}
@@ -130,7 +131,7 @@ export default async function PortfolioPage() {
                       {project.technologies.map((tech: string, idx: number) => (
                         <span
                           key={idx}
-                          className="bg-slate-50 border border-slate-200/70 text-slate-500 text-[9px] sm:text-[10px] font-semibold px-2.5 py-0.5 rounded-full tracking-wide"
+                          className="bg-black/10 border border-slate-200/70 text-slate-500 text-[9px] sm:text-[10px] font-semibold px-2.5 py-0.5 rounded-full tracking-wide"
                         >
                           {tech}
                         </span>
@@ -175,9 +176,10 @@ export default async function PortfolioPage() {
                             href={project.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
+                            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#72AF29] hover:text-[#62A611] flex items-center gap-1 transition-colors"
                           >
                             Live
+<ExternalLink className="h-4 w-4" />
                           </a>
                         );
                       }
