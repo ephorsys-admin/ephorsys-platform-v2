@@ -126,7 +126,13 @@ function TraitPill({
 
 // Main Component
 
-export default function AboutUs() {
+export default function AboutUs({ aboutStats = [] }: { aboutStats?: any[] }) {
+  const statsItems = [
+    aboutStats.find((s) => s.order === -11) || { value: "13+", label: "Projects Shipped" },
+    aboutStats.find((s) => s.order === -12) || { value: "10+", label: "Happy Clients" },
+    aboutStats.find((s) => s.order === -13) || { value: "100%", label: "On-Time Delivery" },
+    aboutStats.find((s) => s.order === -14) || { value: "70%", label: "Repeat Client Rate" },
+  ];
   const sectionRef = useRef<HTMLElement>(null);
   const traitsRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -218,7 +224,7 @@ export default function AboutUs() {
               transition={{ duration: 0.5, delay: 0.26 }}
               className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 lg:grid-cols-2"
             >
-              {STATS.map((s, i) => (
+              {statsItems.map((s, i) => (
                 <StatChip
                   key={s.label}
                   value={s.value}
@@ -229,18 +235,32 @@ export default function AboutUs() {
             </motion.div>
 
             {/* CTA */}
-            <Link href="/contact">
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: 0.5 }}
-                className="group mt-8 flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition-all duration-300 hover:brightness-110 cursor-pointer ml-8 md:ml-auto md:mr-auto lg:ml-8 lg:mr-0"
-                style={{ background: "#74c316" }}
-              >
-                Start a Project with Us
-              </motion.button>
-            </Link>
+           <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+  <Link href="/consultancy">
+    <motion.button
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.45, delay: 0.5 }}
+      className="group flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition-all duration-300 hover:brightness-110 cursor-pointer"
+      style={{ background: "#74c316" }}
+    >
+      Start a Project with Us
+    </motion.button>
+  </Link>
+
+  <Link href="/portfolio">
+    <motion.button
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.45, delay: 0.6 }}
+      className="group flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white border border-white/20 transition-all duration-300 hover:bg-[#62a611] cursor-pointer"
+    >
+      Explore Our Projects
+    </motion.button>
+  </Link>
+</div>
           </div>
         </div>
 

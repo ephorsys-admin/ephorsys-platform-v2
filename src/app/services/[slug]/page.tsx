@@ -494,7 +494,7 @@ export default async function ServicePage({
                 </ul>
 
                 {/* CTA button */}
-                <Link href="/contact">
+                <Link href="/consultancy">
                   <div
                     className={`
                       w-full text-center rounded-xl py-3
@@ -724,7 +724,7 @@ export default async function ServicePage({
 
               <div className="flex flex-col xs:flex-row sm:flex-col md:flex-col lg:flex-row gap-3 shrink-0 w-full sm:w-auto">
               {/* <div className="flex flex-row gap-3 shrink-0 w-full md:w-auto"> */}
-                <Link href="/contact" className="w-full sm:w-auto">
+                <Link href="/consultancy" className="w-full sm:w-auto">
                   <div
                     className="inline-flex items-center justify-center gap-2 cursor-pointer bg-[#74c316] text-[#0d1f0d] font-bold text-[13px] px-6 sm:px-7 py-3 rounded-full whitespace-nowrap w-full min-w-50 shadow-[0_4px_24px_rgba(116,194,22,0.3)] transition-all duration-200 hover:brightness-110 font-heading"
                   >

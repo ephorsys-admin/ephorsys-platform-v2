@@ -95,9 +95,32 @@ function StatCard({
   );
 }
 
-export default function StatsSection() {
+function parseStatValue(value: string) {
+  const numMatch = value.match(/^(\d+)(.*)$/);
+  if (numMatch) {
+    return {
+      number: parseInt(numMatch[1], 10),
+      suffix: numMatch[2] || "",
+    };
+  }
+  return { number: 0, suffix: value };
+}
+
+export default function StatsSection({ statsData }: { statsData?: { value: string; label: string }[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  const activeStats = statsData && statsData.length > 0 
+    ? statsData.map((d) => {
+        const { number, suffix } = parseStatValue(d.value);
+        return {
+          number,
+          suffix,
+          label: d.label,
+          description: "",
+        };
+      })
+    : stats;
 
   return (
     <section
@@ -123,7 +146,7 @@ export default function StatsSection() {
 
       {/* 2 cols on mobile & tablet, 4 on desktop */}
       <div className="grid text-center grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4 sm:gap-x-8 lg:text-start md:text-center lg:gap-x-14">
-        {stats.map((stat, i) => (
+        {activeStats.map((stat, i) => (
           <StatCard key={i} stat={stat} index={i} started={isInView} />
         ))}
       </div>

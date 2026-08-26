@@ -30,6 +30,16 @@ export const services: Service[] = [
   },
   {
     id: "03",
+    title: "AI Development",
+    description:
+      "Custom AI solutions that automate workflows, unlock insights, and give your business a competitive edge.",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop",
+    accent: "#ffffff",
+    href: "/services/ai-development",
+  },
+  {
+    id: "04",
     title: "SEO Optimization",
     description:
       "Technical SEO audits, Core Web Vitals improvements, and structured data implementation that drive organic growth and search visibility.",
@@ -39,7 +49,7 @@ export const services: Service[] = [
     href: "/services/seo",
   },
   {
-    id: "04",
+    id: "05",
     title: "Digital Marketing",
     description:
       "Data-driven paid campaigns, conversion funnel design, and brand storytelling strategies that turn traffic into measurable business results.",

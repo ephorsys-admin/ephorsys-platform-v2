@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import emailjs from "@emailjs/browser";
 import {
   User,
   Mail,
@@ -82,8 +81,6 @@ const defaultForm: FormState = {
 };
 
 export default function BookingForm() {
-  const formRef = useRef<HTMLFormElement>(null);
-
   const [form, setForm] = useState<FormState>(defaultForm);
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -93,6 +90,7 @@ export default function BookingForm() {
     "Other",
     "Web Application Development",
     "Mobile App Development",
+    "AI Development & Automation",
     "Digital Growth & Marketing",
     "Graphic Design",
     "SEO Optimization",
@@ -164,15 +162,19 @@ export default function BookingForm() {
     setStatus("loading");
 
     try {
-      if (!formRef.current) throw new Error("Form ref is null");
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: form.name,
+          email: form.email,
+          phone: form.phone,
+          service: form.service,
+          projectDetails: form.message,
+        }),
+      });
 
-      await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        formRef.current,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!,
-      );
-
+      if (!res.ok) throw new Error("Server error");
       setStatus("success");
     } catch (err) {
       console.error(err);
@@ -239,7 +241,6 @@ export default function BookingForm() {
       </div>
 
       <form
-        ref={formRef}
         onSubmit={handleSubmit}
         className="space-y-5"
         noValidate

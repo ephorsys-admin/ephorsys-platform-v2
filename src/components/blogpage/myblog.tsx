@@ -288,10 +288,46 @@ function Newsletter() {
     );
 }
 
-/* ──────────────────────────── MAIN ─────────────────────────── */
-export default function Myblog() {
-    const featured = blogs.find((b) => b.featured)!;
-    const rest = blogs.filter((b) => !b.featured);
+type BlogItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  shortDescription: string;
+  content: string;
+  featuredImage: string;
+  category: string;
+  subcategory?: string;
+  readTime: string;
+  publishedAt?: string;
+  author: {
+    name: string;
+    profileImage: string;
+    role: string;
+  };
+};
+
+export default function Myblog({ blogsData }: { blogsData?: BlogItem[] }) {
+    const activeBlogs = blogsData && blogsData.length > 0
+        ? blogsData.map((b, idx) => ({
+              id: idx + 1,
+              category: b.category,
+              title: b.title,
+              excerpt: b.shortDescription,
+              more: b.content,
+              image: b.featuredImage || "https://res.cloudinary.com/devrmpo2p/image/upload/v1774352862/pexels-yankrukov-7698805_zwk7hu.jpg",
+              slug: b.slug,
+              tag: b.subcategory || "Tech",
+              number: String(idx + 1).padStart(2, "0"),
+              author: b.author.name,
+              authorRole: b.author.role || "Author",
+              authorAvatar: b.author.profileImage || "https://i.pravatar.cc/40?img=11",
+              date: b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+              featured: idx === 0,
+          }))
+        : blogs;
+
+    const featured = activeBlogs.find((b) => b.featured) || activeBlogs[0];
+    const rest = activeBlogs.filter((b) => b !== featured);
 
     return (
         <>
@@ -313,21 +349,15 @@ export default function Myblog() {
                                 Latest Articles
                             </span>
                         </div>
-                        <Link
-                            href="/blog"
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-[#74c316] transition-colors duration-200 uppercase tracking-widest"
-                        >
-                            View all
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </Link>
+                     
                     </div>
 
                     {/* FEATURED */}
-                    <div className="mb-8">
-                        <FeaturedCard post={featured} />
-                    </div>
+                    {featured && (
+                        <div className="mb-8">
+                            <FeaturedCard post={featured} />
+                        </div>
+                    )}
 
                     {/* GRID */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">

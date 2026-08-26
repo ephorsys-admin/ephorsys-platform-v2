@@ -14,116 +14,11 @@ export interface TeamMember {
 }
 
 // ─── LEADERSHIP (C-suite, founders) ───────────────────────────────────────────
-const LEADERSHIP: TeamMember[] = [
-  {
-    id: 'l1',
-    name: 'Dipti Ranjan Sahoo',
-    role: 'CEO & Founder',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg',
-    social: { linkedin: 'https://www.linkedin.com/in/drsdipti/' },
-  },
-  {
-    id: 'l2',
-    name: 'Biswajit Das',
-    role: 'Chief Technology Officer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337648/biswajit-pX4fUldF_yvl1a1.jpg',
-    social: { linkedin: 'https://www.linkedin.com/in/biswajit-das-307236378/' },
-  },
-  {
-    id: 'l3',
-    name: 'Asish Behera',
-    role: 'Chief Operating Officer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337649/asish-YP_x4M2m_zezpos.png',
-    social: { linkedin: 'https://www.linkedin.com/in/asish-behera-7aa599231/' },
-  },
-  {
-    id: 'l4',
-    name: 'Chandan Prakash Dash',
-    role: 'Chief Data Officer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1774337649/chandan-Cx7uX2po_s6mbwx.png',
-    social: { linkedin: 'https://www.linkedin.com/in/chandan-prakash-dash-938a30314/' },
-  },
-  {
-    id: 'l5',
-    name: 'Abhisek Mahanta',
-    role: 'Chief Financial Officer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717833/WhatsApp_Image_2026-04-09_at_12.26.48_PM_sc5mqr.jpg',
-    social: { linkedin: 'https://www.linkedin.com/in/abhisek-mohanta-9401952a3' },
-  },
-];
+const LEADERSHIP: TeamMember[] = [];
 
 // ─── CORE TEAM ─────────────────────────────────────────────────────────────────
 const CORE_TEAM: TeamMember[] = [
-  {
-    id: 'c1',
-    name: 'Manoj Kumar Das',
-    role: 'Tech Lead',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780379736/manoj_colvy2.jpg',
-    social: { linkedin: 'https://www.linkedin.com/in/manojkumardas308/' },
-  },
-  {
-    id: 'c2',
-    name: 'Santanu sabyasachi Swain ',
-    role: 'Full-Stack Developer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780381456/e907741f-12c7-4cab-a058-6a32e5a408a4.png',
-    social: { linkedin: 'https://www.linkedin.com/in/santanu-swain/' },
-  },
-  {
-    id: 'c3',
-    name: 'Biswranjan Rout',
-    role: 'Backend Developer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380149/bisworanjan_cug4wx.png',
-    social: { linkedin: 'https://www.linkedin.com/in/bisworanjan-rout-90b13724b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
-  },
-  {
-    id: 'c4',
-    name: 'Samir Kumar Swain',
-    role: 'Backend Developer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780382301/46cff1e3-8125-47b4-b479-4068964655f5.png',
-    social: { linkedin: 'https://www.linkedin.com/in/samirkumarswain/' },
-  },
-  {
-    id: 'c5',
-    name: 'Saswat Mohanty',
-    role: 'Full-Stack Developer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380846/1bd7b686-c5e8-491f-a533-961a4c86645f.png',
-    social: { linkedin: 'https://www.linkedin.com/in/sashwat-mohanty' },
-  },
-  {
-    id: 'c6',
-    name: 'Bibhas Ranjan Behera',
-    role: 'Digital Marketing Lead',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780379878/fede2153-6a60-4e9a-8322-1393e77c076d.png',
-    social: { linkedin: 'https://www.linkedin.com/in/bibhas-ranjan-behera' },
-  },
-  {
-    id: 'c7',
-    name: 'Rahul Dev Nayak',
-    role: 'Graphic Designer',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780381822/82f58ab2-559f-499e-ab03-b75b46adf640.png  ',
-    social: { linkedin: 'https://www.linkedin.com/in/rahul-dev-nayak-781205269?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
-  },
-  {
-    id: 'c8',
-    name: 'Pinki Maharana',
-    role: 'Business Development Executive Lead ',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780396102/87a5f591-fcd2-46eb-bd20-9ea6134eb636.png',
-    social: { linkedin: 'https://www.linkedin.com/in/pinki-maharana-39a081276/' },
-  },
-  {
-    id: 'c9',
-    name: 'Swapnajit Acharya',
-    role: 'Business Development Executive',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780380443/3b78e95d-9c50-47d1-bc4a-545e1a930a6e.png',
-    social: { linkedin: 'https://www.linkedin.com/in/swapnajit-acharya-b77506229' },
-  },
-  {
-    id: 'c10',
-    name: 'Pratikshya Rout',
-    role: 'Business Development Executive',
-    image: 'https://res.cloudinary.com/devrmpo2p/image/upload/v1780381072/8729fd84-7163-45c3-8632-901dbf66397e.png',
-    social: { linkedin: 'https://www.linkedin.com/in/pratikshya-rout-1243b0234' },
-  },
+ 
 ];
 
 // ─── ICONS ────────────────────────────────────────────────────────────────────
@@ -330,11 +225,59 @@ function SectionLabel({ label }: { label: string }) {
 }
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
-export default function TeamShowcase() {
+export default function TeamShowcase({
+  leadersData = [],
+  developersData = [],
+  marketingData = [],
+  bdeData = [],
+}: {
+  leadersData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+  developersData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+  marketingData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+  bdeData?: { name: string; position: string; photo: string; linkedIn?: string }[];
+}) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const isAnyHovered = hoveredId !== null;
 
-  const allMembers = [...LEADERSHIP, ...CORE_TEAM];
+  const activeLeaders = leadersData && leadersData.length > 0
+    ? leadersData.map((d, idx) => ({
+        id: `l-${idx}`,
+        name: d.name,
+        role: d.position,
+        image: d.photo || "https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg",
+        social: { linkedin: d.linkedIn || "#" },
+      }))
+    : LEADERSHIP;
+
+  const activeDevelopers = developersData && developersData.length > 0
+    ? developersData.map((d, idx) => ({
+        id: `s-${idx}`,
+        name: d.name,
+        role: d.position,
+        image: d.photo || "https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg",
+        social: { linkedin: d.linkedIn || "#" },
+      }))
+    : CORE_TEAM.filter(m => ['c1', 'c2', 'c3', 'c4', 'c5'].includes(m.id));
+
+  const activeMarketing = marketingData && marketingData.length > 0
+    ? marketingData.map((d, idx) => ({
+        id: `m-${idx}`,
+        name: d.name,
+        role: d.position,
+        image: d.photo || "https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg",
+        social: { linkedin: d.linkedIn || "#" },
+      }))
+    : CORE_TEAM.filter(m => ['c6', 'c7'].includes(m.id));
+
+  const activeBde = bdeData && bdeData.length > 0
+    ? bdeData.map((d, idx) => ({
+        id: `b-${idx}`,
+        name: d.name,
+        role: d.position,
+        image: d.photo || "https://res.cloudinary.com/devrmpo2p/image/upload/q_auto/f_auto/v1775717718/WhatsApp_Image_2026-04-09_at_12.23.19_PM_ds7yuk.jpg",
+        social: { linkedin: d.linkedIn || "#" },
+      }))
+    : CORE_TEAM.filter(m => ['c8', 'c9', 'c10'].includes(m.id));
 
   return (
     <>
@@ -348,54 +291,118 @@ export default function TeamShowcase() {
         aria-label="Team"
       >
         {/* ── Leadership ── */}
-        <SectionLabel label="Leadership" />
-        <div
-          style={{
-            display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: 12,
-            marginBottom: '2.5rem',
-          }}
-        >
-          {LEADERSHIP.map((m, i) => (
-            <MemberCard
-              key={m.id}
-              member={m}
-              index={i}
-              isHovered={hoveredId === m.id}
-              isAnyHovered={isAnyHovered}
-              onEnter={() => setHoveredId(m.id)}
-              onLeave={() => setHoveredId(null)}
-              nameSize={17}
-            />
-          ))}
-        </div>
+        {activeLeaders.length > 0 && (
+          <>
+            <SectionLabel label="Leadership" />
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: 12,
+                marginBottom: '2.5rem',
+              }}
+            >
+              {activeLeaders.map((m, i) => (
+                <MemberCard
+                  key={m.id}
+                  member={m}
+                  index={i}
+                  isHovered={hoveredId === m.id}
+                  isAnyHovered={isAnyHovered}
+                  onEnter={() => setHoveredId(m.id)}
+                  onLeave={() => setHoveredId(null)}
+                  nameSize={17}
+                />
+              ))}
+            </div>
+            <div style={{ height: '0.5px', background: 'var(--color-border-tertiary)', margin: '0 0 2rem' }} />
+          </>
+        )}
 
-        {/* Divider */}
-        <div style={{ height: '0.5px', background: 'var(--color-border-tertiary)', margin: '0 0 2rem' }} />
+        {/* ── Core Developers ── */}
+        {activeDevelopers.length > 0 && (
+          <>
+            <SectionLabel label="Core Developers" />
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+                gap: 12,
+                marginBottom: '2.5rem',
+              }}
+            >
+              {activeDevelopers.map((m, i) => (
+                <MemberCard
+                  key={m.id}
+                  member={m}
+                  index={i}
+                  isHovered={hoveredId === m.id}
+                  isAnyHovered={isAnyHovered}
+                  onEnter={() => setHoveredId(m.id)}
+                  onLeave={() => setHoveredId(null)}
+                  nameSize={15}
+                />
+              ))}
+            </div>
+            <div style={{ height: '0.5px', background: 'var(--color-border-tertiary)', margin: '0 0 2rem' }} />
+          </>
+        )}
 
-        {/* ── Core Team ── */}
-        <SectionLabel label="Core Team" />
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-            gap: 12,
-          }}
-        >
-          {CORE_TEAM.map((m, i) => (
-            <MemberCard
-              key={m.id}
-              member={m}
-              index={i}
-              isHovered={hoveredId === m.id}
-              isAnyHovered={isAnyHovered}
-              onEnter={() => setHoveredId(m.id)}
-              onLeave={() => setHoveredId(null)}
-              nameSize={15}
-            />
-          ))}
-        </div>
+        {/* ── Core Digital Marketing ── */}
+        {activeMarketing.length > 0 && (
+          <>
+            <SectionLabel label="Core Digital Marketing" />
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+                gap: 12,
+                marginBottom: '2.5rem',
+              }}
+            >
+              {activeMarketing.map((m, i) => (
+                <MemberCard
+                  key={m.id}
+                  member={m}
+                  index={i}
+                  isHovered={hoveredId === m.id}
+                  isAnyHovered={isAnyHovered}
+                  onEnter={() => setHoveredId(m.id)}
+                  onLeave={() => setHoveredId(null)}
+                  nameSize={15}
+                />
+              ))}
+            </div>
+            <div style={{ height: '0.5px', background: 'var(--color-border-tertiary)', margin: '0 0 2rem' }} />
+          </>
+        )}
+
+        {/* ── Business Development Executives ── */}
+        {activeBde.length > 0 && (
+          <>
+            <SectionLabel label="Business Development Executives" />
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+                gap: 12,
+              }}
+            >
+              {activeBde.map((m, i) => (
+                <MemberCard
+                  key={m.id}
+                  member={m}
+                  index={i}
+                  isHovered={hoveredId === m.id}
+                  isAnyHovered={isAnyHovered}
+                  onEnter={() => setHoveredId(m.id)}
+                  onLeave={() => setHoveredId(null)}
+                  nameSize={15}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </section>
     </>
   );

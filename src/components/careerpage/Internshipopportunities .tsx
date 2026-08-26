@@ -66,10 +66,32 @@ const stagger = {
   show: { transition: { staggerChildren: 0.12 } },
 };
 
-function JobCard({ job }: { job: Job }) {
+import ApplyModal from "./ApplyModal";
+
+function getJobIcon(dept: string) {
+  const d = dept.toLowerCase();
+  if (d.includes("dev") || d.includes("engine") || d.includes("frontend") || d.includes("backend") || d.includes("stack") || d.includes("code")) return Code2;
+  if (d.includes("java") || d.includes("python") || d.includes("server")) return Server;
+  return Coffee;
+}
+
+function JobCard({
+  job,
+  onApply,
+}: {
+  job: {
+    _id: string;
+    title: string;
+    department: string;
+    location: string;
+    description: string;
+    responsibilities?: string[];
+    experienceRequired?: string;
+  };
+  onApply: () => void;
+}) {
   const [hovered, setHovered] = useState(false);
-  const Icon = job.icon;
-  const router = useRouter();
+  const Icon = getJobIcon(job.department);
 
   return (
     <motion.div
@@ -119,7 +141,7 @@ function JobCard({ job }: { job: Job }) {
             </h3>
           </div>
 
-          <span className="shrink-0 rounded-full border border-[#74c316]/20 bg-[#74c316]/8 border-[#74c316] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#74c316]">
+          <span className="shrink-0 rounded-full border border-[#74c316]/20 bg-[#74c316]/8 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#74c316]">
             Intern
           </span>
         </div>
@@ -140,19 +162,44 @@ function JobCard({ job }: { job: Job }) {
           {job.description}
         </p>
 
-        <div className="mb-5 flex flex-wrap gap-1.5">
-          {job.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[11px] font-medium text-gray-500"
-            >
-              {tag}
-            </span>
-          ))}
+        {/* Requirements */}
+        <div className="mb-5 space-y-3">
+          {/* Must Have Skills */}
+          {job.responsibilities && job.responsibilities.length > 0 && (
+            <div>
+              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-700">
+                Must Have Skills
+              </p>
+
+              <div className="flex flex-wrap gap-1.5">
+                {job.responsibilities.map((resp, idx) => (
+                  <span
+                    key={idx}
+                    className="rounded-md border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-500"
+                  >
+                    {resp}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Experience */}
+          {job.experienceRequired && (
+            <div>
+              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-700">
+                Experience
+              </p>
+
+              <span className="inline-block rounded-md border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-500">
+                {job.experienceRequired}
+              </span>
+            </div>
+          )}
         </div>
 
         <Button
-          onClick={() => router.push("/contact")}
+          onClick={onApply}
           className="w-full justify-between cursor-pointer rounded-xl border-0 bg-[#74c316] font-bold text-white transition-all duration-300 hover:bg-[#62a611]"
         >
           <span>Apply Now</span>
@@ -163,9 +210,24 @@ function JobCard({ job }: { job: Job }) {
   );
 }
 
-export default function InternshipOpportunities() {
+export default function InternshipOpportunities({
+  jobs,
+}: {
+  jobs?: {
+    _id: string;
+    title: string;
+    department: string;
+    location: string;
+    description: string;
+    responsibilities?: string[];
+    experienceRequired?: string;
+  }[];
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.08 });
+  const [selectedJob, setSelectedJob] = useState<{ _id: string; title: string } | null>(null);
+
+  const hasJobs = jobs && jobs.length > 0;
 
   return (
     <section
@@ -209,17 +271,40 @@ export default function InternshipOpportunities() {
           </div>
         </motion.div>
 
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          animate={inView ? "show" : "hidden"}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
-        >
-          {internshipJobs.map((job) => (
-            <JobCard key={job.id} job={job} />
-          ))}
-        </motion.div>
+        {hasJobs ? (
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate={inView ? "show" : "hidden"}
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+          >
+            {jobs.map((job) => (
+              <JobCard
+                key={job._id}
+                job={job}
+                onApply={() => setSelectedJob({ _id: job._id, title: job.title })}
+              />
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "show" : "hidden"}
+            className="text-center py-12 px-4 rounded-2xl border border-gray-200 bg-white"
+          >
+            <p className="text-gray-400 font-medium text-sm">There is no jobs</p>
+          </motion.div>
+        )}
       </div>
+
+      {selectedJob && (
+        <ApplyModal
+          jobId={selectedJob._id}
+          jobTitle={selectedJob.title}
+          onClose={() => setSelectedJob(null)}
+        />
+      )}
     </section>
   );
 }

@@ -14,76 +14,7 @@ const testimonials = [
     initials: "P",
     image: "",
   },
-  {
-    tempId: 1,
-    testimonial: "COMPANY made managing large-scale events smooth and stress-free for our entire team.",
-    by: "Janhabi Behera, Event Manager at Rivora Eventz",
-    initials: "J",
-    image: "",
-  },
-  {
-    tempId: 2,
-    testimonial: "Our customers love the seamless booking experience. COMPANY truly transformed our operations.",
-    by: "Sunil Sethi, Operations Head at RentRideCar",
-    initials: "S",
-    image: "",
-  },
-  {
-    tempId: 3,
-    testimonial: "COMPANY’s system has significantly improved our workflow and patient management.",
-    by: "Ratan Barik, General Secretary at Usthi Hospital Nayapalli",
-    initials: "R",
-    image: "",
-  },
-  {
-    tempId: 4,
-    testimonial: "We evaluated several vendors across Odisha before choosing Ephorsys. As the best software company in Bhubaneswar, they delivered our ERP system on time and within budget. Their professionalism is truly unmatched.",
-    by: "Tarakanta Sahoo, Manager at S8 Eco Resort",
-    initials: "T",
-    image: "",
-  },
-  {
-    tempId: 5,
-    testimonial: "Ephorsys is the most reliable IT company in Bhubaneswar we have worked with. As a web development company in Bhubaneswar, they revamped our entire online presence in just three weeks, with global quality and local understanding.",
-    by: "Pakash Das, CEO of Das Enterprises",
-    initials: "P",
-    image: "",
-  },
-  {
-    tempId: 6,
-    testimonial: "The best app development company in Bhubaneswar, no question. Ephorsys built our cross-platform logistics app that reduced order errors by 40%. Their mobile app development expertise in Bhubaneswar is genuinely world class.",
-    by: "Ananya Mishra, Founder of GreenLeaf Organics",
-    initials: "A",
-    image: "",
-  },
-  {
-    tempId: 7,
-    testimonial: "Ephorsys is our go to digital solutions company in Bhubaneswar. From CRM to cloud migration, they handled everything seamlessly. As a trusted software development company across Odisha, our operational efficiency improved by 60%.",
-    by: "Arjun Rao, CTO at Techkit Solutions",
-    initials: "A",
-    image: "",
-  },
-  {
-    tempId: 8,
-    testimonial: "Finding a true AI development company in Bhubaneswar was a challenge, until Ephorsys. Their custom software development in Bhubaneswar gave us an AI forecasting tool that predicts stock needs with 92% accuracy, saving us lakhs every quarter.",
-     by: "Vikash Nayak, Founder of Swiftmove Logistics",
-    initials: "V",
-    image: "",
-  },
-  {
-    tempId: 9,
-    testimonial: "Ephorsys is a complete package, top web design company, the sharpest digital marketing agency, and the most effective SEO company in Bhubaneswar. Our Google rankings moved from page 2 to top 3 in under 90 days",
-    by: "Sunita Mohanty, CEO, Emerald Retail Pvt. Ltd.",
-    initials: "s",
-    image: "",
-  },
-  {
-    tempId: 10,
-    testimonial: "As a funded startup, we needed a company that could move fast. Ephorsys is the best full stack development company in Bhubaneswar built our entire SaaS platform in under 7 weeks. They are not just developers, they are truely the best technology partners.",
-    by: "Tanmay Rout, Co-founder, Skill Bridge EdTech",
-    initials: "s",
-    image: "",
-  },
+  
 ];
 
 interface TestimonialCardProps {
@@ -231,10 +162,38 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   );
 };
 
-export const StaggerTestimonials: React.FC = () => {
+export const StaggerTestimonials: React.FC<{
+  testimonialsData?: { clientPhoto: string; feedbackText: string; clientName: string }[];
+}> = ({ testimonialsData }) => {
   const [cardSize, setCardSize] = useState(365);
   const [isMobile, setIsMobile] = useState(false);
-  const [testimonialsList, setTestimonialsList] = useState(testimonials);
+
+  const initialList = testimonialsData && testimonialsData.length >= 3
+    ? testimonialsData.map((t, idx) => ({
+        tempId: idx,
+        testimonial: t.feedbackText,
+        by: t.clientName,
+        initials: t.clientName[0] || "?",
+        image: t.clientPhoto || "",
+      }))
+    : testimonials;
+
+  const [testimonialsList, setTestimonialsList] = useState(initialList);
+
+  // Sync if testimonialsData changes
+  useEffect(() => {
+    if (testimonialsData && testimonialsData.length >= 3) {
+      setTestimonialsList(
+        testimonialsData.map((t, idx) => ({
+          tempId: idx,
+          testimonial: t.feedbackText,
+          by: t.clientName,
+          initials: t.clientName[0] || "?",
+          image: t.clientPhoto || "",
+        }))
+      );
+    }
+  }, [testimonialsData]);
 
   const handleMove = (steps: number) => {
     const newList = [...testimonialsList];

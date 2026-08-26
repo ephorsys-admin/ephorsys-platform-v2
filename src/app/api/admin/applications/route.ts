@@ -1,0 +1,38 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { connectDB } from "@/lib/db";
+import JobApplication from "@/models/JobApplication";
+import Job from "@/models/Job";
+
+async function requireAuth() {
+  return (await getServerSession(authOptions)) ?? null;
+}
+
+export async function GET(request: NextRequest) {
+  const session = await requireAuth();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  await connectDB();
+  const { searchParams } = new URL(request.url);
+  const jobId = searchParams.get("jobId");
+  const status = searchParams.get("status");
+  const page = Math.max(1, parseInt(searchParams.get("page") ?? "1"));
+  const limit = 20;
+
+  const query: Record<string, unknown> = {};
+  if (jobId) query.jobId = jobId;
+  if (status) query.status = status;
+
+  const [applications, total] = await Promise.all([
+    JobApplication.find(query)
+      .populate("jobId", "type")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean(),
+    JobApplication.countDocuments(query),
+  ]);
+
+  return NextResponse.json({ applications, total, page, pages: Math.ceil(total / limit) });
+}

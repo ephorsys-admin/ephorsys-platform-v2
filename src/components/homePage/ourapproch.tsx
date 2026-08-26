@@ -7,12 +7,7 @@ import Link from "next/link";
 const FULL_TEXT =
   "Your vision, our expertise delivered with precision and punctuality. We follow a flexible, agile model that prioritises collaboration, transparency, and streamlined execution.";
 
-const AVATARS = [
-  "https://i.pravatar.cc/32?img=11",
-  "https://i.pravatar.cc/32?img=22",
-  "https://i.pravatar.cc/32?img=33",
-  "https://i.pravatar.cc/32?img=44",
-];
+
 
 const steps = [
   { number: "01", title: "Discovery & Planning", desc: "We understand your vision, goals, and challenges to map out a clear strategic roadmap for your business.", Icon: Globe, color: "#6E54F3", bg: "#f5f3ff" },
@@ -21,13 +16,7 @@ const steps = [
   { number: "04", title: "Deployment & Support", desc: "We provide seamless deployment, ongoing maintenance, and continuous improvements aligned with your business goals.", Icon: Rocket, color: "#d97706", bg: "#fffbeb" },
 ];
 
-type StatItem = { value: number; suffix: string; label: string; dark: boolean };
-
-const stats: StatItem[] = [
-  { value: 25, suffix: "+", label: "Projects", dark: false },
-  { value: 30, suffix: "+", label: "Clients", dark: true },
-  { value: 1, suffix: "+", label: "Years", dark: false },
-];
+type StatItem = { value: string; label: string; dark: boolean };
 
 function StatBadge({ stat, posClass }: { stat: StatItem; posClass: string }) {
   return (
@@ -39,7 +28,7 @@ function StatBadge({ stat, posClass }: { stat: StatItem; posClass: string }) {
       ].join(" ")}
     >
       <span className="text-sm font-black sm:text-base">
-        {stat.value}{stat.suffix}
+        {stat.value}
       </span>
       <span className={`text-[9px] font-semibold uppercase tracking-wider ${stat.dark ? "text-white/60" : "text-gray-400"}`}>
         {stat.label}
@@ -48,29 +37,29 @@ function StatBadge({ stat, posClass }: { stat: StatItem; posClass: string }) {
   );
 }
 
-function AvatarStack() {
+function AvatarStack({ clientsValue }: { clientsValue: string }) {
   return (
     <div className="flex items-center">
-      {AVATARS.map((src, i) => (
+      {["#a78bfa", "#7c3aed", "#6d28d9"].map((bg, i) => (
         <div
           key={i}
-          className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-white shadow"
-          style={{ marginLeft: i === 0 ? 0 : -8, zIndex: 10 - i }}
+          className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold text-white shadow"
+          style={{ backgroundColor: bg, marginLeft: i === 0 ? 0 : -8, zIndex: 10 - i }}
         >
-          <Image src={src} alt="" fill className="object-cover" sizes="28px" />
+          {["A", "B", "C"][i]}
         </div>
       ))}
       <div
         className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-[#74c316] text-[9px] font-bold text-white shadow"
-        style={{ marginLeft: -8, zIndex: 6 }}
+        style={{ marginLeft: -3, zIndex: 6 }}
       >
-        +8
+        {clientsValue}
       </div>
     </div>
   );
 }
 
-function ApproachCard() {
+function ApproachCard({ stats }: { stats: StatItem[] }) {
   return (
     <div className="w-full shrink-0 lg:mt-10 lg:w-[42%] xl:w-[38%]">
       <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
@@ -86,7 +75,7 @@ function ApproachCard() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/40" />
          
           <div className="absolute bottom-3 right-3">
-            <AvatarStack />
+            <AvatarStack clientsValue={stats[1].value} />
           </div>
           <StatBadge stat={stats[0]} posClass="top-3 right-3" />
           <StatBadge stat={stats[1]} posClass="bottom-12 left-3" />
@@ -133,7 +122,17 @@ function StepCards() {
   );
 }
 
-export default function OurApproach() {
+export default function OurApproach({ approachStats = [] }: { approachStats?: any[] }) {
+  const projectsStat = approachStats.find((s) => s.order === 1) || { value: "25+", label: "Projects" };
+  const clientsStat = approachStats.find((s) => s.order === -1) || { value: "30+", label: "Clients" };
+  const yearsStat = approachStats.find((s) => s.order === -2) || { value: "1+", label: "Years" };
+
+  const stats: StatItem[] = [
+    { value: projectsStat.value, label: "Projects", dark: false },
+    { value: clientsStat.value, label: "Clients", dark: true },
+    { value: yearsStat.value, label: "Years", dark: false },
+  ];
+
   return (
     <section className="relative w-full overflow-hidden bg-white">
       <div
@@ -146,7 +145,7 @@ export default function OurApproach() {
 
       <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20 xl:py-24">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-14 xl:gap-20">
-          <ApproachCard />
+          <ApproachCard stats={stats} />
 
           <div className="w-full min-w-0 lg:flex-1">
             <h2 className="mb-3 text-3xl font-black leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
