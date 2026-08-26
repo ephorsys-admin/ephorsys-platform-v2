@@ -37,7 +37,7 @@ export default withAuth(
        pathname.startsWith("/api/auth/signin/credentials")) &&
       req.method === "POST"
     ) {
-      const ip = req.headers.get("x-forwarded-for") || req.ip || "unknown";
+      const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
       if (isRateLimited(ip)) {
         return NextResponse.json(
           { error: "Too many login attempts. Please try again in 15 minutes." },
