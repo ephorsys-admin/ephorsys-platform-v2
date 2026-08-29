@@ -134,14 +134,14 @@ const DropdownMenu = memo(function DropdownMenu({
 
   const columns: Array<{ heading: string; items: typeof items }> = isServices
     ? [
-        { heading: headings[0] ?? "", items: items.slice(0, 3) },
-        { heading: headings[1] ?? "", items: items.slice(3, 5) },
-        { heading: headings[2] ?? "", items: items.slice(5) },
-      ]
+      { heading: headings[0] ?? "", items: items.slice(0, 3) },
+      { heading: headings[1] ?? "", items: items.slice(3, 5) },
+      { heading: headings[2] ?? "", items: items.slice(5) },
+    ]
     : [
-        { heading: headings[0] ?? "", items: items.slice(0, 2) },
-        { heading: headings[1] ?? "", items: items.slice(2) },
-      ];
+      { heading: headings[0] ?? "", items: items.slice(0, 2) },
+      { heading: headings[1] ?? "", items: items.slice(2) },
+    ];
 
   /* ── Single item renderer ── */
   const renderItem = ({
@@ -211,10 +211,9 @@ const DropdownMenu = memo(function DropdownMenu({
           relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg
           text-sm font-body font-semibold tracking-wide
           transition-all duration-200 cursor-pointer select-none
-          ${
-            isActive
-              ? "bg-[#74c316]/12 text-[#4a8c00]"
-              : "text-[#74c316] hover:bg-[#74c316]/8 hover:text-[#4a8c00]"
+          ${isActive
+            ? "bg-[#74c316]/12 text-[#4a8c00]"
+            : "text-[#74c316] hover:bg-[#74c316]/8 hover:text-[#4a8c00]"
           }
         `}
       >
@@ -354,9 +353,8 @@ const MobileDropdown = memo(function MobileDropdown({
           )}
         </span>
         <ChevronDown
-          className={`w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:stroke-[#4a8c00] ${
-            isOpen ? "rotate-180 stroke-[#74c316]" : "stroke-[#74c316]"
-          }`}
+          className={`w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:stroke-[#4a8c00] ${isOpen ? "rotate-180 stroke-[#74c316]" : "stroke-[#74c316]"
+            }`}
         />
       </button>
 
@@ -374,9 +372,8 @@ const MobileDropdown = memo(function MobileDropdown({
                 key={href}
                 href={href}
                 onClick={onClose}
-                className={`group/item flex items-center gap-3 px-4 py-3 text-sm font-body font-medium text-[#5a8a25] transition-all duration-150 hover:bg-[#74c316]/10 hover:text-[#3d6b12] ${
-                  i < items.length - 1 ? "border-b border-[#74c316]/8" : ""
-                }`}
+                className={`group/item flex items-center gap-3 px-4 py-3 text-sm font-body font-medium text-[#5a8a25] transition-all duration-150 hover:bg-[#74c316]/10 hover:text-[#3d6b12] ${i < items.length - 1 ? "border-b border-[#74c316]/8" : ""
+                  }`}
               >
                 <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center bg-[#74c316]/10 group-hover/item:bg-[#74c316]/20 transition-colors duration-150">
                   <Icon className="w-3.5 h-3.5 text-[#4a8c00]" />
@@ -485,11 +482,10 @@ export function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          scrolled
-            ? "bg-brand-white border-b border-[#74c316]/10 shadow-md"
-            : "bg-brand-white border-b border-transparent"
-        }`}
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
+          ? "bg-brand-white border-b border-[#74c316]/10 shadow-md"
+          : "bg-brand-white border-b border-transparent"
+          }`}
       >
         <div className="max-w-7xl mx-auto py-2 px-3 sm:px-2 lg:px-2">
           <div className="flex items-center h-14 sm:h-16 md:h-16">
