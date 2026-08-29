@@ -131,7 +131,7 @@ export default function RootLayout({
 
         {/* Preloader */}
         {/* <Preloader /> */}
-        <SocialMedia/>
+        <SocialMedia />
 
         <Navbar />
 

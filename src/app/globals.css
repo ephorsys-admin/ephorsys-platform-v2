@@ -102,6 +102,12 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: #005F02;
+
+  /* ── View Transition timing ── */
+  --vt-exit-duration: 150ms;
+  --vt-enter-duration: 220ms;
+  --vt-enter-delay: 80ms;
+  --vt-slide-offset: 12px;
 }
 
 .dark {
@@ -225,5 +231,57 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ========================================
+   VIEW TRANSITIONS — smooth page navigation
+   React 19 <ViewTransition> + Next.js 16
+   No extra packages needed.
+======================================== */
+
+/* Old page: fade out + slides down slightly */
+::view-transition-old(.page-exit) {
+  animation:
+    var(--vt-exit-duration) ease-in both vt-fade-out,
+    var(--vt-exit-duration) ease-in both vt-slide-out;
+}
+
+/* New page: fade in + slides up, delayed so exit clears first */
+::view-transition-new(.page-enter) {
+  animation:
+    var(--vt-enter-duration) ease-out var(--vt-enter-delay) both vt-fade-in,
+    var(--vt-enter-duration) ease-out var(--vt-enter-delay) both vt-slide-in;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; filter: blur(2px); }
+  to   { opacity: 1; filter: blur(0);   }
+}
+@keyframes vt-slide-out {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(var(--vt-slide-offset) * 0.5)); }
+}
+@keyframes vt-slide-in {
+  from { transform: translateY(calc(var(--vt-slide-offset) * -1)); }
+  to   { transform: translateY(0); }
+}
+
+/* Clicks pass through the transition overlay — no dead clicks */
+::view-transition {
+  pointer-events: none;
+}
+
+/* Respect reduced-motion: instant swap, no animation */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
